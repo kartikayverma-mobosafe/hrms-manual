@@ -1,0 +1,1 @@
+किसी को जोड़ने से पहले सिस्टम को आपके संगठन का ढाँचा पता होना चाहिए। Departments पहला master है। हर पंक्ति में एक नाम, एक code, एक विवरण और display order होता है। New Department से नया जोड़िए। Designations, Grades और Employment Types बिल्कुल इसी तरह काम करते हैं, यानी यह एक स्क्रीन सीख ली, तो चारों आ गईं।

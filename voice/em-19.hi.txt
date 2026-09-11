@@ -1,0 +1,1 @@
+Payroll रजिस्टर। हर पंक्ति एक run है: अवधि, branch, run का प्रकार, उसका status, उसमें कितने कर्मचारी आए, और फिर gross, deductions, net pay, employer cost और सी टी सी। New payroll run से अगला शुरू होता है। Payroll आम तौर पर उस महीने के लिए उठाया जाता है जो अभी ख़त्म हुआ है।

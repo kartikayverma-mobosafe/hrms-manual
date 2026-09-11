@@ -1,7 +1,19 @@
+<script>
+  // Runs before anything paints, so the page never shows both languages.
+  // ?lang= wins, then a remembered choice, then the browser's own preference.
+  (function () {
+    var a = (location.search.match(/[?&]lang=(en|hi)/) || [])[1];
+    var s = null;
+    try { s = localStorage.getItem('manual-lang'); } catch (e) { /* private window */ }
+    var n = (navigator.language || '').slice(0, 2) === 'hi' ? 'hi' : 'en';
+    var code = a || s || n;
+    document.documentElement.setAttribute('data-lang', code === 'hi' ? 'hi' : 'en');
+  })();
+</script>
 <title>Employee Module Handbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   :root {
     --paper:#F3F6F7; --card:#FFFFFF; --sunk:#E8EEEF;
@@ -9,9 +21,9 @@
     --rule:#D2DBDE; --rule-2:#E5EBED;
     --accent:#0E6E69; --accent-soft:#E0EFEE;
     --warn:#8E5504; --warn-bg:#FAF0DB; --warn-rule:#DFB872;
-    --display:'Archivo','Helvetica Neue',system-ui,sans-serif;
-    --prose:'Literata',Georgia,serif;
-    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --display:'Archivo','Noto Sans Devanagari','Helvetica Neue',system-ui,sans-serif;
+    --prose:'Literata','Noto Sans Devanagari',Georgia,serif;
+    --mono:'JetBrains Mono','Noto Sans Devanagari',ui-monospace,Consolas,monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -34,13 +46,32 @@
   .wrap { max-width:64rem; margin:0 auto; padding-inline:20px; padding-block:44px 76px; display:flex; flex-direction:column; gap:44px; }
   .num { font-variant-numeric:tabular-nums; }
   code { font-family:var(--mono); font-size:.84em; background:var(--sunk); border:1px solid var(--rule-2); border-radius:3px; padding:.1em .34em; color:var(--ink); }
+
+  /* Both languages ship inline. Only the one not in use is hidden, so every
+     element keeps whatever display its own rule gives it. */
+  :root[data-lang="en"] .lx-hi, :root[data-lang="hi"] .lx-en { display:none; }
+  /* Devanagari sits lower and needs more room between lines than Literata. */
+  :root[data-lang="hi"] body, [lang="hi-IN"] { line-height:1.75; }
+  [lang="hi-IN"] code { font-size:.92em; }
+  /* The small-caps label treatment is a Latin idea: Devanagari has no upper
+     case, and letter-spacing pulls its conjuncts apart. */
+  [lang="hi-IN"], [lang="hi-IN"] * { letter-spacing:normal; text-transform:none; }
+
+  .langbar { display:flex; align-items:center; gap:8px; }
+  .langbar .who { font-family:var(--display); font-weight:600; font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin-right:2px; }
+  .langbtn { font-family:var(--display); font-weight:600; font-size:.8rem; padding:5px 13px; border:1px solid var(--rule); background:var(--card); color:var(--ink-2); border-radius:999px; cursor:pointer; line-height:1.3; }
+  .langbtn:hover { border-color:var(--accent); color:var(--accent); }
+  .langbtn[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--paper); }
+
   .eyebrow { font-family:var(--display); font-weight:600; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
   h1 { font-family:var(--display); font-weight:700; font-size:clamp(2rem,6.5vw,2.9rem); line-height:1.05; letter-spacing:-.015em; margin:.2em 0 0; text-wrap:balance; }
   h2 { font-family:var(--display); font-weight:700; font-size:1.35rem; margin:0; }
   h3 { font-family:var(--display); font-weight:600; font-size:1.16rem; margin:0; }
   h4 { font-family:var(--display); font-weight:600; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:0 0 8px; }
   header.masthead { border-top:3px solid var(--accent); padding-top:18px; }
+  .masthead-top { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
   header.masthead .lede { margin:14px 0 0; max-width:46ch; font-size:1.07rem; color:var(--ink-2); }
+  .privacy { margin:10px 0 0; font-size:.82rem; color:var(--ink-3); }
   .meta { margin-top:26px; display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); border:1px solid var(--rule); border-radius:3px; background:var(--card); overflow:hidden; }
   .meta > div { padding:11px 14px; border-right:1px solid var(--rule-2); border-bottom:1px solid var(--rule-2); }
   .meta dt { font-family:var(--display); font-weight:600; font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); }
@@ -72,6 +103,7 @@
   .do ol { margin:0; padding-left:1.25rem; display:flex; flex-direction:column; gap:6px; }
   .do li { color:var(--ink-2); }
   .said p { margin:0; color:var(--ink-2); font-style:italic; border-left:2px solid var(--accent); padding-left:13px; }
+  [lang="hi-IN"].said p, .said p[lang="hi-IN"] { font-style:normal; }
   .roles { display:flex; flex-direction:column; gap:20px; }
   .roles-lede { margin:0; max-width:60ch; color:var(--ink-2); }
   ol.ladder { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; background:var(--rule-2); border:1px solid var(--rule); border-radius:3px; overflow:hidden; }
@@ -90,10 +122,9 @@
   .warn { background:var(--warn-bg); border:1px solid var(--warn-rule); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:12px; }
   .warn h2 { font-size:1.15rem; }
   .warn ul, ul.role-rules { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:10px; }
-  ul.role-rules li { color:var(--ink-2); font-size:.93rem; }
-  ul.role-rules b { font-family:var(--display); font-weight:700; color:var(--ink); }
   .warn li { color:var(--ink-2); }
-  .warn b { font-family:var(--display); font-weight:700; color:var(--ink); }
+  .warn b, ul.role-rules b { font-family:var(--display); font-weight:700; color:var(--ink); }
+  ul.role-rules li { color:var(--ink-2); font-size:.93rem; }
   footer.colophon { border-top:1px solid var(--rule); padding-top:16px; font-family:var(--mono); font-size:.73rem; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:4px 18px; }
   @media (max-width:46rem) { .ch-body, .role-grid { grid-template-columns:1fr; gap:16px; } }
   @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
@@ -101,283 +132,304 @@
 
 <div class="wrap">
   <header class="masthead">
-    <div class="eyebrow">Operating manual</div>
-    <h1>Employee Module Handbook</h1>
-    <p class="lede">Every screen in Employee Management, in the order you would actually use them &mdash; set the org up, put people on, run the month, close it. Each chapter has the real screen on video with narration, and the steps in writing.</p>
+    <div class="masthead-top">
+      <div class="eyebrow lx lx-en" lang="en-IN">Operating manual</div><div class="eyebrow lx lx-hi" lang="hi-IN">संचालन पुस्तिका</div>
+      <div class="langbar">
+        <span class="who">Language</span>
+        <button class="langbtn" type="button" data-set="en" aria-pressed="true">English</button>
+        <button class="langbtn" type="button" data-set="hi" aria-pressed="false" lang="hi-IN">हिन्दी</button>
+      </div>
+    </div>
+    <h1 class="lx lx-en" lang="en-IN">Employee Module Handbook</h1><h1 class="lx lx-hi" lang="hi-IN">Employee Module पुस्तिका</h1>
+    <p class="lede lx lx-en" lang="en-IN">Every screen in Employee Management, in the order you would actually use them — set the org up, put people on, run the month, close it. Each chapter has the real screen on video with narration, and the steps in writing.</p><p class="lede lx lx-hi" lang="hi-IN">Employee Management की हर स्क्रीन, उसी क्रम में जिसमें आप उन्हें असल में इस्तेमाल करेंगे — संगठन खड़ा कीजिए, लोगों को जोड़िए, महीना चलाइए, फिर बंद कीजिए। हर अध्याय में असली स्क्रीन का वीडियो है, आवाज़ के साथ, और साथ में लिखित क़दम।</p>
+    <p class="privacy lx lx-en" lang="en-IN">Every name, phone number and identity number on screen is fake.</p><p class="privacy lx lx-hi" lang="hi-IN">स्क्रीन पर दिखने वाला हर नाम, फ़ोन नंबर और पहचान संख्या काल्पनिक है।</p>
     <dl class="meta">
-      <div><dt>Chapters</dt><dd>23</dd></div>
-      <div><dt>Runtime</dt><dd>12:04</dd></div>
-      <div><dt>Module</dt><dd>/employee</dd></div>
-      <div><dt>Voice</dt><dd>Neerja en-IN</dd></div>
-      <div><dt>Captured</dt><dd>85 staff</dd></div>
-      <div><dt>Period</dt><dd>Sep 2026</dd></div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Chapters</dt><dt class="lx lx-hi" lang="hi-IN">अध्याय</dt>
+        <dd class="lx lx-en" lang="en-IN">23</dd><dd class="lx lx-hi" lang="hi-IN">23</dd>
+      </div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Runtime</dt><dt class="lx lx-hi" lang="hi-IN">अवधि</dt>
+        <dd class="lx lx-en" lang="en-IN">12:04</dd><dd class="lx lx-hi" lang="hi-IN">13:28</dd>
+      </div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Module</dt><dt class="lx lx-hi" lang="hi-IN">मॉड्यूल</dt>
+        <dd class="lx lx-en" lang="en-IN">/employee</dd><dd class="lx lx-hi" lang="hi-IN">/employee</dd>
+      </div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Voice</dt><dt class="lx lx-hi" lang="hi-IN">आवाज़</dt>
+        <dd class="lx lx-en" lang="en-IN">Neerja en-IN</dd><dd class="lx lx-hi" lang="hi-IN">Swara hi-IN</dd>
+      </div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Captured</dt><dt class="lx lx-hi" lang="hi-IN">रिकॉर्ड किया</dt>
+        <dd class="lx lx-en" lang="en-IN">85 staff</dd><dd class="lx lx-hi" lang="hi-IN">85 कर्मचारी</dd>
+      </div>
+      <div>
+        <dt class="lx lx-en" lang="en-IN">Period</dt><dt class="lx lx-hi" lang="hi-IN">अवधि माह</dt>
+        <dd class="lx lx-en" lang="en-IN">Sep 2026</dd><dd class="lx lx-hi" lang="hi-IN">सितम्बर 2026</dd>
+      </div>
     </dl>
   </header>
 
   <nav class="toc">
-    <h2>Contents</h2>
+    <h2 class="lx lx-en" lang="en-IN">Contents</h2><h2 class="lx lx-hi" lang="hi-IN">विषय-सूची</h2>
     <div class="toc-part">
-      <div class="toc-head"><span class="toc-n">Who can do what</span>
-        <span class="toc-role">7 roles</span></div>
-      <ol class="toc-list"><li><a href="#roles">
-        <span class="slate">ROLES</span><span>The ladder, and what each rung cannot do</span></a></li></ol>
+      <div class="toc-head">
+        <span class="toc-n lx lx-en" lang="en-IN">Who can do what</span><span class="toc-n lx lx-hi" lang="hi-IN">कौन क्या कर सकता है</span>
+        <span class="toc-role lx lx-en" lang="en-IN">7 roles</span><span class="toc-role lx lx-hi" lang="hi-IN">7 भूमिकाएँ</span>
+      </div>
+      <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#roles"><span class="slate">ROLES</span><span>The ladder, and what each rung cannot do</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#roles"><span class="slate">ROLES</span><span>भूमिकाओं की सीढ़ी, और हर पायदान क्या नहीं कर सकता</span></a></li></ol>
     </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">Start here</span><span class="toc-role">Any HR role</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-01"><span class="slate">EM-01</span> The workspace<span class="toc-time num">0:41</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">Start here</span><span class="toc-n lx lx-hi" lang="hi-IN">यहाँ से शुरू कीजिए</span>
+      <span class="toc-role lx lx-en" lang="en-IN">Any HR role</span><span class="toc-role lx lx-hi" lang="hi-IN">कोई भी HR भूमिका</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-01"><span class="slate">EM-01</span> The workspace<span class="toc-time num">0:41</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-01"><span class="slate">EM-01</span> कार्यक्षेत्र<span class="toc-time num">0:49</span></a></li></ol>
   </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">Set up the org</span><span class="toc-role">HR_ADMIN</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-02"><span class="slate">EM-02</span> Departments, designations, grades<span class="toc-time num">0:29</span></a></li>
-      <li><a href="#em-03"><span class="slate">EM-03</span> Employee codes<span class="toc-time num">0:37</span></a></li>
-      <li><a href="#em-04"><span class="slate">EM-04</span> Basic master — wage rates<span class="toc-time num">0:24</span></a></li>
-      <li><a href="#em-05"><span class="slate">EM-05</span> Leave types<span class="toc-time num">0:23</span></a></li>
-      <li><a href="#em-05b"><span class="slate">EM-05B</span> Holidays<span class="toc-time num">0:25</span></a></li>
-      <li><a href="#em-06"><span class="slate">EM-06</span> Payroll settings<span class="toc-time num">0:36</span></a></li>
-      <li><a href="#em-07"><span class="slate">EM-07</span> Face match<span class="toc-time num">0:24</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">Set up the org</span><span class="toc-n lx lx-hi" lang="hi-IN">संगठन खड़ा कीजिए</span>
+      <span class="toc-role lx lx-en" lang="en-IN">HR_ADMIN</span><span class="toc-role lx lx-hi" lang="hi-IN">HR_ADMIN</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-02"><span class="slate">EM-02</span> Departments, designations, grades<span class="toc-time num">0:29</span></a></li><li><a href="#em-03"><span class="slate">EM-03</span> Employee codes<span class="toc-time num">0:37</span></a></li><li><a href="#em-04"><span class="slate">EM-04</span> Basic master — wage rates<span class="toc-time num">0:24</span></a></li><li><a href="#em-05"><span class="slate">EM-05</span> Leave types<span class="toc-time num">0:23</span></a></li><li><a href="#em-05b"><span class="slate">EM-05B</span> Holidays<span class="toc-time num">0:25</span></a></li><li><a href="#em-06"><span class="slate">EM-06</span> Payroll settings<span class="toc-time num">0:36</span></a></li><li><a href="#em-07"><span class="slate">EM-07</span> Face match<span class="toc-time num">0:24</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-02"><span class="slate">EM-02</span> विभाग, पदनाम और ग्रेड<span class="toc-time num">0:30</span></a></li><li><a href="#em-03"><span class="slate">EM-03</span> कर्मचारी कोड<span class="toc-time num">0:41</span></a></li><li><a href="#em-04"><span class="slate">EM-04</span> Basic Master — मज़दूरी दरें<span class="toc-time num">0:30</span></a></li><li><a href="#em-05"><span class="slate">EM-05</span> छुट्टी के प्रकार<span class="toc-time num">0:28</span></a></li><li><a href="#em-05b"><span class="slate">EM-05B</span> अवकाश कैलेंडर<span class="toc-time num">0:28</span></a></li><li><a href="#em-06"><span class="slate">EM-06</span> Payroll सेटिंग्स<span class="toc-time num">0:37</span></a></li><li><a href="#em-07"><span class="slate">EM-07</span> चेहरा मिलान<span class="toc-time num">0:26</span></a></li></ol>
   </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">Put people on the system</span><span class="toc-role">HR_MANAGER</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-08"><span class="slate">EM-08</span> The employee list<span class="toc-time num">0:33</span></a></li>
-      <li><a href="#em-09"><span class="slate">EM-09</span> Add an employee<span class="toc-time num">0:35</span></a></li>
-      <li><a href="#em-10"><span class="slate">EM-10</span> One employee's record<span class="toc-time num">0:33</span></a></li>
-      <li><a href="#em-12"><span class="slate">EM-12</span> Excel import<span class="toc-time num">0:26</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">Put people on the system</span><span class="toc-n lx lx-hi" lang="hi-IN">लोगों को सिस्टम पर लाइए</span>
+      <span class="toc-role lx lx-en" lang="en-IN">HR_MANAGER</span><span class="toc-role lx lx-hi" lang="hi-IN">HR_MANAGER</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-08"><span class="slate">EM-08</span> The employee list<span class="toc-time num">0:33</span></a></li><li><a href="#em-09"><span class="slate">EM-09</span> Add an employee<span class="toc-time num">0:35</span></a></li><li><a href="#em-10"><span class="slate">EM-10</span> One employee's record<span class="toc-time num">0:33</span></a></li><li><a href="#em-12"><span class="slate">EM-12</span> Excel import<span class="toc-time num">0:26</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-08"><span class="slate">EM-08</span> कर्मचारी सूची<span class="toc-time num">0:36</span></a></li><li><a href="#em-09"><span class="slate">EM-09</span> कर्मचारी जोड़िए<span class="toc-time num">0:37</span></a></li><li><a href="#em-10"><span class="slate">EM-10</span> एक कर्मचारी का रिकॉर्ड<span class="toc-time num">0:38</span></a></li><li><a href="#em-12"><span class="slate">EM-12</span> Excel से आयात<span class="toc-time num">0:30</span></a></li></ol>
   </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">Run the month</span><span class="toc-role">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-13"><span class="slate">EM-13</span> Marking attendance<span class="toc-time num">1:03</span></a></li>
-      <li><a href="#em-14"><span class="slate">EM-14</span> The muster roll<span class="toc-time num">0:30</span></a></li>
-      <li><a href="#em-15"><span class="slate">EM-15</span> Leave<span class="toc-time num">0:25</span></a></li>
-      <li><a href="#em-16"><span class="slate">EM-16</span> Penalties and advances<span class="toc-time num">0:29</span></a></li>
-      <li><a href="#em-17"><span class="slate">EM-17</span> Expense claims<span class="toc-time num">0:32</span></a></li>
-      <li><a href="#em-18"><span class="slate">EM-18</span> Contract workers<span class="toc-time num">0:24</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">Run the month</span><span class="toc-n lx lx-hi" lang="hi-IN">महीना चलाइए</span>
+      <span class="toc-role lx lx-en" lang="en-IN">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span><span class="toc-role lx lx-hi" lang="hi-IN">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-13"><span class="slate">EM-13</span> Marking attendance<span class="toc-time num">1:03</span></a></li><li><a href="#em-14"><span class="slate">EM-14</span> The muster roll<span class="toc-time num">0:30</span></a></li><li><a href="#em-15"><span class="slate">EM-15</span> Leave<span class="toc-time num">0:25</span></a></li><li><a href="#em-16"><span class="slate">EM-16</span> Penalties and advances<span class="toc-time num">0:29</span></a></li><li><a href="#em-17"><span class="slate">EM-17</span> Expense claims<span class="toc-time num">0:32</span></a></li><li><a href="#em-18"><span class="slate">EM-18</span> Contract workers<span class="toc-time num">0:24</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-13"><span class="slate">EM-13</span> हाज़िरी लगाना<span class="toc-time num">1:13</span></a></li><li><a href="#em-14"><span class="slate">EM-14</span> मस्टर रोल<span class="toc-time num">0:34</span></a></li><li><a href="#em-15"><span class="slate">EM-15</span> छुट्टी<span class="toc-time num">0:30</span></a></li><li><a href="#em-16"><span class="slate">EM-16</span> जुर्माना और अग्रिम<span class="toc-time num">0:33</span></a></li><li><a href="#em-17"><span class="slate">EM-17</span> ख़र्च के दावे<span class="toc-time num">0:35</span></a></li><li><a href="#em-18"><span class="slate">EM-18</span> ठेका कर्मी<span class="toc-time num">0:28</span></a></li></ol>
   </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">Close the month</span><span class="toc-role">HR_HEAD</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-19"><span class="slate">EM-19</span> The payroll register<span class="toc-time num">0:25</span></a></li>
-      <li><a href="#em-19b"><span class="slate">EM-19B</span> Inside a payroll run<span class="toc-time num">0:39</span></a></li>
-      <li><a href="#em-20"><span class="slate">EM-20</span> Performance<span class="toc-time num">0:25</span></a></li>
-      <li><a href="#em-21"><span class="slate">EM-21</span> Reports<span class="toc-time num">0:31</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">Close the month</span><span class="toc-n lx lx-hi" lang="hi-IN">महीना बंद कीजिए</span>
+      <span class="toc-role lx lx-en" lang="en-IN">HR_HEAD</span><span class="toc-role lx lx-hi" lang="hi-IN">HR_HEAD</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-19"><span class="slate">EM-19</span> The payroll register<span class="toc-time num">0:25</span></a></li><li><a href="#em-19b"><span class="slate">EM-19B</span> Inside a payroll run<span class="toc-time num">0:39</span></a></li><li><a href="#em-20"><span class="slate">EM-20</span> Performance<span class="toc-time num">0:25</span></a></li><li><a href="#em-21"><span class="slate">EM-21</span> Reports<span class="toc-time num">0:31</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-19"><span class="slate">EM-19</span> Payroll रजिस्टर<span class="toc-time num">0:28</span></a></li><li><a href="#em-19b"><span class="slate">EM-19B</span> Payroll run के भीतर<span class="toc-time num">0:41</span></a></li><li><a href="#em-20"><span class="slate">EM-20</span> प्रदर्शन<span class="toc-time num">0:31</span></a></li><li><a href="#em-21"><span class="slate">EM-21</span> रिपोर्ट<span class="toc-time num">0:32</span></a></li></ol>
   </div>
 
   <div class="toc-part">
-    <div class="toc-head"><span class="toc-n">What the employee sees</span><span class="toc-role">EMPLOYEE</span></div>
-    <ol class="toc-list">
-      <li><a href="#em-22"><span class="slate">EM-22</span> My HR — what the employee sees<span class="toc-time num">0:34</span></a></li>
-    </ol>
+    <div class="toc-head">
+      <span class="toc-n lx lx-en" lang="en-IN">What the employee sees</span><span class="toc-n lx lx-hi" lang="hi-IN">कर्मचारी को क्या दिखता है</span>
+      <span class="toc-role lx lx-en" lang="en-IN">HRMS_EMPLOYEE_SELF</span><span class="toc-role lx lx-hi" lang="hi-IN">HRMS_EMPLOYEE_SELF</span>
+    </div>
+    <ol class="toc-list lx lx-en" lang="en-IN"><li><a href="#em-22"><span class="slate">EM-22</span> My HR — what the employee sees<span class="toc-time num">0:34</span></a></li></ol><ol class="toc-list lx lx-hi" lang="hi-IN"><li><a href="#em-22"><span class="slate">EM-22</span> My HR — कर्मचारी को क्या दिखता है<span class="toc-time num">0:37</span></a></li></ol>
   </div>
   </nav>
 
   <section class="roles" id="roles">
     <div class="part-rule">
-      <h2>Who can do what</h2>
-      <span class="part-role">7 roles &middot; lowest rung first</span>
+      <h2 class="lx lx-en" lang="en-IN">Who can do what</h2><h2 class="lx lx-hi" lang="hi-IN">कौन क्या कर सकता है</h2>
+      <span class="part-role lx lx-en" lang="en-IN">7 roles · lowest rung first</span><span class="part-role lx lx-hi" lang="hi-IN">7 भूमिकाएँ · सबसे नीचे का पायदान पहले</span>
     </div>
-    <p class="roles-lede">Seven rungs, each the smallest set that lets somebody finish their own job. Nothing stops one person holding more than one role — that is a decision for whoever assigns them.</p>
+    <p class="roles-lede lx lx-en" lang="en-IN">Seven rungs, each the smallest set that lets somebody finish their own job. Nothing stops one person holding more than one role — that is a decision for whoever assigns them.</p><p class="roles-lede lx lx-hi" lang="hi-IN">सात पायदान, हर एक उतना ही छोटा जितने में कोई अपना काम पूरा कर सके। एक ही व्यक्ति को एक से ज़्यादा भूमिकाएँ देने पर कोई रोक नहीं है — यह फ़ैसला उसका है जो भूमिकाएँ बाँटता है।</p>
     <ol class="ladder">
     <li class="role">
       <div class="role-head">
         <code class="role-name">HRMS_EMPLOYEE_SELF</code>
-        <span class="role-count num">1 permission</span>
+        <span class="role-count num lx lx-en" lang="en-IN">1 permission</span><span class="role-count num lx lx-hi" lang="hi-IN">1 अनुमति</span>
       </div>
-      <p class="role-what">The login an employee is handed for their own record. Reaches My HR and nothing else.</p>
+      <p class="role-what lx lx-en" lang="en-IN">The login an employee is handed for their own record. Reaches My HR and nothing else.</p><p class="role-what lx lx-hi" lang="hi-IN">वह login जो कर्मचारी को उसके अपने रिकॉर्ड के लिए दिया जाता है। यह सिर्फ़ My HR तक पहुँचता है, और कहीं नहीं।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>Their own payslips, attendance, leave balance and details, through /hrms/me</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Their own payslips, attendance, leave balance and details, through /hrms/me</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>/hrms/me के ज़रिए अपनी payslips, हाज़िरी, छुट्टी का बैलेंस और अपना विवरण</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>See any other employee, anywhere in the module</li><li><code>Apply for leave</code> or submit a claim through the main screens — those endpoints are organisation-wide, so an employee holding them would see every colleague's leave and every colleague's claims. They are deliberately withheld.</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>See any other employee, anywhere in the module</li><li><code>Apply for leave</code> or submit a claim through the main screens — those endpoints are organisation-wide, so an employee holding them would see every colleague's leave and every colleague's claims. They are deliberately withheld.</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>मॉड्यूल में कहीं भी किसी दूसरे कर्मचारी को देखना</li><li>मुख्य स्क्रीनों से छुट्टी का आवेदन या ख़र्च का दावा करना — वे endpoint पूरे संगठन के हैं, इसलिए यह अनुमति रखने वाला कर्मचारी हर साथी की छुट्टी और हर साथी के दावे देख लेता। इसीलिए ये जानबूझकर नहीं दी गईं।</li></ul>
         </div>
       </div>
-      <p class="role-watch"><b>Watch out:</b> The role is called HRMS_EMPLOYEE_SELF, not EMPLOYEE. A role named plainly EMPLOYEE collided with an existing one, and every workforce login issued silently received all 53 permissions instead of one.</p>
+      <p class="role-watch lx lx-en" lang="en-IN"><b>Watch out:</b> The role is called HRMS_EMPLOYEE_SELF, not EMPLOYEE. A role named plainly EMPLOYEE collided with an existing one, and every workforce login issued silently received all 53 permissions instead of one.</p><p class="role-watch lx lx-hi" lang="hi-IN"><b>ध्यान दीजिए:</b> भूमिका का नाम HRMS_EMPLOYEE_SELF है, सिर्फ़ EMPLOYEE नहीं। सादे EMPLOYEE नाम वाली एक भूमिका पहले से मौजूद भूमिका से टकरा गई थी, और जारी किया गया हर कर्मचारी login चुपचाप एक के बजाय पूरी तिरपन अनुमतियाँ पा रहा था।</p>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">ATTENDANCE_TAKER</code>
-        <span class="role-count num">4 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">4 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">4 अनुमतियाँ</span>
       </div>
-      <p class="role-what">Marks the daily attendance of the branch or office they are posted to.</p>
+      <p class="role-what lx lx-en" lang="en-IN">Marks the daily attendance of the branch or office they are posted to.</p><p class="role-what lx lx-hi" lang="hi-IN">जिस branch या दफ़्तर में तैनात है, वहाँ की रोज़ाना हाज़िरी लगाता है।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>See the employee list — the marking screen is a list of employees</li><li>View and mark attendance</li><li>See their own record, because whoever marks the roster is also on it</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>See the employee list — the marking screen is a list of employees</li><li>View and mark attendance</li><li>See their own record, because whoever marks the roster is also on it</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>कर्मचारी सूची देखना — हाज़िरी की स्क्रीन ख़ुद कर्मचारियों की सूची ही है</li><li>हाज़िरी देखना और लगाना</li><li>अपना रिकॉर्ड देखना, क्योंकि जो हाज़िरी लगाता है वह भी रोल पर होता है</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>See what anybody is paid</li><li><code>Approve</code> anything</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>See what anybody is paid</li><li><code>Approve</code> anything</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>किसी को कितना मिलता है, यह देखना</li><li>कुछ भी मंज़ूर करना</li></ul>
         </div>
       </div>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">BRANCH_SUPERVISOR</code>
-        <span class="role-count num">16 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">16 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">16 अनुमतियाँ</span>
       </div>
-      <p class="role-what">Runs a branch day to day: attendance, leave, expense claims and penalties for their own people.</p>
+      <p class="role-what lx lx-en" lang="en-IN">Runs a branch day to day: attendance, leave, expense claims and penalties for their own people.</p><p class="role-what lx lx-hi" lang="hi-IN">एक branch का रोज़मर्रा चलाता है: हाज़िरी, छुट्टी, ख़र्च के दावे और अपने लोगों पर जुर्माना।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>Everything the attendance taker can</li><li><code>Approve</code> leave</li><li>Raise a penalty</li><li>Pass an expense claim</li><li>Read departments, advances, contract workers and performance</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Everything the attendance taker can</li><li><code>Approve</code> leave</li><li>Raise a penalty</li><li>Pass an expense claim</li><li>Read departments, advances, contract workers and performance</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>वह सब जो attendance taker कर सकता है</li><li>छुट्टी मंज़ूर करना</li><li>जुर्माना लगाना</li><li>ख़र्च का दावा पास करना</li><li>विभाग, अग्रिम, ठेका कर्मी और प्रदर्शन पढ़ना</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>See salary</li><li>Correct attendance on a day payroll has already consumed — that changes a figure somebody has been paid against, so it is an HR_ADMIN action</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>See salary</li><li>Correct attendance on a day payroll has already consumed — that changes a figure somebody has been paid against, so it is an HR_ADMIN action</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>वेतन देखना</li><li>उस दिन की हाज़िरी सुधारना जिसे payroll पहले ही ले चुका है — इससे वह अंक बदलता है जिस पर भुगतान हो चुका है, इसलिए यह HR_ADMIN का काम है</li></ul>
         </div>
       </div>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">HR_MANAGER</code>
-        <span class="role-count num">37 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">37 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">37 अनुमतियाँ</span>
       </div>
-      <p class="role-what">Runs the module: employee master, wage master, statutory returns and payroll processing.</p>
+      <p class="role-what lx lx-en" lang="en-IN">Runs the module: employee master, wage master, statutory returns and payroll processing.</p><p class="role-what lx lx-hi" lang="hi-IN">मॉड्यूल चलाता है: employee master, wage master, क़ानूनी रिटर्न और payroll की गणना।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>Create and edit employees</li><li>Manage departments, designations, grades and employment types</li><li>View salary and raise a pay revision</li><li>Process the monthly payroll run</li><li><code>Approve</code> leave and expense claims, raise penalties and advances</li><li>Manage contract workers</li><li>Generate EPF, ESIC and Form-II returns</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Create and edit employees</li><li>Manage departments, designations, grades and employment types</li><li>View salary and raise a pay revision</li><li>Process the monthly payroll run</li><li><code>Approve</code> leave and expense claims, raise penalties and advances</li><li>Manage contract workers</li><li>Generate EPF, ESIC and Form-II returns</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>कर्मचारी बनाना और संपादित करना</li><li>विभाग, पदनाम, ग्रेड और employment types सँभालना</li><li>वेतन देखना और pay revision उठाना</li><li>महीने का payroll run चलाना</li><li>छुट्टी और ख़र्च के दावे मंज़ूर करना, जुर्माना और अग्रिम उठाना</li><li>ठेका कर्मी सँभालना</li><li>EPF, ESIC और Form-II रिटर्न बनाना</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li><code>Approve</code> a payroll run at either level — processing and approving must be two different acts, and this is the processing one</li><li>Sign the pay revision it raised, for the same reason</li><li>Delete an employee, or see unmasked identity numbers</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li><code>Approve</code> a payroll run at either level — processing and approving must be two different acts, and this is the processing one</li><li>Sign the pay revision it raised, for the same reason</li><li>Delete an employee, or see unmasked identity numbers</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>किसी भी स्तर पर payroll run मंज़ूर करना — गणना और मंज़ूरी दो अलग काम होने चाहिए, और यह गणना वाला है</li><li>अपनी ही उठाई pay revision पर दस्तख़त करना, उसी वजह से</li><li>कर्मचारी मिटाना, या बिना छिपाए पहचान संख्याएँ देखना</li></ul>
         </div>
       </div>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">HR_ADMIN</code>
-        <span class="role-count num">46 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">46 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">46 अनुमतियाँ</span>
       </div>
-      <p class="role-what">First signature: approves payroll runs and pay revisions at level 1, and corrects locked attendance.</p>
+      <p class="role-what lx lx-en" lang="en-IN">First signature: approves payroll runs and pay revisions at level 1, and corrects locked attendance.</p><p class="role-what lx lx-hi" lang="hi-IN">पहला दस्तख़त: payroll run और pay revision को स्तर एक पर मंज़ूरी, और बंद हो चुकी हाज़िरी में सुधार।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>Everything HR_MANAGER can</li><li><code>Approve</code> a payroll run at L1, and a pay revision at L1</li><li>Override attendance on a locked day</li><li>Delete an employee record</li><li>See unmasked identity numbers (UAN, ESIC, PAN, Aadhaar)</li><li><code>Approve</code> penalties, rate performance, read the payroll journal</li><li>Mark a released run paid, or cancel one</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Everything HR_MANAGER can</li><li><code>Approve</code> a payroll run at L1, and a pay revision at L1</li><li>Override attendance on a locked day</li><li>Delete an employee record</li><li>See unmasked identity numbers (UAN, ESIC, PAN, Aadhaar)</li><li><code>Approve</code> penalties, rate performance, read the payroll journal</li><li>Mark a released run paid, or cancel one</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>वह सब जो HR_MANAGER कर सकता है</li><li>Payroll run को L1 पर, और pay revision को L1 पर मंज़ूर करना</li><li>बंद हो चुके दिन की हाज़िरी बदलना</li><li>कर्मचारी का रिकॉर्ड मिटाना</li><li>बिना छिपाए पहचान संख्याएँ देखना (UAN, ESIC, PAN, Aadhaar)</li><li>जुर्माना मंज़ूर करना, प्रदर्शन आँकना, payroll journal पढ़ना</li><li>जारी हो चुके run को paid चिह्नित करना, या रद्द करना</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>Release a run — that is the second signature, and it belongs to HR_HEAD</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Release a run — that is the second signature, and it belongs to HR_HEAD</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>run जारी करना — वह दूसरा दस्तख़त है, और वह HR_HEAD का है</li></ul>
         </div>
       </div>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">HR_HEAD</code>
-        <span class="role-count num">27 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">27 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">27 अनुमतियाँ</span>
       </div>
-      <p class="role-what">Second signature: releases payroll runs and pay revisions at level 2.</p>
+      <p class="role-what lx lx-en" lang="en-IN">Second signature: releases payroll runs and pay revisions at level 2.</p><p class="role-what lx lx-hi" lang="hi-IN">दूसरा दस्तख़त: payroll run और pay revision को स्तर दो पर जारी करता है।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li><code>Approve</code> a payroll run at L2, and a pay revision at L2 — the approvals that release either</li><li>Read the figures, the register behind them and the ledger they post to</li><li><code>Approve</code> leave, expense claims and penalties</li><li>See unmasked identity numbers</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li><code>Approve</code> a payroll run at L2, and a pay revision at L2 — the approvals that release either</li><li>Read the figures, the register behind them and the ledger they post to</li><li><code>Approve</code> leave, expense claims and penalties</li><li>See unmasked identity numbers</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>Payroll run को L2 पर, और pay revision को L2 पर मंज़ूर करना — यही दोनों को जारी करता है</li><li>आँकड़े, उनके पीछे का रजिस्टर, और जिस ledger में वे जाएँगे, सब पढ़ना</li><li>छुट्टी, ख़र्च के दावे और जुर्माना मंज़ूर करना</li><li>बिना छिपाए पहचान संख्याएँ देखना</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>Process payroll — this role cannot compute the run it releases</li><li>Create or edit employees, or touch the masters</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Process payroll — this role cannot compute the run it releases</li><li>Create or edit employees, or touch the masters</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>Payroll की गणना करना — जो run यह जारी करता है, उसे यह बना नहीं सकता</li><li>कर्मचारी बनाना या संपादित करना, या masters छूना</li></ul>
         </div>
       </div>
     </li>
     <li class="role">
       <div class="role-head">
         <code class="role-name">HEAD_OFFICE</code>
-        <span class="role-count num">23 permissions</span>
+        <span class="role-count num lx lx-en" lang="en-IN">23 permissions</span><span class="role-count num lx lx-hi" lang="hi-IN">23 अनुमतियाँ</span>
       </div>
-      <p class="role-what">Head office and accounts: payroll settings, the wage master and the payroll ledger.</p>
+      <p class="role-what lx lx-en" lang="en-IN">Head office and accounts: payroll settings, the wage master and the payroll ledger.</p><p class="role-what lx lx-hi" lang="hi-IN">मुख्यालय और लेखा: payroll settings, wage master और payroll ledger।</p>
       <div class="role-grid">
         <div class="role-can">
-          <h4>Can</h4>
-          <ul><li>Manage payroll settings — PF and ESIC rates, professional tax, the duty base</li><li>Manage the wage master every employee's basic is looked up in</li><li>Manage designations, grades and employment types</li><li>Read widely across the module, because a rate cannot be set sensibly without seeing what it does</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Can</h4><h4 class="lx lx-hi" lang="hi-IN">कर सकता है</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Manage payroll settings — PF and ESIC rates, professional tax, the duty base</li><li>Manage the wage master every employee's basic is looked up in</li><li>Manage designations, grades and employment types</li><li>Read widely across the module, because a rate cannot be set sensibly without seeing what it does</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>Payroll settings सँभालना — PF और ESIC की दरें, professional tax, duty base</li><li>वह wage master सँभालना जिसमें हर कर्मचारी का basic देखा जाता है</li><li>पदनाम, ग्रेड और employment types सँभालना</li><li>मॉड्यूल भर में खुलकर पढ़ना, क्योंकि कोई दर तब तक ठीक से तय नहीं हो सकती जब तक यह न दिखे कि वह करती क्या है</li></ul>
         </div>
         <div class="role-cannot">
-          <h4>Cannot</h4>
-          <ul><li>Sign at either level. Somebody who both sets the rates and releases the run should be given HR_HEAD as well, deliberately, rather than this role quietly including it.</li></ul>
+          <h4 class="lx lx-en" lang="en-IN">Cannot</h4><h4 class="lx lx-hi" lang="hi-IN">नहीं कर सकता</h4>
+          <ul class="lx lx-en" lang="en-IN"><li>Sign at either level. Somebody who both sets the rates and releases the run should be given HR_HEAD as well, deliberately, rather than this role quietly including it.</li></ul><ul class="lx lx-hi" lang="hi-IN"><li>किसी भी स्तर पर दस्तख़त करना। जो व्यक्ति दरें भी तय करे और run भी जारी करे, उसे HR_HEAD अलग से, जानबूझकर दिया जाना चाहिए — यह भूमिका उसे चुपचाप शामिल नहीं करती।</li></ul>
         </div>
       </div>
     </li>
     </ol>
-    <p class="platform"><b>SUPER_ADMIN</b> and <b>FLEET_ADMIN</b> sit outside the ladder. The platform administrators, who already administer every other module. They hold the whole vocabulary including both signatures — somebody has to be able to unstick a tenant that has assigned its roles badly.</p>
-    <ul class="role-rules">
-        <li><b>Two signatures, and they are different roles.</b> A payroll run and a pay revision both need L1 then L2. That is why the top of the ladder is split: HR_MANAGER computes, HR_ADMIN signs first, HR_HEAD signs second. A run one person can compute, approve and release is not controlled at all.</li>
-        <li><b>But there is no different-person rule.</b> Nothing stops one login holding HR_ADMIN and HR_HEAD and clearing both levels. The run records who signed each level, so the trail shows when they were the same person. If you want two people, assign two people.</li>
-        <li><b>A penalty needs only one approver.</b> hrms:penalty:approve is the whole requirement. Do not wait for a second signature — the two-person rule belongs to payments in the Accounting module, not here.</li>
-    </ul>
+    <p class="platform lx lx-en" lang="en-IN"><b>SUPER_ADMIN</b> and <b>FLEET_ADMIN</b> sit outside the ladder. The platform administrators, who already administer every other module. They hold the whole vocabulary including both signatures — somebody has to be able to unstick a tenant that has assigned its roles badly.</p><p class="platform lx lx-hi" lang="hi-IN"><b>SUPER_ADMIN</b> और <b>FLEET_ADMIN</b> इस सीढ़ी से बाहर हैं। मंच के प्रशासक, जो पहले से हर दूसरा मॉड्यूल सँभालते हैं। इनके पास पूरी शब्दावली है, दोनों दस्तख़त सहित — किसी न किसी को उस tenant को फिर से चलाने लायक़ बनाना पड़ता है जिसने अपनी भूमिकाएँ ग़लत बाँट दी हों।</p>
+    <ul class="role-rules lx lx-en" lang="en-IN"><li><b>Two signatures, and they are different roles.</b> A payroll run and a pay revision both need L1 then L2. That is why the top of the ladder is split: HR_MANAGER computes, HR_ADMIN signs first, HR_HEAD signs second. A run one person can compute, approve and release is not controlled at all.</li><li><b>But there is no different-person rule.</b> Nothing stops one login holding HR_ADMIN and HR_HEAD and clearing both levels. The run records who signed each level, so the trail shows when they were the same person. If you want two people, assign two people.</li><li><b>A penalty needs only one approver.</b> hrms:penalty:approve is the whole requirement. Do not wait for a second signature — the two-person rule belongs to payments in the Accounting module, not here.</li></ul><ul class="role-rules lx lx-hi" lang="hi-IN"><li><b>दो दस्तख़त, और वे अलग भूमिकाएँ हैं.</b> Payroll run और pay revision, दोनों को पहले L1 फिर L2 चाहिए। इसीलिए सीढ़ी का ऊपरी हिस्सा बँटा हुआ है: HR_MANAGER गणना करता है, HR_ADMIN पहला दस्तख़त करता है, HR_HEAD दूसरा। जिस run को एक ही व्यक्ति बना ले, मंज़ूर कर ले और जारी भी कर दे, उस पर कोई नियंत्रण है ही नहीं।</li><li><b>लेकिन अलग-अलग व्यक्ति होने का नियम नहीं है.</b> एक ही login के पास HR_ADMIN और HR_HEAD दोनों हों तो वह दोनों स्तर पार कर सकता है, इसे कुछ नहीं रोकता। run में यह दर्ज होता है कि हर स्तर पर किसने दस्तख़त किया, इसलिए रिकॉर्ड बता देता है कि वे एक ही व्यक्ति थे। दो लोग चाहिए तो दो लोगों को भूमिका दीजिए।</li><li><b>जुर्माने के लिए एक ही अनुमोदक काफ़ी है.</b> hrms:penalty:approve ही पूरी शर्त है। दूसरे दस्तख़त का इंतज़ार मत कीजिए — दो व्यक्तियों वाला नियम Accounting मॉड्यूल के भुगतानों का है, यहाँ का नहीं।</li></ul>
   </section>
 
 
 <section class="part">
   <div class="part-rule">
-    <h2>Start here</h2>
-    <span class="part-role">Any HR role</span>
+    <h2 class="lx lx-en" lang="en-IN">Start here</h2><h2 class="lx lx-hi" lang="hi-IN">यहाँ से शुरू कीजिए</h2>
+    <span class="part-role lx lx-en" lang="en-IN">Any HR role</span><span class="part-role lx lx-hi" lang="hi-IN">कोई भी HR भूमिका</span>
   </div>
   
   <article class="chapter" id="em-01">
     <header class="ch-head">
       <span class="slate">EM-01</span>
-      <h3>The workspace</h3>
-      <span class="ch-time num">0:41</span>
+      <h3 class="lx lx-en" lang="en-IN">The workspace</h3><h3 class="lx lx-hi" lang="hi-IN">कार्यक्षेत्र</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:41</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:49</span>
       <code class="route">/employee</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-01-workspace.png">
-        <source src="mp4/em-01.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-01-workspace.png">
+          <source src="mp4/em-01.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-01-workspace.png">
+          <source src="mp4-hi/em-01.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Sign in, then choose Employee Management on the module screen.</li><li>Read the line under the title — that is your live headcount.</li><li>Scan the four tiles: active employees, monthly wage bill, marked today, awaiting action.</li><li>Use the Go to cards or the left sidebar to reach any screen in the module.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Sign in, then choose Employee Management on the module screen.</li><li>Read the line under the title — that is your live headcount.</li><li>Scan the four tiles: active employees, monthly wage bill, marked today, awaiting action.</li><li>Use the Go to cards or the left sidebar to reach any screen in the module.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>साइन इन कीजिए, फिर module स्क्रीन पर Employee Management चुनिए।</li><li>टाइटल के नीचे की लाइन पढ़िए — यही आपकी मौजूदा headcount है।</li><li>चारों टाइल देखिए: active employees, monthly wage bill, marked today, awaiting action।</li><li>मॉड्यूल की किसी भी स्क्रीन तक पहुँचने के लिए Go to कार्ड या बाईं sidebar इस्तेमाल कीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Welcome to Employee Management. Everything about your staff sits behind this one door. The line under the title shows eighty five active employees of eighty five on record. Across the top you get your monthly wage bill, how many people are marked today, and anything awaiting your action. Below that sits the latest payroll, September twenty twenty six, already paid, with gross, deductions, net paid, employer cost and C.T.C. The Go to cards, and the menu down the left, take you to every other part of the module.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Welcome to Employee Management. Everything about your staff sits behind this one door. The line under the title shows eighty five active employees of eighty five on record. Across the top you get your monthly wage bill, how many people are marked today, and anything awaiting your action. Below that sits the latest payroll, September twenty twenty six, already paid, with gross, deductions, net paid, employer cost and C.T.C. The Go to cards, and the menu down the left, take you to every other part of the module.</p><p class="lx lx-hi" lang="hi-IN">Employee Management में आपका स्वागत है। आपके स्टाफ़ से जुड़ी हर चीज़ इसी एक दरवाज़े के पीछे है। टाइटल के नीचे की लाइन बताती है कि रिकॉर्ड पर पचासी में से पचासी कर्मचारी सक्रिय हैं। ऊपर की तरफ़ आपको महीने का वेतन ख़र्च मिलता है, आज कितने लोगों की हाज़िरी लगी है, और वह सब जो आपकी कार्रवाई का इंतज़ार कर रहा है। उसके नीचे सबसे नया payroll है, सितम्बर दो हज़ार छब्बीस, जिसका भुगतान हो चुका है, gross, deductions, net paid, employer cost और सी टी सी के साथ। Go to कार्ड, और बाईं तरफ़ का मेन्यू, आपको मॉड्यूल के बाक़ी हर हिस्से तक ले जाते हैं।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-01-workspace-lower.png" alt="The workspace — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-01-workspace-lower.png" alt="The workspace — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 </section>
 
 <section class="part">
   <div class="part-rule">
-    <h2>Set up the org</h2>
-    <span class="part-role">HR_ADMIN</span>
+    <h2 class="lx lx-en" lang="en-IN">Set up the org</h2><h2 class="lx lx-hi" lang="hi-IN">संगठन खड़ा कीजिए</h2>
+    <span class="part-role lx lx-en" lang="en-IN">HR_ADMIN</span><span class="part-role lx lx-hi" lang="hi-IN">HR_ADMIN</span>
   </div>
   
   <article class="chapter" id="em-02">
     <header class="ch-head">
       <span class="slate">EM-02</span>
-      <h3>Departments, designations, grades</h3>
-      <span class="ch-time num">0:29</span>
+      <h3 class="lx lx-en" lang="en-IN">Departments, designations, grades</h3><h3 class="lx lx-hi" lang="hi-IN">विभाग, पदनाम और ग्रेड</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:29</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:30</span>
       <code class="route">/employee/masters/departments</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-02-departments.png">
-        <source src="mp4/em-02.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-02-departments.png">
+          <source src="mp4/em-02.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-02-departments.png">
+          <source src="mp4-hi/em-02.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Departments.</li><li>Press <code>New Department</code> and fill name, code, description and order.</li><li>Repeat on the Designations, Grades and Employment Types tabs — same pattern.</li><li>Use <code>Refresh</code> if a row you just added has not appeared.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Departments.</li><li>Press <code>New Department</code> and fill name, code, description and order.</li><li>Repeat on the Designations, Grades and Employment Types tabs — same pattern.</li><li>Use <code>Refresh</code> if a row you just added has not appeared.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Departments।</li><li><code>New Department</code> दबाइए और name, code, description और order भरिए।</li><li>Designations, Grades और Employment Types टैब पर वही तरीक़ा दोहराइए।</li><li>अभी जोड़ी गई पंक्ति न दिखे तो <code>Refresh</code> दबाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Before you add anybody, the system needs to know the shape of your organisation. Departments is the first master. Each row carries a name, a code, a description and a display order. Add one with New Department. Designations, Grades and Employment Types work exactly the same way, so once you have done this screen, you have done all four.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Before you add anybody, the system needs to know the shape of your organisation. Departments is the first master. Each row carries a name, a code, a description and a display order. Add one with New Department. Designations, Grades and Employment Types work exactly the same way, so once you have done this screen, you have done all four.</p><p class="lx lx-hi" lang="hi-IN">किसी को जोड़ने से पहले सिस्टम को आपके संगठन का ढाँचा पता होना चाहिए। Departments पहला master है। हर पंक्ति में एक नाम, एक code, एक विवरण और display order होता है। New Department से नया जोड़िए। Designations, Grades और Employment Types बिल्कुल इसी तरह काम करते हैं, यानी यह एक स्क्रीन सीख ली, तो चारों आ गईं।</p>
       </div>
     </div>
     
@@ -386,48 +438,57 @@
   <article class="chapter" id="em-03">
     <header class="ch-head">
       <span class="slate">EM-03</span>
-      <h3>Employee codes</h3>
-      <span class="ch-time num">0:37</span>
+      <h3 class="lx lx-en" lang="en-IN">Employee codes</h3><h3 class="lx lx-hi" lang="hi-IN">कर्मचारी कोड</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:37</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:41</span>
       <code class="route">/employee/masters/codes</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-03-employee-codes.png">
-        <source src="mp4/em-03.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-03-employee-codes.png">
+          <source src="mp4/em-03.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-03-employee-codes.png">
+          <source src="mp4-hi/em-03.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Employee Codes.</li><li>Give each branch a short code; the table previews what codes there start with and the next code.</li><li>Press <code>Save Code Format</code>.</li><li>Do this before adding employees — a missing short code produces the old plain format instead.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Employee Codes.</li><li>Give each branch a short code; the table previews what codes there start with and the next code.</li><li>Press <code>Save Code Format</code>.</li><li>Do this before adding employees — a missing short code produces the old plain format instead.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Employee Codes।</li><li>हर branch को short code दीजिए; टेबल दिखाएगी कि वहाँ के code किससे शुरू होंगे और अगला code क्या होगा।</li><li><code>Save Code Format</code> दबाइए।</li><li>यह कर्मचारी जोड़ने से पहले कीजिए — short code न होने पर पुराना सादा फ़ॉर्मैट बन जाता है।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Employee codes are built by the system, not typed by you. Each branch gets a short code, and the table shows you exactly what codes there will start with, and what the next code will be. A Bengaluru employee comes out as M.D.M dash B.L dash zero zero zero zero one. Set this up before you add people, and press Save Code Format when you are done. If a branch has no short code, the code quietly falls back to the older plain format.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Employee codes are built by the system, not typed by you. Each branch gets a short code, and the table shows you exactly what codes there will start with, and what the next code will be. A Bengaluru employee comes out as M.D.M dash B.L dash zero zero zero zero one. Set this up before you add people, and press Save Code Format when you are done. If a branch has no short code, the code quietly falls back to the older plain format.</p><p class="lx lx-hi" lang="hi-IN">Employee code सिस्टम बनाता है, आप टाइप नहीं करते। हर branch को एक short code मिलता है, और टेबल आपको ठीक-ठीक दिखाती है कि वहाँ के code किससे शुरू होंगे और अगला code क्या होगा। बेंगलुरु के कर्मचारी का code बनता है, एम डी एम, डैश, बी एल, डैश, ज़ीरो ज़ीरो ज़ीरो ज़ीरो वन। लोगों को जोड़ने से पहले यह सेट कीजिए, और पूरा होने पर Save Code Format दबाइए। अगर किसी branch का short code नहीं है, तो code चुपचाप पुराने सादे फ़ॉर्मैट पर लौट जाता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-03-employee-codes-lower.png" alt="Employee codes — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-03-employee-codes-lower.png" alt="Employee codes — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-04">
     <header class="ch-head">
       <span class="slate">EM-04</span>
-      <h3>Basic master — wage rates</h3>
-      <span class="ch-time num">0:24</span>
+      <h3 class="lx lx-en" lang="en-IN">Basic master — wage rates</h3><h3 class="lx lx-hi" lang="hi-IN">Basic Master — मज़दूरी दरें</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:24</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:30</span>
       <code class="route">/employee/masters/basic</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-04-basic-master.png">
-        <source src="mp4/em-04.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-04-basic-master.png">
+          <source src="mp4/em-04.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-04-basic-master.png">
+          <source src="mp4-hi/em-04.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Basic Master.</li><li>Press <code>New Rate</code> and pick the designation and category.</li><li>Enter basic per day, D.A. per day, the per-month figure and H.R.A.</li><li>Check the figures — payroll computes straight off these rates.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Basic Master.</li><li>Press <code>New Rate</code> and pick the designation and category.</li><li>Enter basic per day, D.A. per day, the per-month figure and H.R.A.</li><li>Check the figures — payroll computes straight off these rates.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Basic Master।</li><li><code>New Rate</code> दबाइए और designation तथा category चुनिए।</li><li>Basic प्रति दिन, डी ए प्रति दिन, प्रति माह राशि और एच आर ए भरिए।</li><li>अंक जाँच लीजिए — payroll सीधे इन्हीं दरों से गणना करता है।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Basic Master holds your base wage rates, one row per designation and category. You set basic per day, dearness allowance per day, the monthly figure and H.R.A. Payroll reads these rates directly, so a wrong number here becomes a wrong payslip for everybody on that designation. New Rate adds a row.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Basic Master holds your base wage rates, one row per designation and category. You set basic per day, dearness allowance per day, the monthly figure and H.R.A. Payroll reads these rates directly, so a wrong number here becomes a wrong payslip for everybody on that designation. New Rate adds a row.</p><p class="lx lx-hi" lang="hi-IN">Basic Master में आपकी आधार मज़दूरी दरें रहती हैं, हर designation और category के लिए एक पंक्ति। आप basic प्रति दिन, dearness allowance प्रति दिन, महीने का आँकड़ा और एच आर ए तय करते हैं। Payroll सीधे इन्हीं दरों को पढ़ता है, इसलिए यहाँ एक ग़लत अंक उस designation के हर व्यक्ति की payslip ग़लत कर देता है। New Rate से नई पंक्ति जुड़ती है।</p>
       </div>
     </div>
     
@@ -436,23 +497,26 @@
   <article class="chapter" id="em-05">
     <header class="ch-head">
       <span class="slate">EM-05</span>
-      <h3>Leave types</h3>
-      <span class="ch-time num">0:23</span>
+      <h3 class="lx lx-en" lang="en-IN">Leave types</h3><h3 class="lx lx-hi" lang="hi-IN">छुट्टी के प्रकार</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:23</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:28</span>
       <code class="route">/employee/masters/leave-types</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-05-leave-types.png">
-        <source src="mp4/em-05.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-05-leave-types.png">
+          <source src="mp4/em-05.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-05-leave-types.png">
+          <source src="mp4-hi/em-05.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Leave Types.</li><li>Press <code>New Type</code>.</li><li>Set name, code, annual quota, paid or unpaid, and carry forward.</li><li>These are the only types that will appear when somebody applies for leave.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Leave Types.</li><li>Press <code>New Type</code>.</li><li>Set name, code, annual quota, paid or unpaid, and carry forward.</li><li>These are the only types that will appear when somebody applies for leave.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Leave Types।</li><li><code>New Type</code> दबाइए।</li><li>नाम, code, सालाना कोटा, सवेतन या अवैतनिक, और carry forward तय कीजिए।</li><li>छुट्टी के आवेदन में सिर्फ़ यही प्रकार दिखाई देंगे।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Leave Types decides what your staff can actually apply for. Each type has a name, a short code, an annual quota, whether it is paid, and whether the balance carries forward into next year. Casual Leave with a quota of twelve is a typical row. Add more with New Type.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Leave Types decides what your staff can actually apply for. Each type has a name, a short code, an annual quota, whether it is paid, and whether the balance carries forward into next year. Casual Leave with a quota of twelve is a typical row. Add more with New Type.</p><p class="lx lx-hi" lang="hi-IN">Leave Types तय करता है कि आपका स्टाफ़ असल में किस चीज़ के लिए आवेदन कर सकता है। हर प्रकार का एक नाम, एक short code, सालाना कोटा, यह कि वह सवेतन है या नहीं, और यह कि बचा हुआ बैलेंस अगले साल आगे बढ़ेगा या नहीं। बारह के कोटे वाली Casual Leave एक आम पंक्ति है। और जोड़ने के लिए New Type।</p>
       </div>
     </div>
     
@@ -461,23 +525,26 @@
   <article class="chapter" id="em-05b">
     <header class="ch-head">
       <span class="slate">EM-05B</span>
-      <h3>Holidays</h3>
-      <span class="ch-time num">0:25</span>
+      <h3 class="lx lx-en" lang="en-IN">Holidays</h3><h3 class="lx lx-hi" lang="hi-IN">अवकाश कैलेंडर</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:25</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:28</span>
       <code class="route">/employee/masters/holidays</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-05b-holidays.png">
-        <source src="mp4/em-05b.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-05b-holidays.png">
+          <source src="mp4/em-05b.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-05b-holidays.png">
+          <source src="mp4-hi/em-05b.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Holidays.</li><li>Press <code>New Holiday</code> and enter the date, name and type.</li><li>Load the whole year before the first payroll run.</li><li>Mark national holidays correctly — N.H. overtime is paid at its own rate.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Holidays.</li><li>Press <code>New Holiday</code> and enter the date, name and type.</li><li>Load the whole year before the first payroll run.</li><li>Mark national holidays correctly — N.H. overtime is paid at its own rate.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Holidays।</li><li><code>New Holiday</code> दबाइए और तारीख़, नाम तथा प्रकार भरिए।</li><li>पहले payroll run से पहले पूरे साल का कैलेंडर भर दीजिए।</li><li>राष्ट्रीय अवकाश सही चिह्नित कीजिए — एन एच overtime की दर अलग होती है।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Holidays is the company calendar, the days everybody is off. Each entry has a date, a name and a type. Both the muster and payroll read this calendar, so load the full year before you run the first payroll. National holidays matter twice over here, because overtime worked on them is paid at a different rate.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Holidays is the company calendar, the days everybody is off. Each entry has a date, a name and a type. Both the muster and payroll read this calendar, so load the full year before you run the first payroll. National holidays matter twice over here, because overtime worked on them is paid at a different rate.</p><p class="lx lx-hi" lang="hi-IN">Holidays कंपनी का कैलेंडर है, वे दिन जब सब छुट्टी पर होते हैं। हर प्रविष्टि में तारीख़, नाम और प्रकार होता है। Muster और payroll दोनों यही कैलेंडर पढ़ते हैं, इसलिए पहला payroll चलाने से पहले पूरे साल का डेटा भर दीजिए। राष्ट्रीय अवकाश यहाँ दोहरा मायने रखते हैं, क्योंकि उन दिनों किया गया overtime अलग दर पर मिलता है।</p>
       </div>
     </div>
     
@@ -486,23 +553,26 @@
   <article class="chapter" id="em-06">
     <header class="ch-head">
       <span class="slate">EM-06</span>
-      <h3>Payroll settings</h3>
-      <span class="ch-time num">0:36</span>
+      <h3 class="lx lx-en" lang="en-IN">Payroll settings</h3><h3 class="lx lx-hi" lang="hi-IN">Payroll सेटिंग्स</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:36</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:37</span>
       <code class="route">/employee/salary-setup</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-06-payroll-settings.png">
-        <source src="mp4/em-06.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-06-payroll-settings.png">
+          <source src="mp4/em-06.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-06-payroll-settings.png">
+          <source src="mp4-hi/em-06.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Payroll Settings from the sidebar.</li><li>Work through the tabs: Earnings, Overtime, Provident Fund, ESIC, PT &amp; LWF, Other.</li><li>Set the organisation values first.</li><li>For a branch that differs, change only the keys that differ — the rest keep falling back.</li><li>Press <code>Save settings</code>.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Payroll Settings from the sidebar.</li><li>Work through the tabs: Earnings, Overtime, Provident Fund, ESIC, PT &amp; LWF, Other.</li><li>Set the organisation values first.</li><li>For a branch that differs, change only the keys that differ — the rest keep falling back.</li><li>Press <code>Save settings</code>.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Sidebar से Payroll Settings खोलिए।</li><li>टैब एक-एक करके देखिए: Earnings, Overtime, Provident Fund, ESIC, PT &amp; LWF, Other।</li><li>पहले संगठन स्तर के मान तय कीजिए।</li><li>जिस branch में फ़र्क़ है, वहाँ सिर्फ़ वही key बदलिए — बाक़ी अपने आप संगठन के मान पर लौटती रहेंगी।</li><li><code>Save settings</code> दबाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Payroll Settings is where the statutory side lives, split across tabs: Earnings, Overtime, Provident Fund, E.S.I.C, P.T and L.W.F, and Other. The important thing to understand here is scope. You set these once for the organisation, and where a branch is different, you set only that one key on the branch. Everything you do not override keeps falling back to the organisation value. Press Save settings to apply.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Payroll Settings is where the statutory side lives, split across tabs: Earnings, Overtime, Provident Fund, E.S.I.C, P.T and L.W.F, and Other. The important thing to understand here is scope. You set these once for the organisation, and where a branch is different, you set only that one key on the branch. Everything you do not override keeps falling back to the organisation value. Press Save settings to apply.</p><p class="lx lx-hi" lang="hi-IN">Payroll Settings में क़ानूनी पक्ष रहता है, टैब में बँटा हुआ: Earnings, Overtime, Provident Fund, ई एस आई सी, पी टी और एल डब्ल्यू एफ, और Other। यहाँ समझने की सबसे ज़रूरी बात scope है। आप ये मान एक बार संगठन के लिए तय करते हैं, और जहाँ कोई branch अलग है, वहाँ सिर्फ़ उसी एक key को branch पर बदलते हैं। जो आप override नहीं करते, वह संगठन के मान पर ही लौटता रहता है। लागू करने के लिए Save settings दबाइए।</p>
       </div>
     </div>
     
@@ -511,23 +581,26 @@
   <article class="chapter" id="em-07">
     <header class="ch-head">
       <span class="slate">EM-07</span>
-      <h3>Face match</h3>
-      <span class="ch-time num">0:24</span>
+      <h3 class="lx lx-en" lang="en-IN">Face match</h3><h3 class="lx lx-hi" lang="hi-IN">चेहरा मिलान</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:24</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:26</span>
       <code class="route">/employee/masters/face-match</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-07-face-match.png">
-        <source src="mp4/em-07.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-07-face-match.png">
+          <source src="mp4/em-07.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-07-face-match.png">
+          <source src="mp4-hi/em-07.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Face Match.</li><li>Set the match threshold.</li><li>Read the warning if the value is loose — a low threshold accepts the wrong face.</li><li>Press <code>Save Face Match Settings</code>.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Face Match.</li><li>Set the match threshold.</li><li>Read the warning if the value is loose — a low threshold accepts the wrong face.</li><li>Press <code>Save Face Match Settings</code>.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Face Match।</li><li>Match threshold तय कीजिए।</li><li>मान ढीला हो तो चेतावनी पढ़िए — कम threshold ग़लत चेहरा स्वीकार कर लेता है।</li><li><code>Save Face Match Settings</code> दबाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Face Match lets attendance be verified against a stored photograph. The threshold decides how close a match has to be before the system accepts it. Set it too loose and you will get false accepts, so the screen warns you when the value is risky. Save with Save Face Match Settings.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Face Match lets attendance be verified against a stored photograph. The threshold decides how close a match has to be before the system accepts it. Set it too loose and you will get false accepts, so the screen warns you when the value is risky. Save with Save Face Match Settings.</p><p class="lx lx-hi" lang="hi-IN">Face Match हाज़िरी को संग्रहित तस्वीर से जाँचने देता है। Threshold तय करता है कि सिस्टम मिलान स्वीकार करने से पहले कितनी नज़दीकी चाहता है। बहुत ढीला रखेंगे तो ग़लत चेहरे स्वीकार होने लगेंगे, इसलिए मान जोखिम भरा होने पर स्क्रीन आपको चेतावनी देती है। Save Face Match Settings से सहेजिए।</p>
       </div>
     </div>
     
@@ -536,105 +609,126 @@
 
 <section class="part">
   <div class="part-rule">
-    <h2>Put people on the system</h2>
-    <span class="part-role">HR_MANAGER</span>
+    <h2 class="lx lx-en" lang="en-IN">Put people on the system</h2><h2 class="lx lx-hi" lang="hi-IN">लोगों को सिस्टम पर लाइए</h2>
+    <span class="part-role lx lx-en" lang="en-IN">HR_MANAGER</span><span class="part-role lx lx-hi" lang="hi-IN">HR_MANAGER</span>
   </div>
   
   <article class="chapter" id="em-08">
     <header class="ch-head">
       <span class="slate">EM-08</span>
-      <h3>The employee list</h3>
-      <span class="ch-time num">0:33</span>
+      <h3 class="lx lx-en" lang="en-IN">The employee list</h3><h3 class="lx lx-hi" lang="hi-IN">कर्मचारी सूची</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:33</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:36</span>
       <code class="route">/employee/employees</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-08-employee-list.png">
-        <source src="mp4/em-08.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-08-employee-list.png">
+          <source src="mp4/em-08.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-08-employee-list.png">
+          <source src="mp4-hi/em-08.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Employees from the sidebar.</li><li>Search by name or code, or filter by status, category or department.</li><li>Press <code>Columns</code> to show or hide fields.</li><li>Use the Login column to see who has a working sign-in.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Employees from the sidebar.</li><li>Search by name or code, or filter by status, category or department.</li><li>Press <code>Columns</code> to show or hide fields.</li><li>Use the Login column to see who has a working sign-in.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Sidebar से Employees खोलिए।</li><li>नाम या code से खोजिए, या status, category या विभाग से छाँटिए।</li><li>फ़ील्ड दिखाने या छिपाने के लिए <code>Columns</code> दबाइए।</li><li>किसके पास चालू sign-in है, यह देखने के लिए Login कॉलम इस्तेमाल कीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>This is the employee master, everybody on your rolls. The table carries code, name, department, phone, U.A.N, category, monthly wage, whether the person has a login, and status. Search by name or code, narrow by status, category or department, and use Columns to choose what you want to see. Watch the Login column — that tells you at a glance who can actually sign in.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">This is the employee master, everybody on your rolls. The table carries code, name, department, phone, U.A.N, category, monthly wage, whether the person has a login, and status. Search by name or code, narrow by status, category or department, and use Columns to choose what you want to see. Watch the Login column — that tells you at a glance who can actually sign in.</p><p class="lx lx-hi" lang="hi-IN">यह employee master है, आपके रोल पर मौजूद हर व्यक्ति। टेबल में code, नाम, विभाग, फ़ोन, यू ए एन, category, महीने की मज़दूरी, व्यक्ति के पास login है या नहीं, और status रहता है। नाम या code से खोजिए, status, category या विभाग से छाँटिए, और जो देखना है वह चुनने के लिए Columns इस्तेमाल कीजिए। Login कॉलम पर नज़र रखिए, वही एक नज़र में बताता है कि असल में कौन साइन इन कर सकता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-08-employee-list-lower.png" alt="The employee list — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-08-employee-list-lower.png" alt="The employee list — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-09">
     <header class="ch-head">
       <span class="slate">EM-09</span>
-      <h3>Add an employee</h3>
-      <span class="ch-time num">0:35</span>
+      <h3 class="lx lx-en" lang="en-IN">Add an employee</h3><h3 class="lx lx-hi" lang="hi-IN">कर्मचारी जोड़िए</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:35</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:37</span>
       <code class="route">/employee/employees/new</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-09-employee-new.png">
-        <source src="mp4/em-09.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-09-employee-new.png">
+          <source src="mp4/em-09.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-09-employee-new.png">
+          <source src="mp4-hi/em-09.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>From Masters ▸ Employee Master press <code>New Employee</code>.</li><li>Check the auto-filled employee code and the branch it reports detecting.</li><li>Fill Identity, then Contact Information, then Employment &amp; Role.</li><li>Complete the statutory and document sections below.</li><li>Press <code>Create Employee</code>.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>From Masters ▸ Employee Master press <code>New Employee</code>.</li><li>Check the auto-filled employee code and the branch it reports detecting.</li><li>Fill Identity, then Contact Information, then Employment &amp; Role.</li><li>Complete the statutory and document sections below.</li><li>Press <code>Create Employee</code>.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters ▸ Employee Master से <code>New Employee</code> दबाइए।</li><li>अपने आप भरा employee code और उससे पहचानी गई branch जाँच लीजिए।</li><li>पहले Identity, फिर Contact Information, फिर Employment &amp; Role भरिए।</li><li>नीचे के क़ानूनी और दस्तावेज़ खंड पूरे कीजिए।</li><li><code>Create Employee</code> दबाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Adding a person. The employee code is filled in for you, here M.D.M zero zero zero eight five, and the screen tells you which branch it detected from that prefix. Work down the sections in order: Identity, Contact Information, Employment and Role, and the statutory and document blocks below. Father's name is worth filling in, because it prints on the FORM two wage register. When everything is in, press Create Employee.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Adding a person. The employee code is filled in for you, here M.D.M zero zero zero eight five, and the screen tells you which branch it detected from that prefix. Work down the sections in order: Identity, Contact Information, Employment and Role, and the statutory and document blocks below. Father's name is worth filling in, because it prints on the FORM two wage register. When everything is in, press Create Employee.</p><p class="lx lx-hi" lang="hi-IN">किसी व्यक्ति को जोड़ना। Employee code आपके लिए अपने आप भर जाता है, यहाँ एम डी एम ज़ीरो ज़ीरो ज़ीरो आठ पाँच, और स्क्रीन बताती है कि उस prefix से उसने कौन सी branch पहचानी। खंडों को क्रम से भरिए: Identity, Contact Information, Employment and Role, और नीचे के क़ानूनी तथा दस्तावेज़ खंड। पिता का नाम भरना सार्थक है, क्योंकि वह फ़ॉर्म दो मज़दूरी रजिस्टर पर छपता है। सब भर जाने पर Create Employee दबाइए।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-09-employee-new-lower.png" alt="Add an employee — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-09-employee-new-lower.png" alt="Add an employee — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-10">
     <header class="ch-head">
       <span class="slate">EM-10</span>
-      <h3>One employee's record</h3>
-      <span class="ch-time num">0:33</span>
+      <h3 class="lx lx-en" lang="en-IN">One employee's record</h3><h3 class="lx lx-hi" lang="hi-IN">एक कर्मचारी का रिकॉर्ड</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:33</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:38</span>
       <code class="route">/employee/employees/53</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-10-employee-detail.png">
-        <source src="mp4/em-10.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-10-employee-detail.png">
+          <source src="mp4/em-10.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-10-employee-detail.png">
+          <source src="mp4-hi/em-10.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Click any row in the employee list.</li><li>Move through the tabs: Profile, Salary, <code>Payslips</code>, Leave, Attendance.</li><li>Use <code>Edit</code> for ordinary corrections; <code>Upload</code> for documents.</li><li>Issue a new password if the person has a login.</li><li>A salary change is raised as a revision and needs L1 then L2 approval.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Click any row in the employee list.</li><li>Move through the tabs: Profile, Salary, <code>Payslips</code>, Leave, Attendance.</li><li>Use <code>Edit</code> for ordinary corrections; <code>Upload</code> for documents.</li><li>Issue a new password if the person has a login.</li><li>A salary change is raised as a revision and needs L1 then L2 approval.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>कर्मचारी सूची में किसी भी पंक्ति पर क्लिक कीजिए।</li><li>टैब देखिए: Profile, Salary, <code>Payslips</code>, Leave, Attendance।</li><li>सामान्य सुधार के लिए <code>Edit</code>; दस्तावेज़ों के लिए <code>Upload</code>।</li><li>व्यक्ति के पास login हो तो नया पासवर्ड जारी कीजिए।</li><li>वेतन परिवर्तन revision के रूप में उठता है और उसे L1 फिर L2 मंज़ूरी चाहिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>One person, with everything about them in five tabs: Profile, Salary, Payslips, Leave and Attendance. Along the top you can edit the record, deactivate or suspend the person, upload their documents, and issue a new password if they have a login. Pay is not edited casually here. A change to salary is raised as a revision, and then approved at two levels, L one and L two, before it takes effect.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">One person, with everything about them in five tabs: Profile, Salary, Payslips, Leave and Attendance. Along the top you can edit the record, deactivate or suspend the person, upload their documents, and issue a new password if they have a login. Pay is not edited casually here. A change to salary is raised as a revision, and then approved at two levels, L one and L two, before it takes effect.</p><p class="lx lx-hi" lang="hi-IN">एक व्यक्ति, और उससे जुड़ी हर चीज़ पाँच टैब में: Profile, Salary, Payslips, Leave और Attendance। ऊपर की पंक्ति से आप रिकॉर्ड संपादित कर सकते हैं, व्यक्ति को निष्क्रिय या निलंबित कर सकते हैं, उसके दस्तावेज़ अपलोड कर सकते हैं, और login होने पर नया पासवर्ड जारी कर सकते हैं। वेतन यहाँ यूँ ही नहीं बदला जाता। वेतन में बदलाव एक revision के रूप में उठाया जाता है, और लागू होने से पहले दो स्तरों पर, एल वन और एल टू, मंज़ूर होता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-10-employee-detail-lower.png" alt="One employee's record — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-10-employee-detail-lower.png" alt="One employee's record — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-12">
     <header class="ch-head">
       <span class="slate">EM-12</span>
-      <h3>Excel import</h3>
-      <span class="ch-time num">0:26</span>
+      <h3 class="lx lx-en" lang="en-IN">Excel import</h3><h3 class="lx lx-hi" lang="hi-IN">Excel से आयात</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:26</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:30</span>
       <code class="route">/employee/masters/employees</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-12-employee-master.png">
-        <source src="mp4/em-12.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-12-employee-master.png">
+          <source src="mp4/em-12.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-12-employee-master.png">
+          <source src="mp4-hi/em-12.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Go to Masters, then Employee Master.</li><li>Press <code>Download Template</code>.</li><li>Fill the sheet, keeping the column headings exactly as given.</li><li><code>Upload</code> it and read the preview: rows to add, and rows to fix.</li><li>Commit only once the preview is clean.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Go to Masters, then Employee Master.</li><li>Press <code>Download Template</code>.</li><li>Fill the sheet, keeping the column headings exactly as given.</li><li><code>Upload</code> it and read the preview: rows to add, and rows to fix.</li><li>Commit only once the preview is clean.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Masters में जाइए, फिर Employee Master।</li><li><code>Download Template</code> दबाइए।</li><li>शीट भरिए, कॉलम के शीर्षक बिल्कुल वैसे ही रखिए जैसे दिए गए हैं।</li><li>अपलोड कीजिए और preview पढ़िए: कितनी पंक्तियाँ जुड़ेंगी और कितनी ठीक करनी हैं।</li><li>Preview साफ़ होने पर ही commit कीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>For a new branch you are not going to type two hundred people by hand. Employee Master, under Masters, gives you Download Template. Fill the sheet, upload it, and read the preview the system shows you before committing anything. Rows with problems are listed for you, so you fix the sheet rather than hunting through the system afterwards.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">For a new branch you are not going to type two hundred people by hand. Employee Master, under Masters, gives you Download Template. Fill the sheet, upload it, and read the preview the system shows you before committing anything. Rows with problems are listed for you, so you fix the sheet rather than hunting through the system afterwards.</p><p class="lx lx-hi" lang="hi-IN">नई branch के लिए आप दो सौ लोग हाथ से टाइप नहीं करेंगे। Masters के नीचे Employee Master आपको Download Template देता है। शीट भरिए, अपलोड कीजिए, और कुछ भी सहेजने से पहले सिस्टम जो preview दिखाता है उसे पढ़िए। जिन पंक्तियों में गड़बड़ है वे आपके लिए सूचीबद्ध होती हैं, ताकि आप शीट ठीक करें, बाद में सिस्टम में ढूँढते न फिरें।</p>
       </div>
     </div>
     
@@ -643,80 +737,95 @@
 
 <section class="part">
   <div class="part-rule">
-    <h2>Run the month</h2>
-    <span class="part-role">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span>
+    <h2 class="lx lx-en" lang="en-IN">Run the month</h2><h2 class="lx lx-hi" lang="hi-IN">महीना चलाइए</h2>
+    <span class="part-role lx lx-en" lang="en-IN">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span><span class="part-role lx lx-hi" lang="hi-IN">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span>
   </div>
   
   <article class="chapter" id="em-13">
     <header class="ch-head">
       <span class="slate">EM-13</span>
-      <h3>Marking attendance</h3>
-      <span class="ch-time num">1:03</span>
+      <h3 class="lx lx-en" lang="en-IN">Marking attendance</h3><h3 class="lx lx-hi" lang="hi-IN">हाज़िरी लगाना</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">1:03</span><span class="ch-time num lx lx-hi" lang="hi-IN">1:13</span>
       <code class="route">/employee/attendance</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-13-attendance.png">
-        <source src="mp4/em-13.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-13-attendance.png">
+          <source src="mp4/em-13.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-13-attendance.png">
+          <source src="mp4-hi/em-13.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Attendance and set the date; narrow by department if you want.</li><li>Check the tiles: on roster, saved, present, unmarked.</li><li>Press <code>Mark all present</code>, then fix only the exceptions.</li><li>Statuses: P present, A absent, HALF half day, WO weekly off, NH national holiday, OP off-day present, PL paid leave, UL unpaid leave.</li><li>Enter overtime hours in the OT box on the row.</li><li>With face check on, pick a status then photograph the person — 55% or better against their profile photo; you may mark through a failure.</li><li>The <code>Changes</code> tab shows every edit, stamped with who made it.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Attendance and set the date; narrow by department if you want.</li><li>Check the tiles: on roster, saved, present, unmarked.</li><li>Press <code>Mark all present</code>, then fix only the exceptions.</li><li>Statuses: P present, A absent, HALF half day, WO weekly off, NH national holiday, OP off-day present, PL paid leave, UL unpaid leave.</li><li>Enter overtime hours in the OT box on the row.</li><li>With face check on, pick a status then photograph the person — 55% or better against their profile photo; you may mark through a failure.</li><li>The <code>Changes</code> tab shows every edit, stamped with who made it.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Attendance खोलिए और तारीख़ तय कीजिए; चाहें तो विभाग से छाँटिए।</li><li>टाइल जाँचिए: on roster, saved, present, unmarked।</li><li><code>Mark all present</code> दबाइए, फिर सिर्फ़ अपवाद ठीक कीजिए।</li><li>Status: P उपस्थित, A अनुपस्थित, HALF आधा दिन, WO साप्ताहिक अवकाश, NH राष्ट्रीय अवकाश, OP अवकाश के दिन उपस्थित, PL सवेतन छुट्टी, UL अवैतनिक छुट्टी।</li><li>पंक्ति के OT बॉक्स में overtime के घंटे भरिए।</li><li>Face check चालू हो तो status चुनकर व्यक्ति की तस्वीर लीजिए — profile तस्वीर के मुक़ाबले 55% या बेहतर; विफलता के बावजूद निशान लगाया जा सकता है।</li><li><code>Changes</code> टैब हर बदलाव दिखाता है, इस निशान के साथ कि वह किसने किया।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Marking a day. Pick your date and, if you want, narrow to a department. The tiles tell you where you stand: on roster, saved, present, and still unmarked. Press Mark all present, then correct only the exceptions with the status buttons on each row. P for present, A for absent, HALF for a half day, W.O for a weekly off, N.H for a national holiday, O.P for off day present, and P.L or U.L for paid and unpaid leave. Overtime hours go in the box on the right. Where face checking is switched on, you pick a status and then photograph the employee. The face has to score fifty five per cent or better against their profile photo, though you may still mark through a failure. The Changes tab shows every edit, because each mark is stamped with who made it.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Marking a day. Pick your date and, if you want, narrow to a department. The tiles tell you where you stand: on roster, saved, present, and still unmarked. Press Mark all present, then correct only the exceptions with the status buttons on each row. P for present, A for absent, HALF for a half day, W.O for a weekly off, N.H for a national holiday, O.P for off day present, and P.L or U.L for paid and unpaid leave. Overtime hours go in the box on the right. Where face checking is switched on, you pick a status and then photograph the employee. The face has to score fifty five per cent or better against their profile photo, though you may still mark through a failure. The Changes tab shows every edit, because each mark is stamped with who made it.</p><p class="lx lx-hi" lang="hi-IN">एक दिन की हाज़िरी। अपनी तारीख़ चुनिए और चाहें तो विभाग से छाँट लीजिए। टाइल बताती हैं कि आप कहाँ खड़े हैं: on roster, saved, present, और अब भी बिना निशान वाले। Mark all present दबाइए, फिर हर पंक्ति के status बटन से सिर्फ़ अपवाद सुधारिए। पी माने present, ए माने absent, HALF माने आधा दिन, डब्ल्यू ओ माने साप्ताहिक अवकाश, एन एच माने राष्ट्रीय अवकाश, ओ पी माने अवकाश के दिन उपस्थित, और पी एल तथा यू एल माने सवेतन और अवैतनिक छुट्टी। Overtime के घंटे दाईं तरफ़ के बॉक्स में जाते हैं। जहाँ face checking चालू है, वहाँ आप status चुनते हैं और फिर कर्मचारी की तस्वीर लेते हैं। चेहरे को उसकी profile तस्वीर के मुक़ाबले पचपन प्रतिशत या उससे बेहतर अंक लाना होता है, हालाँकि विफलता के बावजूद आप निशान लगा सकते हैं। Changes टैब हर बदलाव दिखाता है, क्योंकि हर निशान पर यह दर्ज होता है कि वह किसने लगाया।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-13-attendance-lower.png" alt="Marking attendance — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-13-attendance-lower.png" alt="Marking attendance — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-14">
     <header class="ch-head">
       <span class="slate">EM-14</span>
-      <h3>The muster roll</h3>
-      <span class="ch-time num">0:30</span>
+      <h3 class="lx lx-en" lang="en-IN">The muster roll</h3><h3 class="lx lx-hi" lang="hi-IN">मस्टर रोल</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:30</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:34</span>
       <code class="route">/employee/muster</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-14-muster.png">
-        <source src="mp4/em-14.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-14-muster.png">
+          <source src="mp4/em-14.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-14-muster.png">
+          <source src="mp4-hi/em-14.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Muster and choose the month.</li><li>Scroll across to the totals: PRESENT DAY, OT Hours, NH OT, W.OFF, SUN.OT, ABSENT, TOTAL PAID.</li><li>Reconcile anything that looks wrong before payroll, not after.</li><li>Agree the sheet with the branch before the run is raised.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Muster and choose the month.</li><li>Scroll across to the totals: PRESENT DAY, OT Hours, NH OT, W.OFF, SUN.OT, ABSENT, TOTAL PAID.</li><li>Reconcile anything that looks wrong before payroll, not after.</li><li>Agree the sheet with the branch before the run is raised.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Muster खोलिए और महीना चुनिए।</li><li>दाईं तरफ़ योग तक स्क्रॉल कीजिए: PRESENT DAY, OT Hours, NH OT, W.OFF, SUN.OT, ABSENT, TOTAL PAID।</li><li>जो ग़लत लगे उसका मिलान payroll से पहले कीजिए, बाद में नहीं।</li><li>run उठाने से पहले शीट पर branch से सहमति ले लीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>The Muster Roll is your whole month on one sheet. Scroll across, and the totals on the right are the numbers payroll actually pays on: present days, overtime hours, national holiday overtime, weekly offs, Sunday overtime, absent days and total paid days. This is the screen to check and agree before you run payroll, because after the run, these are the numbers everybody is paid against.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">The Muster Roll is your whole month on one sheet. Scroll across, and the totals on the right are the numbers payroll actually pays on: present days, overtime hours, national holiday overtime, weekly offs, Sunday overtime, absent days and total paid days. This is the screen to check and agree before you run payroll, because after the run, these are the numbers everybody is paid against.</p><p class="lx lx-hi" lang="hi-IN">Muster Roll आपका पूरा महीना एक ही शीट पर है। दाईं तरफ़ स्क्रॉल कीजिए, वहाँ के योग ही वे अंक हैं जिन पर payroll असल में भुगतान करता है: उपस्थित दिन, overtime घंटे, राष्ट्रीय अवकाश का overtime, साप्ताहिक अवकाश, रविवार का overtime, अनुपस्थित दिन और कुल भुगतान योग्य दिन। Payroll चलाने से पहले यही स्क्रीन जाँचनी और सहमत करनी है, क्योंकि run के बाद इन्हीं अंकों पर सबका भुगतान होता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-14-muster-lower.png" alt="The muster roll — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-14-muster-lower.png" alt="The muster roll — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-15">
     <header class="ch-head">
       <span class="slate">EM-15</span>
-      <h3>Leave</h3>
-      <span class="ch-time num">0:25</span>
+      <h3 class="lx lx-en" lang="en-IN">Leave</h3><h3 class="lx lx-hi" lang="hi-IN">छुट्टी</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:25</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:30</span>
       <code class="route">/employee/leave</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-15-leave.png">
-        <source src="mp4/em-15.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-15-leave.png">
+          <source src="mp4/em-15.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-15-leave.png">
+          <source src="mp4-hi/em-15.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Leave. Applications is the default tab.</li><li>Review the row: employee, type, dates, days, reason.</li><li><code>Approve</code> or <code>Reject</code> from the row — give a reason when rejecting.</li><li>Check the <code>Balances</code> tab to see the quota left.</li><li>Use <code>Apply for leave</code> to file on someone's behalf.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Leave. Applications is the default tab.</li><li>Review the row: employee, type, dates, days, reason.</li><li><code>Approve</code> or <code>Reject</code> from the row — give a reason when rejecting.</li><li>Check the <code>Balances</code> tab to see the quota left.</li><li>Use <code>Apply for leave</code> to file on someone's behalf.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Leave खोलिए। Applications डिफ़ॉल्ट टैब है।</li><li>पंक्ति देखिए: कर्मचारी, प्रकार, तारीख़ें, दिन, कारण।</li><li>पंक्ति से ही <code>Approve</code> या <code>Reject</code> कीजिए — अस्वीकार करते समय कारण दीजिए।</li><li>बचा हुआ कोटा देखने के लिए <code>Balances</code> टैब जाँचिए।</li><li>किसी और की ओर से दर्ज करने के लिए <code>Apply for leave</code> इस्तेमाल कीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Leave has two tabs, Applications and Balances. An application shows the employee, the type, the from and to dates, the number of days, a status and the reason given. Approve or reject from the row, and the employee's balance moves the moment you do. Apply for leave lets you file one on somebody's behalf.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Leave has two tabs, Applications and Balances. An application shows the employee, the type, the from and to dates, the number of days, a status and the reason given. Approve or reject from the row, and the employee's balance moves the moment you do. Apply for leave lets you file one on somebody's behalf.</p><p class="lx lx-hi" lang="hi-IN">Leave में दो टैब हैं, Applications और Balances। किसी आवेदन में कर्मचारी, प्रकार, from और to तारीख़ें, दिनों की संख्या, एक status और दिया गया कारण दिखता है। पंक्ति से ही मंज़ूर या अस्वीकार कीजिए, और जैसे ही आप ऐसा करते हैं कर्मचारी का बैलेंस बदल जाता है। Apply for leave से आप किसी और की ओर से आवेदन दर्ज कर सकते हैं।</p>
       </div>
     </div>
     
@@ -725,23 +834,26 @@
   <article class="chapter" id="em-16">
     <header class="ch-head">
       <span class="slate">EM-16</span>
-      <h3>Penalties and advances</h3>
-      <span class="ch-time num">0:29</span>
+      <h3 class="lx lx-en" lang="en-IN">Penalties and advances</h3><h3 class="lx lx-hi" lang="hi-IN">जुर्माना और अग्रिम</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:29</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:33</span>
       <code class="route">/employee/deductions</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-16-deductions.png">
-        <source src="mp4/em-16.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-16-deductions.png">
+          <source src="mp4/em-16.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-16-deductions.png">
+          <source src="mp4-hi/em-16.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Penalties &amp; <code>Advances</code>.</li><li>Press <code>New Penalty</code>; set type, amount and deduction month.</li><li><code>Approve</code> it — one approver is enough here.</li><li>It shows as DEDUCTED once payroll picks it up.</li><li><code>Advances</code> live on the <code>Advances</code> tab: active while instalments run, then closed.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Penalties &amp; <code>Advances</code>.</li><li>Press <code>New Penalty</code>; set type, amount and deduction month.</li><li><code>Approve</code> it — one approver is enough here.</li><li>It shows as DEDUCTED once payroll picks it up.</li><li><code>Advances</code> live on the <code>Advances</code> tab: active while instalments run, then closed.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Penalties &amp; <code>Advances</code> खोलिए।</li><li><code>New Penalty</code> दबाइए; प्रकार, राशि और कटौती का महीना तय कीजिए।</li><li>इसे मंज़ूर कीजिए — यहाँ एक ही अनुमोदक काफ़ी है।</li><li>Payroll उठा लेने पर यह DEDUCTED दिखने लगता है।</li><li><code>Advances</code>, <code>Advances</code> टैब पर रहते हैं: किश्तों के दौरान सक्रिय, फिर बंद।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>This is money recovered through the payslip, in two tabs. A penalty is raised with New Penalty: you choose the type, the amount, and the month it should be deducted in. It is then approved, and shows as deducted once payroll picks it up. Advances sit on the other tab. They stay active while the instalments run, and close when the money is fully recovered.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">This is money recovered through the payslip, in two tabs. A penalty is raised with New Penalty: you choose the type, the amount, and the month it should be deducted in. It is then approved, and shows as deducted once payroll picks it up. Advances sit on the other tab. They stay active while the instalments run, and close when the money is fully recovered.</p><p class="lx lx-hi" lang="hi-IN">यह वह पैसा है जो payslip के ज़रिए वसूला जाता है, दो टैब में। जुर्माना New Penalty से उठाया जाता है: आप प्रकार, राशि, और वह महीना चुनते हैं जिसमें कटौती होनी है। फिर वह मंज़ूर होता है, और payroll उठा लेने पर deducted दिखने लगता है। Advances दूसरे टैब पर रहते हैं। जब तक किश्तें चलती हैं वे सक्रिय रहते हैं, और पैसा पूरा वसूल होने पर बंद हो जाते हैं।</p>
       </div>
     </div>
     
@@ -750,23 +862,26 @@
   <article class="chapter" id="em-17">
     <header class="ch-head">
       <span class="slate">EM-17</span>
-      <h3>Expense claims</h3>
-      <span class="ch-time num">0:32</span>
+      <h3 class="lx lx-en" lang="en-IN">Expense claims</h3><h3 class="lx lx-hi" lang="hi-IN">ख़र्च के दावे</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:32</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:35</span>
       <code class="route">/employee/expenses</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-17-expenses.png">
-        <source src="mp4/em-17.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-17-expenses.png">
+          <source src="mp4/em-17.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-17-expenses.png">
+          <source src="mp4-hi/em-17.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Expenses.</li><li>Press <code>New Claim</code>, add lines and attach the bill.</li><li>Submit it for approval.</li><li>The approver may approve a lower figure than claimed.</li><li><code>Categories</code> controls what can be claimed under.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Expenses.</li><li>Press <code>New Claim</code>, add lines and attach the bill.</li><li>Submit it for approval.</li><li>The approver may approve a lower figure than claimed.</li><li><code>Categories</code> controls what can be claimed under.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Expenses खोलिए।</li><li><code>New Claim</code> दबाइए, पंक्तियाँ जोड़िए और बिल संलग्न कीजिए।</li><li>मंज़ूरी के लिए भेजिए।</li><li>अनुमोदक दावे से कम राशि मंज़ूर कर सकता है।</li><li><code>Categories</code> तय करता है कि किन मदों में दावा हो सकता है।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Expense claims move through draft, submitted, approved and paid. Each claim carries a number, the employee, a date, a title, the total claimed, the amount actually approved, and what has been paid. An approver may pass a smaller figure than the one claimed, and the bill stays attached to the claim. New Claim starts one, and the Categories tab controls what people are allowed to claim under.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Expense claims move through draft, submitted, approved and paid. Each claim carries a number, the employee, a date, a title, the total claimed, the amount actually approved, and what has been paid. An approver may pass a smaller figure than the one claimed, and the bill stays attached to the claim. New Claim starts one, and the Categories tab controls what people are allowed to claim under.</p><p class="lx lx-hi" lang="hi-IN">ख़र्च के दावे draft, submitted, approved और paid से होकर गुज़रते हैं। हर दावे में एक नंबर, कर्मचारी, तारीख़, शीर्षक, दावा की गई कुल राशि, असल में मंज़ूर राशि, और जो भुगतान हुआ है वह रहता है। अनुमोदक दावा की गई राशि से कम राशि पास कर सकता है, और बिल दावे के साथ जुड़ा रहता है। New Claim से नया शुरू होता है, और Categories टैब तय करता है कि लोग किन मदों में दावा कर सकते हैं।</p>
       </div>
     </div>
     
@@ -775,23 +890,26 @@
   <article class="chapter" id="em-18">
     <header class="ch-head">
       <span class="slate">EM-18</span>
-      <h3>Contract workers</h3>
-      <span class="ch-time num">0:24</span>
+      <h3 class="lx lx-en" lang="en-IN">Contract workers</h3><h3 class="lx lx-hi" lang="hi-IN">ठेका कर्मी</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:24</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:28</span>
       <code class="route">/employee/contractors</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-18-contract-workers.png">
-        <source src="mp4/em-18.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-18-contract-workers.png">
+          <source src="mp4/em-18.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-18-contract-workers.png">
+          <source src="mp4-hi/em-18.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Contract Workers.</li><li>Press <code>Record new terms</code>.</li><li>Enter the fee, allowances and T.D.S. terms.</li><li>Save — the previous terms stay on the record as history.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Contract Workers.</li><li>Press <code>Record new terms</code>.</li><li>Enter the fee, allowances and T.D.S. terms.</li><li>Save — the previous terms stay on the record as history.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Contract Workers खोलिए।</li><li><code>Record new terms</code> दबाइए।</li><li>फ़ीस, भत्ते और टी डी एस की शर्तें भरिए।</li><li>सहेजिए — पिछली शर्तें इतिहास के रूप में रिकॉर्ड पर बनी रहती हैं।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Contract staff are paid on terms rather than a salary. The list shows code, name, phone, monthly figure and status. Record new terms files a fresh set of terms as a new row. The earlier terms are kept, not overwritten, so you can always see what was agreed, and from when.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Contract staff are paid on terms rather than a salary. The list shows code, name, phone, monthly figure and status. Record new terms files a fresh set of terms as a new row. The earlier terms are kept, not overwritten, so you can always see what was agreed, and from when.</p><p class="lx lx-hi" lang="hi-IN">ठेका कर्मियों को वेतन के बजाय तय शर्तों पर भुगतान होता है। सूची में code, नाम, फ़ोन, महीने की राशि और status दिखता है। Record new terms नई शर्तों को एक नई पंक्ति के रूप में दर्ज करता है। पुरानी शर्तें मिटाई नहीं जातीं, रखी जाती हैं, ताकि आप हमेशा देख सकें कि क्या तय हुआ था और कब से।</p>
       </div>
     </div>
     
@@ -800,30 +918,33 @@
 
 <section class="part">
   <div class="part-rule">
-    <h2>Close the month</h2>
-    <span class="part-role">HR_HEAD</span>
+    <h2 class="lx lx-en" lang="en-IN">Close the month</h2><h2 class="lx lx-hi" lang="hi-IN">महीना बंद कीजिए</h2>
+    <span class="part-role lx lx-en" lang="en-IN">HR_HEAD</span><span class="part-role lx lx-hi" lang="hi-IN">HR_HEAD</span>
   </div>
   
   <article class="chapter" id="em-19">
     <header class="ch-head">
       <span class="slate">EM-19</span>
-      <h3>The payroll register</h3>
-      <span class="ch-time num">0:25</span>
+      <h3 class="lx lx-en" lang="en-IN">The payroll register</h3><h3 class="lx lx-hi" lang="hi-IN">Payroll रजिस्टर</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:25</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:28</span>
       <code class="route">/employee/payroll</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-19-payroll.png">
-        <source src="mp4/em-19.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-19-payroll.png">
+          <source src="mp4/em-19.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-19-payroll.png">
+          <source src="mp4-hi/em-19.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Payroll.</li><li>Read the register: period, branch, run type, status, employees, and the money columns.</li><li>Press <code>New payroll run</code> for the next period.</li><li>Raise it for the month that has just ended.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Payroll.</li><li>Read the register: period, branch, run type, status, employees, and the money columns.</li><li>Press <code>New payroll run</code> for the next period.</li><li>Raise it for the month that has just ended.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Payroll खोलिए।</li><li>रजिस्टर पढ़िए: अवधि, branch, run type, status, कर्मचारी, और पैसे के कॉलम।</li><li>अगली अवधि के लिए <code>New payroll run</code> दबाइए।</li><li>जो महीना अभी ख़त्म हुआ है, उसी के लिए इसे उठाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>The payroll register. Each row is one run: the period, the branch, the run type, its status, how many employees it covered, and then gross, deductions, net pay, employer cost and C.T.C. New payroll run starts the next one. Payroll is normally raised for the month that has just finished.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">The payroll register. Each row is one run: the period, the branch, the run type, its status, how many employees it covered, and then gross, deductions, net pay, employer cost and C.T.C. New payroll run starts the next one. Payroll is normally raised for the month that has just finished.</p><p class="lx lx-hi" lang="hi-IN">Payroll रजिस्टर। हर पंक्ति एक run है: अवधि, branch, run का प्रकार, उसका status, उसमें कितने कर्मचारी आए, और फिर gross, deductions, net pay, employer cost और सी टी सी। New payroll run से अगला शुरू होता है। Payroll आम तौर पर उस महीने के लिए उठाया जाता है जो अभी ख़त्म हुआ है।</p>
       </div>
     </div>
     
@@ -832,48 +953,57 @@
   <article class="chapter" id="em-19b">
     <header class="ch-head">
       <span class="slate">EM-19B</span>
-      <h3>Inside a payroll run</h3>
-      <span class="ch-time num">0:39</span>
+      <h3 class="lx lx-en" lang="en-IN">Inside a payroll run</h3><h3 class="lx lx-hi" lang="hi-IN">Payroll run के भीतर</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:39</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:41</span>
       <code class="route">/employee/payroll/4</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-19b-payroll-run.png">
-        <source src="mp4/em-19b.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-19b-payroll-run.png">
+          <source src="mp4/em-19b.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-19b-payroll-run.png">
+          <source src="mp4-hi/em-19b.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open a run from the register.</li><li>Check the Sheet: attendance, earnings, deductions, employer contributions, computed.</li><li><code>Approve</code> at L1, then at L2 — both are required.</li><li>Hand over from the tabs: <code>Payslips</code>, <code>FORM-II</code>, EPF, ESIC, <code>Export Excel</code>.</li><li><code>Audit</code> shows who did what on the run.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open a run from the register.</li><li>Check the Sheet: attendance, earnings, deductions, employer contributions, computed.</li><li><code>Approve</code> at L1, then at L2 — both are required.</li><li>Hand over from the tabs: <code>Payslips</code>, <code>FORM-II</code>, EPF, ESIC, <code>Export Excel</code>.</li><li><code>Audit</code> shows who did what on the run.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>रजिस्टर से कोई run खोलिए।</li><li>Sheet जाँचिए: attendance, earnings, deductions, employer contributions, computed।</li><li>L1 पर मंज़ूर कीजिए, फिर L2 पर — दोनों ज़रूरी हैं।</li><li>टैब से सौंपिए: <code>Payslips</code>, <code>FORM-II</code>, EPF, ESIC, <code>Export Excel</code>।</li><li><code>Audit</code> दिखाता है कि run पर किसने क्या किया।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Inside a run you get the full sheet: every employee with their attendance, earnings, deductions, employer contributions and the computed result, column by column, from paid days and overtime hours through basic, dearness allowance, H.R.A, conveyance and mobile allowance. The tabs along the top are what you actually hand over: Payslips, FORM two, E.P.F, E.S.I.C, an audit trail, and Export Excel. A run is approved at two levels before the payslips are final.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Inside a run you get the full sheet: every employee with their attendance, earnings, deductions, employer contributions and the computed result, column by column, from paid days and overtime hours through basic, dearness allowance, H.R.A, conveyance and mobile allowance. The tabs along the top are what you actually hand over: Payslips, FORM two, E.P.F, E.S.I.C, an audit trail, and Export Excel. A run is approved at two levels before the payslips are final.</p><p class="lx lx-hi" lang="hi-IN">run के भीतर आपको पूरी शीट मिलती है: हर कर्मचारी, उसकी हाज़िरी, earnings, deductions, employer contributions और गणना का नतीजा, कॉलम दर कॉलम, भुगतान योग्य दिनों और overtime घंटों से लेकर basic, dearness allowance, एच आर ए, conveyance और mobile allowance तक। ऊपर के टैब वही हैं जो आप असल में सौंपते हैं: Payslips, फ़ॉर्म दो, ई पी एफ, ई एस आई सी, एक audit trail, और Export Excel। Payslips अंतिम होने से पहले run दो स्तरों पर मंज़ूर होता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-19b-payroll-run-lower.png" alt="Inside a payroll run — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-19b-payroll-run-lower.png" alt="Inside a payroll run — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 
   <article class="chapter" id="em-20">
     <header class="ch-head">
       <span class="slate">EM-20</span>
-      <h3>Performance</h3>
-      <span class="ch-time num">0:25</span>
+      <h3 class="lx lx-en" lang="en-IN">Performance</h3><h3 class="lx lx-hi" lang="hi-IN">प्रदर्शन</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:25</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:31</span>
       <code class="route">/employee/performance</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-20-performance.png">
-        <source src="mp4/em-20.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-20-performance.png">
+          <source src="mp4/em-20.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-20-performance.png">
+          <source src="mp4-hi/em-20.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Performance.</li><li>Start on By branch: headcount, paid days, absent, OT hours.</li><li>Note the below-average and fully-marked flags.</li><li>Switch to By employee to drill into one person.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Performance.</li><li>Start on By branch: headcount, paid days, absent, OT hours.</li><li>Note the below-average and fully-marked flags.</li><li>Switch to By employee to drill into one person.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Performance खोलिए।</li><li>By branch से शुरू कीजिए: headcount, paid days, absent, OT hours।</li><li>Below-average और fully-marked चिह्न देखिए।</li><li>एक व्यक्ति के भीतर जाने के लिए By employee पर जाइए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Performance answers two questions. By branch shows headcount, paid days, absences and overtime hours side by side, and flags branches below average and whether attendance was fully marked. By employee drills into one person. This is a scanning screen: it tells you where to look, not what to do.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Performance answers two questions. By branch shows headcount, paid days, absences and overtime hours side by side, and flags branches below average and whether attendance was fully marked. By employee drills into one person. This is a scanning screen: it tells you where to look, not what to do.</p><p class="lx lx-hi" lang="hi-IN">Performance दो सवालों के जवाब देता है। By branch में headcount, भुगतान योग्य दिन, अनुपस्थिति और overtime घंटे साथ-साथ दिखते हैं, और यह चिह्नित होता है कि कौन सी branch औसत से नीचे है और हाज़िरी पूरी लगी या नहीं। By employee एक व्यक्ति के भीतर ले जाता है। यह देखने-परखने की स्क्रीन है: यह बताती है कि कहाँ देखना है, क्या करना है यह नहीं।</p>
       </div>
     </div>
     
@@ -882,55 +1012,64 @@
   <article class="chapter" id="em-21">
     <header class="ch-head">
       <span class="slate">EM-21</span>
-      <h3>Reports</h3>
-      <span class="ch-time num">0:31</span>
+      <h3 class="lx lx-en" lang="en-IN">Reports</h3><h3 class="lx lx-hi" lang="hi-IN">रिपोर्ट</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:31</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:32</span>
       <code class="route">/employee/reports</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-21-reports.png">
-        <source src="mp4/em-21.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-21-reports.png">
+          <source src="mp4/em-21.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-21-reports.png">
+          <source src="mp4-hi/em-21.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>Open Reports.</li><li>Choose a report and press <code>Run</code> to see it on screen.</li><li>Press <code>Download</code> for the spreadsheet.</li><li>Use this for anyone who needs the numbers outside the system.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>Open Reports.</li><li>Choose a report and press <code>Run</code> to see it on screen.</li><li>Press <code>Download</code> for the spreadsheet.</li><li>Use this for anyone who needs the numbers outside the system.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Reports खोलिए।</li><li>कोई रिपोर्ट चुनिए और स्क्रीन पर देखने के लिए <code>Run</code> दबाइए।</li><li>Spreadsheet के लिए <code>Download</code> दबाइए।</li><li>जिसे सिस्टम के बाहर अंक चाहिए, उसके लिए यही इस्तेमाल कीजिए।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Reports gives you the same data in a form you can send outside the system. Pick a report and press Run to see it on screen. Headcount here shows code, name, status, branch, department, designation, wage and pay category, date of joining, tenure, phone, U.A.N and E.S.I.C number. Download gives you the same thing as a spreadsheet.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Reports gives you the same data in a form you can send outside the system. Pick a report and press Run to see it on screen. Headcount here shows code, name, status, branch, department, designation, wage and pay category, date of joining, tenure, phone, U.A.N and E.S.I.C number. Download gives you the same thing as a spreadsheet.</p><p class="lx lx-hi" lang="hi-IN">Reports वही डेटा ऐसे रूप में देता है जिसे आप सिस्टम के बाहर भेज सकें। कोई रिपोर्ट चुनिए और स्क्रीन पर देखने के लिए Run दबाइए। यहाँ Headcount में code, नाम, status, branch, विभाग, designation, wage और pay category, joining की तारीख़, कार्यकाल, फ़ोन, यू ए एन और ई एस आई सी नंबर दिखता है। Download वही चीज़ spreadsheet के रूप में देता है।</p>
       </div>
     </div>
-    <figure class="media lower"><img src="shots/em-21-reports-lower.png" alt="Reports — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+    <figure class="media lower">
+      <img src="shots/em-21-reports-lower.png" alt="Reports — lower part of the screen" loading="lazy">
+      <figcaption class="lx lx-en" lang="en-IN">Further down the same screen</figcaption><figcaption class="lx lx-hi" lang="hi-IN">उसी स्क्रीन का निचला हिस्सा</figcaption>
+    </figure>
   </article>
 </section>
 
 <section class="part">
   <div class="part-rule">
-    <h2>What the employee sees</h2>
-    <span class="part-role">EMPLOYEE</span>
+    <h2 class="lx lx-en" lang="en-IN">What the employee sees</h2><h2 class="lx lx-hi" lang="hi-IN">कर्मचारी को क्या दिखता है</h2>
+    <span class="part-role lx lx-en" lang="en-IN">HRMS_EMPLOYEE_SELF</span><span class="part-role lx lx-hi" lang="hi-IN">HRMS_EMPLOYEE_SELF</span>
   </div>
   
   <article class="chapter" id="em-22">
     <header class="ch-head">
       <span class="slate">EM-22</span>
-      <h3>My HR — what the employee sees</h3>
-      <span class="ch-time num">0:34</span>
+      <h3 class="lx lx-en" lang="en-IN">My HR — what the employee sees</h3><h3 class="lx lx-hi" lang="hi-IN">My HR — कर्मचारी को क्या दिखता है</h3>
+      <span class="ch-time num lx lx-en" lang="en-IN">0:34</span><span class="ch-time num lx lx-hi" lang="hi-IN">0:37</span>
       <code class="route">/employee/me</code>
     </header>
     <figure class="media">
-      <video controls preload="none" playsinline poster="shots/em-22-my-hr.png">
-        <source src="mp4/em-22.mp4" type="video/mp4">
-      </video>
+        <video class="lx lx-en" controls preload="none" playsinline poster="shots/em-22-my-hr.png">
+          <source src="mp4/em-22.mp4" type="video/mp4">
+        </video>
+        <video class="lx lx-hi" controls preload="none" playsinline poster="shots/em-22-my-hr.png">
+          <source src="mp4-hi/em-22.mp4" type="video/mp4">
+        </video>
     </figure>
     <div class="ch-body">
       <div class="do">
-        <h4>Do this</h4>
-        <ol><li>An employee with a login lands on My HR.</li><li>They see only their own <code>Payslips</code>, Attendance, Leave and My details.</li><li>They can change their own password.</li><li>No other employee's data, no payroll and no settings are reachable from here.</li></ol>
+        <h4 class="lx lx-en" lang="en-IN">Do this</h4><h4 class="lx lx-hi" lang="hi-IN">यह कीजिए</h4>
+        <ol class="lx lx-en" lang="en-IN"><li>An employee with a login lands on My HR.</li><li>They see only their own <code>Payslips</code>, Attendance, Leave and My details.</li><li>They can change their own password.</li><li>No other employee's data, no payroll and no settings are reachable from here.</li></ol><ol class="lx lx-hi" lang="hi-IN"><li>Login वाला कर्मचारी My HR पर पहुँचता है।</li><li>उसे सिर्फ़ अपनी <code>Payslips</code>, Attendance, Leave और My details दिखती हैं।</li><li>वह अपना पासवर्ड ख़ुद बदल सकता है।</li><li>यहाँ से किसी दूसरे कर्मचारी का डेटा, payroll या settings तक नहीं पहुँचा जा सकता।</li></ol>
       </div>
       <div class="said">
-        <h4>What the voiceover says</h4>
-        <p>Finally, this is what an ordinary employee sees when they sign in. My H.R gives them their own payslips, their own attendance, their own leave and their own details, and nothing else. No other employee, no payroll, no settings. They can change their own password here too. It is worth showing your staff this screen, because most of the questions they would otherwise bring to H.R are already answered on it.</p>
+        <h4 class="lx lx-en" lang="en-IN">What the voiceover says</h4><h4 class="lx lx-hi" lang="hi-IN">आवाज़ क्या कहती है</h4>
+        <p class="lx lx-en" lang="en-IN">Finally, this is what an ordinary employee sees when they sign in. My H.R gives them their own payslips, their own attendance, their own leave and their own details, and nothing else. No other employee, no payroll, no settings. They can change their own password here too. It is worth showing your staff this screen, because most of the questions they would otherwise bring to H.R are already answered on it.</p><p class="lx lx-hi" lang="hi-IN">आख़िर में, साइन इन करने पर एक आम कर्मचारी को यह दिखता है। My एच आर उसे उसकी अपनी payslips, अपनी हाज़िरी, अपनी छुट्टी और अपना विवरण देता है, और इसके अलावा कुछ नहीं। न कोई दूसरा कर्मचारी, न payroll, न settings। वह यहीं अपना पासवर्ड भी बदल सकता है। अपने स्टाफ़ को यह स्क्रीन दिखाना सार्थक है, क्योंकि जो सवाल वे वरना एच आर के पास लाते, उनमें से ज़्यादातर के जवाब इसी पर मौजूद हैं।</p>
       </div>
     </div>
     
@@ -938,19 +1077,43 @@
 </section>
 
   <section class="warn">
-    <h2>Things that will trip you up</h2>
-    <ul>
-      <li><b>Payroll runs and pay revisions need two approvals.</b> L1 then L2. There is no different-person rule, so the same login can clear both &mdash; but both must happen before payslips are final.</li>
-      <li><b>A penalty needs only one approver.</b> Do not wait for a second signature. The two-person rule belongs to payments in the Accounting module, not here.</li>
-      <li><b>Payroll settings fall back key by key.</b> A branch value overrides the organisation for that one key and nothing else. Set the organisation first, then override only what genuinely differs.</li>
-      <li><b>Set the employee-code prefixes before you add anybody.</b> The code is built from the organisation prefix plus the branch short code. Miss a segment and it silently reverts to the old plain format.</li>
-      <li><b>Check the muster before the payroll run, not after.</b> The totals on the right of the Muster Roll are what everybody is paid against.</li>
-      <li><b>An employee login reaches My HR and nothing else.</b> Their own payslips, attendance, leave and details. No other employee, no payroll, no settings.</li>
-    </ul>
+    <h2 class="lx lx-en" lang="en-IN">Things that will trip you up</h2><h2 class="lx lx-hi" lang="hi-IN">जिन बातों पर लोग अक्सर चूक जाते हैं</h2>
+    <ul class="lx lx-en" lang="en-IN"><li><b>Payroll runs and pay revisions need two approvals.</b> L1 then L2. There is no different-person rule, so the same login can clear both — but both must happen before payslips are final.</li><li><b>A penalty needs only one approver.</b> Do not wait for a second signature. The two-person rule belongs to payments in the Accounting module, not here.</li><li><b>Payroll settings fall back key by key.</b> A branch value overrides the organisation for that one key and nothing else. Set the organisation first, then override only what genuinely differs.</li><li><b>Set the employee-code prefixes before you add anybody.</b> The code is built from the organisation prefix plus the branch short code. Miss a segment and it silently reverts to the old plain format.</li><li><b>Check the muster before the payroll run, not after.</b> The totals on the right of the Muster Roll are what everybody is paid against.</li><li><b>An employee login reaches My HR and nothing else.</b> Their own payslips, attendance, leave and details. No other employee, no payroll, no settings.</li></ul><ul class="lx lx-hi" lang="hi-IN"><li><b>Payroll run और pay revision को दो मंज़ूरियाँ चाहिए।</b> पहले L1, फिर L2। अलग-अलग व्यक्ति होने का कोई नियम नहीं है, इसलिए एक ही login दोनों पार कर सकता है — पर payslips अंतिम होने से पहले दोनों होनी ज़रूरी हैं।</li><li><b>जुर्माने के लिए एक ही अनुमोदक काफ़ी है।</b> दूसरे दस्तख़त का इंतज़ार मत कीजिए। दो व्यक्तियों वाला नियम Accounting मॉड्यूल के भुगतानों का है, यहाँ का नहीं।</li><li><b>Payroll settings एक-एक key करके पीछे लौटती हैं।</b> Branch का मान संगठन को सिर्फ़ उसी एक key के लिए ओवरराइड करता है, और किसी के लिए नहीं। पहले संगठन तय कीजिए, फिर सिर्फ़ वही बदलिए जो सचमुच अलग है।</li><li><b>किसी को जोड़ने से पहले employee-code के prefix तय कीजिए।</b> Code संगठन के prefix और branch के short code से बनता है। एक हिस्सा छूटा तो वह चुपचाप पुराने सादे फ़ॉर्मैट पर लौट जाता है।</li><li><b>Muster payroll run से पहले जाँचिए, बाद में नहीं।</b> Muster Roll की दाईं तरफ़ के योग ही वे अंक हैं जिन पर सबका भुगतान होता है।</li><li><b>कर्मचारी का login सिर्फ़ My HR तक पहुँचता है।</b> उसकी अपनी payslips, हाज़िरी, छुट्टी और विवरण। न कोई दूसरा कर्मचारी, न payroll, न settings।</li></ul>
   </section>
 
   <footer class="colophon">
-    <span>Employee Management &middot; 23 chapters &middot; 12:04</span>
-    <span>Captured from the running module</span>
+    <span class="lx lx-en" lang="en-IN">Employee Management &middot; 23 chapters &middot; 12:04</span><span class="lx lx-hi" lang="hi-IN">Employee Management &middot; 23 अध्याय &middot; 13:28</span>
+    <span class="lx lx-en" lang="en-IN">Captured from the running module</span><span class="lx lx-hi" lang="hi-IN">चलते हुए मॉड्यूल से रिकॉर्ड किया गया</span>
   </footer>
 </div>
+
+<script>
+  // The toggle. Remembers the choice, and keeps the document's own lang
+  // attribute honest so a screen reader switches voice with the page.
+  (function () {
+    var root = document.documentElement;
+    var LANG = { en: 'en-IN', hi: 'hi-IN' };
+    var TITLE = {"en":"Employee Module Handbook","hi":"Employee Module पुस्तिका"};
+    function set(code, remember) {
+      if (!LANG[code]) code = 'en';
+      root.setAttribute('data-lang', code);
+      root.setAttribute('lang', LANG[code]);
+      document.title = TITLE[code];
+      var btns = document.querySelectorAll('.langbtn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].setAttribute('aria-pressed', String(btns[i].dataset.set === code));
+      }
+      if (remember) { try { localStorage.setItem('manual-lang', code); } catch (e) { /* private window */ } }
+    }
+    // The early script already chose; this only syncs title and buttons.
+    set(root.getAttribute('data-lang') || 'en', false);
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.langbtn') : null;
+      if (!b) return;
+      // A video mid-play should not keep talking from behind the hidden copy.
+      var vids = document.querySelectorAll('video');
+      for (var i = 0; i < vids.length; i++) { if (!vids[i].paused) vids[i].pause(); }
+      set(b.dataset.set, true);
+    });
+  })();
+</script>

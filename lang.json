@@ -1,0 +1,125 @@
+{
+  "_note": "Every string on the page that is not a chapter or a role. Chapters live in narration.json / narration.hi.json, roles in roles.json / roles.hi.json. Screen and button names stay in English in both languages, because the interface is in English and a translated label sends people looking for something that is not there.",
+  "en": {
+    "label": "English",
+    "htmlLang": "en-IN",
+    "docTitle": "Employee Module Handbook",
+    "eyebrow": "Operating manual",
+    "h1": "Employee Module Handbook",
+    "lede": "Every screen in Employee Management, in the order you would actually use them — set the org up, put people on, run the month, close it. Each chapter has the real screen on video with narration, and the steps in writing.",
+    "meta": {
+      "chapters": "Chapters",
+      "runtime": "Runtime",
+      "module": "Module",
+      "voice": "Voice",
+      "captured": "Captured",
+      "period": "Period"
+    },
+    "voiceName": "Neerja en-IN",
+    "capturedValue": "85 staff",
+    "periodValue": "Sep 2026",
+    "contents": "Contents",
+    "rolesNav": "Who can do what",
+    "rolesNavSub": "The ladder, and what each rung cannot do",
+    "rolesHeading": "Who can do what",
+    "rolesCount": "roles · lowest rung first",
+    "can": "Can",
+    "cannot": "Cannot",
+    "watchOut": "Watch out:",
+    "platformLead": "sit outside the ladder.",
+    "doThis": "Do this",
+    "voiceover": "What the voiceover says",
+    "lowerCaption": "Further down the same screen",
+    "lowerAlt": "lower part of the screen",
+    "warnHeading": "Things that will trip you up",
+    "warnings": [
+      "<b>Payroll runs and pay revisions need two approvals.</b> L1 then L2. There is no different-person rule, so the same login can clear both — but both must happen before payslips are final.",
+      "<b>A penalty needs only one approver.</b> Do not wait for a second signature. The two-person rule belongs to payments in the Accounting module, not here.",
+      "<b>Payroll settings fall back key by key.</b> A branch value overrides the organisation for that one key and nothing else. Set the organisation first, then override only what genuinely differs.",
+      "<b>Set the employee-code prefixes before you add anybody.</b> The code is built from the organisation prefix plus the branch short code. Miss a segment and it silently reverts to the old plain format.",
+      "<b>Check the muster before the payroll run, not after.</b> The totals on the right of the Muster Roll are what everybody is paid against.",
+      "<b>An employee login reaches My HR and nothing else.</b> Their own payslips, attendance, leave and details. No other employee, no payroll, no settings."
+    ],
+    "colophonLeft": "Employee Management",
+    "colophonChapters": "chapters",
+    "colophonRight": "Captured from the running module",
+    "privacy": "Every name, phone number and identity number on screen is fake."
+  },
+  "hi": {
+    "label": "हिन्दी",
+    "htmlLang": "hi-IN",
+    "docTitle": "Employee Module पुस्तिका",
+    "eyebrow": "संचालन पुस्तिका",
+    "h1": "Employee Module पुस्तिका",
+    "lede": "Employee Management की हर स्क्रीन, उसी क्रम में जिसमें आप उन्हें असल में इस्तेमाल करेंगे — संगठन खड़ा कीजिए, लोगों को जोड़िए, महीना चलाइए, फिर बंद कीजिए। हर अध्याय में असली स्क्रीन का वीडियो है, आवाज़ के साथ, और साथ में लिखित क़दम।",
+    "meta": {
+      "chapters": "अध्याय",
+      "runtime": "अवधि",
+      "module": "मॉड्यूल",
+      "voice": "आवाज़",
+      "captured": "रिकॉर्ड किया",
+      "period": "अवधि माह"
+    },
+    "voiceName": "Swara hi-IN",
+    "capturedValue": "85 कर्मचारी",
+    "periodValue": "सितम्बर 2026",
+    "contents": "विषय-सूची",
+    "rolesNav": "कौन क्या कर सकता है",
+    "rolesNavSub": "भूमिकाओं की सीढ़ी, और हर पायदान क्या नहीं कर सकता",
+    "rolesHeading": "कौन क्या कर सकता है",
+    "rolesCount": "भूमिकाएँ · सबसे नीचे का पायदान पहले",
+    "can": "कर सकता है",
+    "cannot": "नहीं कर सकता",
+    "watchOut": "ध्यान दीजिए:",
+    "platformLead": "इस सीढ़ी से बाहर हैं।",
+    "doThis": "यह कीजिए",
+    "voiceover": "आवाज़ क्या कहती है",
+    "lowerCaption": "उसी स्क्रीन का निचला हिस्सा",
+    "lowerAlt": "स्क्रीन का निचला हिस्सा",
+    "warnHeading": "जिन बातों पर लोग अक्सर चूक जाते हैं",
+    "warnings": [
+      "<b>Payroll run और pay revision को दो मंज़ूरियाँ चाहिए।</b> पहले L1, फिर L2। अलग-अलग व्यक्ति होने का कोई नियम नहीं है, इसलिए एक ही login दोनों पार कर सकता है — पर payslips अंतिम होने से पहले दोनों होनी ज़रूरी हैं।",
+      "<b>जुर्माने के लिए एक ही अनुमोदक काफ़ी है।</b> दूसरे दस्तख़त का इंतज़ार मत कीजिए। दो व्यक्तियों वाला नियम Accounting मॉड्यूल के भुगतानों का है, यहाँ का नहीं।",
+      "<b>Payroll settings एक-एक key करके पीछे लौटती हैं।</b> Branch का मान संगठन को सिर्फ़ उसी एक key के लिए ओवरराइड करता है, और किसी के लिए नहीं। पहले संगठन तय कीजिए, फिर सिर्फ़ वही बदलिए जो सचमुच अलग है।",
+      "<b>किसी को जोड़ने से पहले employee-code के prefix तय कीजिए।</b> Code संगठन के prefix और branch के short code से बनता है। एक हिस्सा छूटा तो वह चुपचाप पुराने सादे फ़ॉर्मैट पर लौट जाता है।",
+      "<b>Muster payroll run से पहले जाँचिए, बाद में नहीं।</b> Muster Roll की दाईं तरफ़ के योग ही वे अंक हैं जिन पर सबका भुगतान होता है।",
+      "<b>कर्मचारी का login सिर्फ़ My HR तक पहुँचता है।</b> उसकी अपनी payslips, हाज़िरी, छुट्टी और विवरण। न कोई दूसरा कर्मचारी, न payroll, न settings।"
+    ],
+    "colophonLeft": "Employee Management",
+    "colophonChapters": "अध्याय",
+    "colophonRight": "चलते हुए मॉड्यूल से रिकॉर्ड किया गया",
+    "privacy": "स्क्रीन पर दिखने वाला हर नाम, फ़ोन नंबर और पहचान संख्या काल्पनिक है।"
+  },
+  "parts": [
+    {
+      "en": { "n": "Start here", "role": "Any HR role" },
+      "hi": { "n": "यहाँ से शुरू कीजिए", "role": "कोई भी HR भूमिका" },
+      "ids": ["em-01"]
+    },
+    {
+      "en": { "n": "Set up the org", "role": "HR_ADMIN" },
+      "hi": { "n": "संगठन खड़ा कीजिए", "role": "HR_ADMIN" },
+      "ids": ["em-02", "em-03", "em-04", "em-05", "em-05b", "em-06", "em-07"]
+    },
+    {
+      "en": { "n": "Put people on the system", "role": "HR_MANAGER" },
+      "hi": { "n": "लोगों को सिस्टम पर लाइए", "role": "HR_MANAGER" },
+      "ids": ["em-08", "em-09", "em-10", "em-12"]
+    },
+    {
+      "en": { "n": "Run the month", "role": "ATTENDANCE_TAKER → BRANCH_SUPERVISOR" },
+      "hi": { "n": "महीना चलाइए", "role": "ATTENDANCE_TAKER → BRANCH_SUPERVISOR" },
+      "ids": ["em-13", "em-14", "em-15", "em-16", "em-17", "em-18"]
+    },
+    {
+      "en": { "n": "Close the month", "role": "HR_HEAD" },
+      "hi": { "n": "महीना बंद कीजिए", "role": "HR_HEAD" },
+      "ids": ["em-19", "em-19b", "em-20", "em-21"]
+    },
+    {
+      "en": { "n": "What the employee sees", "role": "HRMS_EMPLOYEE_SELF" },
+      "hi": { "n": "कर्मचारी को क्या दिखता है", "role": "HRMS_EMPLOYEE_SELF" },
+      "ids": ["em-22"]
+    }
+  ]
+}

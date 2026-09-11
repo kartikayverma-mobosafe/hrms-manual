@@ -1,0 +1,1 @@
+Reports वही डेटा ऐसे रूप में देता है जिसे आप सिस्टम के बाहर भेज सकें। कोई रिपोर्ट चुनिए और स्क्रीन पर देखने के लिए Run दबाइए। यहाँ Headcount में code, नाम, status, branch, विभाग, designation, wage और pay category, joining की तारीख़, कार्यकाल, फ़ोन, यू ए एन और ई एस आई सी नंबर दिखता है। Download वही चीज़ spreadsheet के रूप में देता है।

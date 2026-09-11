@@ -11,17 +11,41 @@ frame is checked as it is taken. See *Redaction* below for what that guarantees.
 
 | File | What it is |
 |---|---|
-| `employee-management-manual.mp4` | The whole manual. 23 chapters, 12m04s, with chapter markers. |
-| `handbook.html` | Written handbook — open it in a browser; each chapter plays its own clip inline. Also written as `index.html`, which is what GitHub Pages serves. |
-| `mp4/em-*.mp4` | One narrated clip per chapter, if you want to send just one screen. |
+| `employee-management-manual.mp4` | The whole manual in English. 23 chapters, with chapter markers. |
+| `employee-management-manual-hi.mp4` | The same manual in Hindi. |
+| `handbook.html` | Written handbook, both languages in one page with a toggle — open it in a browser; each chapter plays its own clip inline. Also written as `index.html`, which is what GitHub Pages serves. |
+| `mp4/em-*.mp4` | One narrated English clip per chapter, if you want to send just one screen. |
+| `mp4-hi/em-*.mp4` | The same chapters in Hindi. |
 | `shots/em-*.png` | 1440x900 screenshots, `-lower` = further down the same screen. |
-| `voice/em-*.mp3` | Narration only (Neerja, en-IN). Drop these on a Recordly timeline as audio regions. |
-| `video/em-*.webm` | Raw silent screen capture. Import these into Recordly to add zooms and annotations. |
+| `voice/em-*.mp3` | English narration only (Neerja, en-IN). Drop these on a Recordly timeline as audio regions. |
+| `voice/em-*.hi.mp3` | Hindi narration only (Swara, hi-IN). |
+| `video/em-*.webm` | Raw silent screen capture, shared by both languages. Import these into Recordly to add zooms and annotations. |
 
 `shots/00-login.png`, `shots/01-module-selection.png`, `shots/em-02-masters-index.png`
 and the `console-*.log` / `page-*.yml` files are debris from setting the tour up.
 They predate redaction, nothing references them, and they are not part of the
 handover — delete them if the folder is going anywhere.
+
+## Two languages
+
+Everything ships in English and Hindi: the narration, the written steps, the
+role ladder and every heading and warning on the page. The handbook carries
+both inline and switches in the browser — no request, no reload — so the
+toggle at the top of the page works offline and on a phone. The choice is
+remembered, and `?lang=hi` opens the page straight into Hindi.
+
+The screen recordings are shared. There is one capture of one English
+interface, with a different voice over it, which is why there is one `video/`
+folder and two `mp4` ones. **Screen and button names stay in English in the
+Hindi text on purpose** — the interface is in English, and a translated label
+sends somebody hunting for a control that is not there.
+
+Sources: `narration.json` / `narration.hi.json` for the chapters,
+`roles.json` / `roles.hi.json` for the ladder, and `lang.json` for every other
+string on the page. Edit those, never the HTML.
+
+Hindi runs about 15% longer than English for the same chapter, so each
+language has its own chapter timings and its own full-length file.
 
 ## Who can do what
 
@@ -90,9 +114,14 @@ cd D:/Mobosafe/employee-manual
 node tour.mjs              # re-capture screens + video, redacted and audited
 node labels.mjs            # re-extract the real UI labels
 node verify-redaction.mjs  # must print CLEAN before anything below
-node mux.mjs               # chapters + full manual + chapter markers
-node build-page.mjs        # regenerate handbook.html
+node voice.mjs             # render narration to speech, both languages
+node mux.mjs               # chapters + full manuals + chapter markers
+node build-page.mjs        # regenerate handbook.html and index.html
 ```
+
+`voice.mjs` and `mux.mjs` both take an optional language: `node voice.mjs hi`
+re-renders only the Hindi audio, `node mux.mjs hi` only the Hindi clips. Useful
+after a wording change on one side.
 
 `tour.mjs` and `verify-redaction.mjs` reuse the signed-in session in `.auth.json`;
 set `MS_EMAIL` and `MS_PASS` for the first run or once it expires.
@@ -101,12 +130,10 @@ set `MS_EMAIL` and `MS_PASS` for the first run or once it expires.
 only step that puts a capture into the files that leave the building, and it
 copies whatever is in `video/` without looking at it.
 
-Editing narration means re-rendering `voice/em-*.mp3` with the TTS in
-`tts-venv/` and then re-running `mux.mjs`; the chapter lasts as long as its
-narration plus 1.2s, with the last frame held for the difference.
-
-`narration.json` is the single source of truth for what is said and what the
-written steps say — edit it there, not in `handbook.html`.
+Editing narration means re-running `voice.mjs` and then `mux.mjs`; the chapter
+lasts as long as its narration plus 1.2s, with the last frame held for the
+difference. Change the English and you must change `narration.hi.json` to match,
+or the two languages drift apart.
 
 ## Known notes
 
