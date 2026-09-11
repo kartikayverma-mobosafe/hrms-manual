@@ -1,0 +1,1 @@
+This is money recovered through the payslip, in two tabs. A penalty is raised with New Penalty: you choose the type, the amount, and the month it should be deducted in. It is then approved, and shows as deducted once payroll picks it up. Advances sit on the other tab. They stay active while the instalments run, and close when the money is fully recovered.

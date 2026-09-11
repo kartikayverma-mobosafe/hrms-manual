@@ -1,0 +1,1 @@
+Reports gives you the same data in a form you can send outside the system. Pick a report and press Run to see it on screen. Headcount here shows code, name, status, branch, department, designation, wage and pay category, date of joining, tenure, phone, U.A.N and E.S.I.C number. Download gives you the same thing as a spreadsheet.

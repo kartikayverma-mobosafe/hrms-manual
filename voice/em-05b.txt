@@ -1,0 +1,1 @@
+Holidays is the company calendar, the days everybody is off. Each entry has a date, a name and a type. Both the muster and payroll read this calendar, so load the full year before you run the first payroll. National holidays matter twice over here, because overtime worked on them is paid at a different rate.

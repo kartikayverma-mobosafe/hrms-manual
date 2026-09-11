@@ -1,0 +1,956 @@
+<title>Employee Module Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper:#F3F6F7; --card:#FFFFFF; --sunk:#E8EEEF;
+    --ink:#101619; --ink-2:#47565C; --ink-3:#78888E;
+    --rule:#D2DBDE; --rule-2:#E5EBED;
+    --accent:#0E6E69; --accent-soft:#E0EFEE;
+    --warn:#8E5504; --warn-bg:#FAF0DB; --warn-rule:#DFB872;
+    --display:'Archivo','Helvetica Neue',system-ui,sans-serif;
+    --prose:'Literata',Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#0D1316; --card:#151D20; --sunk:#1B2427;
+      --ink:#E5ECEE; --ink-2:#9CADB2; --ink-3:#76878C;
+      --rule:#243033; --rule-2:#1E282B;
+      --accent:#4FB5AD; --accent-soft:#12272A;
+      --warn:#DCA03A; --warn-bg:#241C10; --warn-rule:#5A4520;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#0D1316; --card:#151D20; --sunk:#1B2427;
+    --ink:#E5ECEE; --ink-2:#9CADB2; --ink-3:#76878C;
+    --rule:#243033; --rule-2:#1E282B;
+    --accent:#4FB5AD; --accent-soft:#12272A;
+    --warn:#DCA03A; --warn-bg:#241C10; --warn-rule:#5A4520;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--prose); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:64rem; margin:0 auto; padding-inline:20px; padding-block:44px 76px; display:flex; flex-direction:column; gap:44px; }
+  .num { font-variant-numeric:tabular-nums; }
+  code { font-family:var(--mono); font-size:.84em; background:var(--sunk); border:1px solid var(--rule-2); border-radius:3px; padding:.1em .34em; color:var(--ink); }
+  .eyebrow { font-family:var(--display); font-weight:600; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+  h1 { font-family:var(--display); font-weight:700; font-size:clamp(2rem,6.5vw,2.9rem); line-height:1.05; letter-spacing:-.015em; margin:.2em 0 0; text-wrap:balance; }
+  h2 { font-family:var(--display); font-weight:700; font-size:1.35rem; margin:0; }
+  h3 { font-family:var(--display); font-weight:600; font-size:1.16rem; margin:0; }
+  h4 { font-family:var(--display); font-weight:600; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:0 0 8px; }
+  header.masthead { border-top:3px solid var(--accent); padding-top:18px; }
+  header.masthead .lede { margin:14px 0 0; max-width:46ch; font-size:1.07rem; color:var(--ink-2); }
+  .meta { margin-top:26px; display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); border:1px solid var(--rule); border-radius:3px; background:var(--card); overflow:hidden; }
+  .meta > div { padding:11px 14px; border-right:1px solid var(--rule-2); border-bottom:1px solid var(--rule-2); }
+  .meta dt { font-family:var(--display); font-weight:600; font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); }
+  .meta dd { margin:3px 0 0; font-family:var(--mono); font-size:.85rem; font-variant-numeric:tabular-nums; }
+  .toc { display:flex; flex-direction:column; gap:18px; }
+  .toc-part { display:flex; flex-direction:column; gap:6px; }
+  .toc-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--rule); padding-bottom:4px; }
+  .toc-n { font-family:var(--display); font-weight:700; font-size:.95rem; }
+  .toc-role { font-family:var(--mono); font-size:.68rem; color:var(--ink-3); }
+  ol.toc-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:1px 18px; }
+  ol.toc-list a { display:flex; align-items:baseline; gap:9px; padding:4px 0; text-decoration:none; color:var(--ink-2); }
+  ol.toc-list a:hover { color:var(--accent); }
+  .toc-time { margin-left:auto; font-family:var(--mono); font-size:.72rem; color:var(--ink-3); }
+  .slate { font-family:var(--mono); font-weight:500; font-size:.72rem; color:var(--accent); letter-spacing:.02em; }
+  .part { display:flex; flex-direction:column; gap:26px; }
+  .part-rule { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; border-bottom:2px solid var(--accent); padding-bottom:7px; }
+  .part-rule h2 { flex:1 1 12rem; }
+  .part-role { font-family:var(--mono); font-size:.7rem; color:var(--ink-3); }
+  .chapter { display:flex; flex-direction:column; gap:14px; padding-bottom:26px; border-bottom:1px solid var(--rule-2); scroll-margin-top:20px; }
+  .ch-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .ch-head h3 { flex:0 1 auto; }
+  .ch-time { font-family:var(--mono); font-size:.76rem; color:var(--ink-3); }
+  .route { flex-basis:100%; font-size:.76rem; color:var(--accent); background:var(--accent-soft); border-color:transparent; align-self:flex-start; }
+  figure.media { margin:0; }
+  figure.media video, figure.media img { display:block; width:100%; max-width:100%; height:auto; border:1px solid var(--rule); border-radius:4px; background:var(--sunk); }
+  figure.media.lower { margin-top:4px; }
+  figure.media figcaption { margin-top:6px; font-size:.8rem; color:var(--ink-3); font-family:var(--display); }
+  .ch-body { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .do ol { margin:0; padding-left:1.25rem; display:flex; flex-direction:column; gap:6px; }
+  .do li { color:var(--ink-2); }
+  .said p { margin:0; color:var(--ink-2); font-style:italic; border-left:2px solid var(--accent); padding-left:13px; }
+  .roles { display:flex; flex-direction:column; gap:20px; }
+  .roles-lede { margin:0; max-width:60ch; color:var(--ink-2); }
+  ol.ladder { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; background:var(--rule-2); border:1px solid var(--rule); border-radius:3px; overflow:hidden; }
+  .role { background:var(--card); padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+  .role-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .role-name { font-size:.8rem; font-weight:500; background:var(--accent-soft); border-color:transparent; color:var(--accent); }
+  .role-count { margin-left:auto; font-family:var(--mono); font-size:.7rem; color:var(--ink-3); }
+  .role-what { margin:0; color:var(--ink); font-size:.97rem; }
+  .role-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .role-grid ul { margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:5px; }
+  .role-grid li { color:var(--ink-2); font-size:.92rem; }
+  .role-cannot li::marker { color:var(--warn); }
+  .role-watch { margin:0; font-size:.88rem; color:var(--ink-2); background:var(--warn-bg); border-left:2px solid var(--warn-rule); padding:9px 12px; border-radius:0 3px 3px 0; }
+  .role-watch b { font-family:var(--display); color:var(--warn); }
+  .platform { margin:0; font-size:.9rem; color:var(--ink-2); border-left:2px solid var(--rule); padding-left:13px; }
+  .warn { background:var(--warn-bg); border:1px solid var(--warn-rule); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:12px; }
+  .warn h2 { font-size:1.15rem; }
+  .warn ul, ul.role-rules { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:10px; }
+  ul.role-rules li { color:var(--ink-2); font-size:.93rem; }
+  ul.role-rules b { font-family:var(--display); font-weight:700; color:var(--ink); }
+  .warn li { color:var(--ink-2); }
+  .warn b { font-family:var(--display); font-weight:700; color:var(--ink); }
+  footer.colophon { border-top:1px solid var(--rule); padding-top:16px; font-family:var(--mono); font-size:.73rem; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:4px 18px; }
+  @media (max-width:46rem) { .ch-body, .role-grid { grid-template-columns:1fr; gap:16px; } }
+  @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">Operating manual</div>
+    <h1>Employee Module Handbook</h1>
+    <p class="lede">Every screen in Employee Management, in the order you would actually use them &mdash; set the org up, put people on, run the month, close it. Each chapter has the real screen on video with narration, and the steps in writing.</p>
+    <dl class="meta">
+      <div><dt>Chapters</dt><dd>23</dd></div>
+      <div><dt>Runtime</dt><dd>12:04</dd></div>
+      <div><dt>Module</dt><dd>/employee</dd></div>
+      <div><dt>Voice</dt><dd>Neerja en-IN</dd></div>
+      <div><dt>Captured</dt><dd>85 staff</dd></div>
+      <div><dt>Period</dt><dd>Sep 2026</dd></div>
+    </dl>
+  </header>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <div class="toc-part">
+      <div class="toc-head"><span class="toc-n">Who can do what</span>
+        <span class="toc-role">7 roles</span></div>
+      <ol class="toc-list"><li><a href="#roles">
+        <span class="slate">ROLES</span><span>The ladder, and what each rung cannot do</span></a></li></ol>
+    </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">Start here</span><span class="toc-role">Any HR role</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-01"><span class="slate">EM-01</span> The workspace<span class="toc-time num">0:41</span></a></li>
+    </ol>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">Set up the org</span><span class="toc-role">HR_ADMIN</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-02"><span class="slate">EM-02</span> Departments, designations, grades<span class="toc-time num">0:29</span></a></li>
+      <li><a href="#em-03"><span class="slate">EM-03</span> Employee codes<span class="toc-time num">0:37</span></a></li>
+      <li><a href="#em-04"><span class="slate">EM-04</span> Basic master — wage rates<span class="toc-time num">0:24</span></a></li>
+      <li><a href="#em-05"><span class="slate">EM-05</span> Leave types<span class="toc-time num">0:23</span></a></li>
+      <li><a href="#em-05b"><span class="slate">EM-05B</span> Holidays<span class="toc-time num">0:25</span></a></li>
+      <li><a href="#em-06"><span class="slate">EM-06</span> Payroll settings<span class="toc-time num">0:36</span></a></li>
+      <li><a href="#em-07"><span class="slate">EM-07</span> Face match<span class="toc-time num">0:24</span></a></li>
+    </ol>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">Put people on the system</span><span class="toc-role">HR_MANAGER</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-08"><span class="slate">EM-08</span> The employee list<span class="toc-time num">0:33</span></a></li>
+      <li><a href="#em-09"><span class="slate">EM-09</span> Add an employee<span class="toc-time num">0:35</span></a></li>
+      <li><a href="#em-10"><span class="slate">EM-10</span> One employee's record<span class="toc-time num">0:33</span></a></li>
+      <li><a href="#em-12"><span class="slate">EM-12</span> Excel import<span class="toc-time num">0:26</span></a></li>
+    </ol>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">Run the month</span><span class="toc-role">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-13"><span class="slate">EM-13</span> Marking attendance<span class="toc-time num">1:03</span></a></li>
+      <li><a href="#em-14"><span class="slate">EM-14</span> The muster roll<span class="toc-time num">0:30</span></a></li>
+      <li><a href="#em-15"><span class="slate">EM-15</span> Leave<span class="toc-time num">0:25</span></a></li>
+      <li><a href="#em-16"><span class="slate">EM-16</span> Penalties and advances<span class="toc-time num">0:29</span></a></li>
+      <li><a href="#em-17"><span class="slate">EM-17</span> Expense claims<span class="toc-time num">0:32</span></a></li>
+      <li><a href="#em-18"><span class="slate">EM-18</span> Contract workers<span class="toc-time num">0:24</span></a></li>
+    </ol>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">Close the month</span><span class="toc-role">HR_HEAD</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-19"><span class="slate">EM-19</span> The payroll register<span class="toc-time num">0:25</span></a></li>
+      <li><a href="#em-19b"><span class="slate">EM-19B</span> Inside a payroll run<span class="toc-time num">0:39</span></a></li>
+      <li><a href="#em-20"><span class="slate">EM-20</span> Performance<span class="toc-time num">0:25</span></a></li>
+      <li><a href="#em-21"><span class="slate">EM-21</span> Reports<span class="toc-time num">0:31</span></a></li>
+    </ol>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-head"><span class="toc-n">What the employee sees</span><span class="toc-role">EMPLOYEE</span></div>
+    <ol class="toc-list">
+      <li><a href="#em-22"><span class="slate">EM-22</span> My HR — what the employee sees<span class="toc-time num">0:34</span></a></li>
+    </ol>
+  </div>
+  </nav>
+
+  <section class="roles" id="roles">
+    <div class="part-rule">
+      <h2>Who can do what</h2>
+      <span class="part-role">7 roles &middot; lowest rung first</span>
+    </div>
+    <p class="roles-lede">Seven rungs, each the smallest set that lets somebody finish their own job. Nothing stops one person holding more than one role — that is a decision for whoever assigns them.</p>
+    <ol class="ladder">
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">HRMS_EMPLOYEE_SELF</code>
+        <span class="role-count num">1 permission</span>
+      </div>
+      <p class="role-what">The login an employee is handed for their own record. Reaches My HR and nothing else.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>Their own payslips, attendance, leave balance and details, through /hrms/me</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>See any other employee, anywhere in the module</li><li><code>Apply for leave</code> or submit a claim through the main screens — those endpoints are organisation-wide, so an employee holding them would see every colleague's leave and every colleague's claims. They are deliberately withheld.</li></ul>
+        </div>
+      </div>
+      <p class="role-watch"><b>Watch out:</b> The role is called HRMS_EMPLOYEE_SELF, not EMPLOYEE. A role named plainly EMPLOYEE collided with an existing one, and every workforce login issued silently received all 53 permissions instead of one.</p>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">ATTENDANCE_TAKER</code>
+        <span class="role-count num">4 permissions</span>
+      </div>
+      <p class="role-what">Marks the daily attendance of the branch or office they are posted to.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>See the employee list — the marking screen is a list of employees</li><li>View and mark attendance</li><li>See their own record, because whoever marks the roster is also on it</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>See what anybody is paid</li><li><code>Approve</code> anything</li></ul>
+        </div>
+      </div>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">BRANCH_SUPERVISOR</code>
+        <span class="role-count num">16 permissions</span>
+      </div>
+      <p class="role-what">Runs a branch day to day: attendance, leave, expense claims and penalties for their own people.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>Everything the attendance taker can</li><li><code>Approve</code> leave</li><li>Raise a penalty</li><li>Pass an expense claim</li><li>Read departments, advances, contract workers and performance</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>See salary</li><li>Correct attendance on a day payroll has already consumed — that changes a figure somebody has been paid against, so it is an HR_ADMIN action</li></ul>
+        </div>
+      </div>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">HR_MANAGER</code>
+        <span class="role-count num">37 permissions</span>
+      </div>
+      <p class="role-what">Runs the module: employee master, wage master, statutory returns and payroll processing.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>Create and edit employees</li><li>Manage departments, designations, grades and employment types</li><li>View salary and raise a pay revision</li><li>Process the monthly payroll run</li><li><code>Approve</code> leave and expense claims, raise penalties and advances</li><li>Manage contract workers</li><li>Generate EPF, ESIC and Form-II returns</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li><code>Approve</code> a payroll run at either level — processing and approving must be two different acts, and this is the processing one</li><li>Sign the pay revision it raised, for the same reason</li><li>Delete an employee, or see unmasked identity numbers</li></ul>
+        </div>
+      </div>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">HR_ADMIN</code>
+        <span class="role-count num">46 permissions</span>
+      </div>
+      <p class="role-what">First signature: approves payroll runs and pay revisions at level 1, and corrects locked attendance.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>Everything HR_MANAGER can</li><li><code>Approve</code> a payroll run at L1, and a pay revision at L1</li><li>Override attendance on a locked day</li><li>Delete an employee record</li><li>See unmasked identity numbers (UAN, ESIC, PAN, Aadhaar)</li><li><code>Approve</code> penalties, rate performance, read the payroll journal</li><li>Mark a released run paid, or cancel one</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>Release a run — that is the second signature, and it belongs to HR_HEAD</li></ul>
+        </div>
+      </div>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">HR_HEAD</code>
+        <span class="role-count num">27 permissions</span>
+      </div>
+      <p class="role-what">Second signature: releases payroll runs and pay revisions at level 2.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li><code>Approve</code> a payroll run at L2, and a pay revision at L2 — the approvals that release either</li><li>Read the figures, the register behind them and the ledger they post to</li><li><code>Approve</code> leave, expense claims and penalties</li><li>See unmasked identity numbers</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>Process payroll — this role cannot compute the run it releases</li><li>Create or edit employees, or touch the masters</li></ul>
+        </div>
+      </div>
+    </li>
+    <li class="role">
+      <div class="role-head">
+        <code class="role-name">HEAD_OFFICE</code>
+        <span class="role-count num">23 permissions</span>
+      </div>
+      <p class="role-what">Head office and accounts: payroll settings, the wage master and the payroll ledger.</p>
+      <div class="role-grid">
+        <div class="role-can">
+          <h4>Can</h4>
+          <ul><li>Manage payroll settings — PF and ESIC rates, professional tax, the duty base</li><li>Manage the wage master every employee's basic is looked up in</li><li>Manage designations, grades and employment types</li><li>Read widely across the module, because a rate cannot be set sensibly without seeing what it does</li></ul>
+        </div>
+        <div class="role-cannot">
+          <h4>Cannot</h4>
+          <ul><li>Sign at either level. Somebody who both sets the rates and releases the run should be given HR_HEAD as well, deliberately, rather than this role quietly including it.</li></ul>
+        </div>
+      </div>
+    </li>
+    </ol>
+    <p class="platform"><b>SUPER_ADMIN</b> and <b>FLEET_ADMIN</b> sit outside the ladder. The platform administrators, who already administer every other module. They hold the whole vocabulary including both signatures — somebody has to be able to unstick a tenant that has assigned its roles badly.</p>
+    <ul class="role-rules">
+        <li><b>Two signatures, and they are different roles.</b> A payroll run and a pay revision both need L1 then L2. That is why the top of the ladder is split: HR_MANAGER computes, HR_ADMIN signs first, HR_HEAD signs second. A run one person can compute, approve and release is not controlled at all.</li>
+        <li><b>But there is no different-person rule.</b> Nothing stops one login holding HR_ADMIN and HR_HEAD and clearing both levels. The run records who signed each level, so the trail shows when they were the same person. If you want two people, assign two people.</li>
+        <li><b>A penalty needs only one approver.</b> hrms:penalty:approve is the whole requirement. Do not wait for a second signature — the two-person rule belongs to payments in the Accounting module, not here.</li>
+    </ul>
+  </section>
+
+
+<section class="part">
+  <div class="part-rule">
+    <h2>Start here</h2>
+    <span class="part-role">Any HR role</span>
+  </div>
+  
+  <article class="chapter" id="em-01">
+    <header class="ch-head">
+      <span class="slate">EM-01</span>
+      <h3>The workspace</h3>
+      <span class="ch-time num">0:41</span>
+      <code class="route">/employee</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-01-workspace.png">
+        <source src="mp4/em-01.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Sign in, then choose Employee Management on the module screen.</li><li>Read the line under the title — that is your live headcount.</li><li>Scan the four tiles: active employees, monthly wage bill, marked today, awaiting action.</li><li>Use the Go to cards or the left sidebar to reach any screen in the module.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Welcome to Employee Management. Everything about your staff sits behind this one door. The line under the title shows eighty five active employees of eighty five on record. Across the top you get your monthly wage bill, how many people are marked today, and anything awaiting your action. Below that sits the latest payroll, September twenty twenty six, already paid, with gross, deductions, net paid, employer cost and C.T.C. The Go to cards, and the menu down the left, take you to every other part of the module.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-01-workspace-lower.png" alt="The workspace — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+</section>
+
+<section class="part">
+  <div class="part-rule">
+    <h2>Set up the org</h2>
+    <span class="part-role">HR_ADMIN</span>
+  </div>
+  
+  <article class="chapter" id="em-02">
+    <header class="ch-head">
+      <span class="slate">EM-02</span>
+      <h3>Departments, designations, grades</h3>
+      <span class="ch-time num">0:29</span>
+      <code class="route">/employee/masters/departments</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-02-departments.png">
+        <source src="mp4/em-02.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Departments.</li><li>Press <code>New Department</code> and fill name, code, description and order.</li><li>Repeat on the Designations, Grades and Employment Types tabs — same pattern.</li><li>Use <code>Refresh</code> if a row you just added has not appeared.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Before you add anybody, the system needs to know the shape of your organisation. Departments is the first master. Each row carries a name, a code, a description and a display order. Add one with New Department. Designations, Grades and Employment Types work exactly the same way, so once you have done this screen, you have done all four.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-03">
+    <header class="ch-head">
+      <span class="slate">EM-03</span>
+      <h3>Employee codes</h3>
+      <span class="ch-time num">0:37</span>
+      <code class="route">/employee/masters/codes</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-03-employee-codes.png">
+        <source src="mp4/em-03.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Employee Codes.</li><li>Give each branch a short code; the table previews what codes there start with and the next code.</li><li>Press <code>Save Code Format</code>.</li><li>Do this before adding employees — a missing short code produces the old plain format instead.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Employee codes are built by the system, not typed by you. Each branch gets a short code, and the table shows you exactly what codes there will start with, and what the next code will be. A Bengaluru employee comes out as M.D.M dash B.L dash zero zero zero zero one. Set this up before you add people, and press Save Code Format when you are done. If a branch has no short code, the code quietly falls back to the older plain format.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-03-employee-codes-lower.png" alt="Employee codes — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-04">
+    <header class="ch-head">
+      <span class="slate">EM-04</span>
+      <h3>Basic master — wage rates</h3>
+      <span class="ch-time num">0:24</span>
+      <code class="route">/employee/masters/basic</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-04-basic-master.png">
+        <source src="mp4/em-04.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Basic Master.</li><li>Press <code>New Rate</code> and pick the designation and category.</li><li>Enter basic per day, D.A. per day, the per-month figure and H.R.A.</li><li>Check the figures — payroll computes straight off these rates.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Basic Master holds your base wage rates, one row per designation and category. You set basic per day, dearness allowance per day, the monthly figure and H.R.A. Payroll reads these rates directly, so a wrong number here becomes a wrong payslip for everybody on that designation. New Rate adds a row.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-05">
+    <header class="ch-head">
+      <span class="slate">EM-05</span>
+      <h3>Leave types</h3>
+      <span class="ch-time num">0:23</span>
+      <code class="route">/employee/masters/leave-types</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-05-leave-types.png">
+        <source src="mp4/em-05.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Leave Types.</li><li>Press <code>New Type</code>.</li><li>Set name, code, annual quota, paid or unpaid, and carry forward.</li><li>These are the only types that will appear when somebody applies for leave.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Leave Types decides what your staff can actually apply for. Each type has a name, a short code, an annual quota, whether it is paid, and whether the balance carries forward into next year. Casual Leave with a quota of twelve is a typical row. Add more with New Type.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-05b">
+    <header class="ch-head">
+      <span class="slate">EM-05B</span>
+      <h3>Holidays</h3>
+      <span class="ch-time num">0:25</span>
+      <code class="route">/employee/masters/holidays</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-05b-holidays.png">
+        <source src="mp4/em-05b.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Holidays.</li><li>Press <code>New Holiday</code> and enter the date, name and type.</li><li>Load the whole year before the first payroll run.</li><li>Mark national holidays correctly — N.H. overtime is paid at its own rate.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Holidays is the company calendar, the days everybody is off. Each entry has a date, a name and a type. Both the muster and payroll read this calendar, so load the full year before you run the first payroll. National holidays matter twice over here, because overtime worked on them is paid at a different rate.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-06">
+    <header class="ch-head">
+      <span class="slate">EM-06</span>
+      <h3>Payroll settings</h3>
+      <span class="ch-time num">0:36</span>
+      <code class="route">/employee/salary-setup</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-06-payroll-settings.png">
+        <source src="mp4/em-06.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Payroll Settings from the sidebar.</li><li>Work through the tabs: Earnings, Overtime, Provident Fund, ESIC, PT &amp; LWF, Other.</li><li>Set the organisation values first.</li><li>For a branch that differs, change only the keys that differ — the rest keep falling back.</li><li>Press <code>Save settings</code>.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Payroll Settings is where the statutory side lives, split across tabs: Earnings, Overtime, Provident Fund, E.S.I.C, P.T and L.W.F, and Other. The important thing to understand here is scope. You set these once for the organisation, and where a branch is different, you set only that one key on the branch. Everything you do not override keeps falling back to the organisation value. Press Save settings to apply.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-07">
+    <header class="ch-head">
+      <span class="slate">EM-07</span>
+      <h3>Face match</h3>
+      <span class="ch-time num">0:24</span>
+      <code class="route">/employee/masters/face-match</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-07-face-match.png">
+        <source src="mp4/em-07.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Face Match.</li><li>Set the match threshold.</li><li>Read the warning if the value is loose — a low threshold accepts the wrong face.</li><li>Press <code>Save Face Match Settings</code>.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Face Match lets attendance be verified against a stored photograph. The threshold decides how close a match has to be before the system accepts it. Set it too loose and you will get false accepts, so the screen warns you when the value is risky. Save with Save Face Match Settings.</p>
+      </div>
+    </div>
+    
+  </article>
+</section>
+
+<section class="part">
+  <div class="part-rule">
+    <h2>Put people on the system</h2>
+    <span class="part-role">HR_MANAGER</span>
+  </div>
+  
+  <article class="chapter" id="em-08">
+    <header class="ch-head">
+      <span class="slate">EM-08</span>
+      <h3>The employee list</h3>
+      <span class="ch-time num">0:33</span>
+      <code class="route">/employee/employees</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-08-employee-list.png">
+        <source src="mp4/em-08.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Employees from the sidebar.</li><li>Search by name or code, or filter by status, category or department.</li><li>Press <code>Columns</code> to show or hide fields.</li><li>Use the Login column to see who has a working sign-in.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>This is the employee master, everybody on your rolls. The table carries code, name, department, phone, U.A.N, category, monthly wage, whether the person has a login, and status. Search by name or code, narrow by status, category or department, and use Columns to choose what you want to see. Watch the Login column — that tells you at a glance who can actually sign in.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-08-employee-list-lower.png" alt="The employee list — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-09">
+    <header class="ch-head">
+      <span class="slate">EM-09</span>
+      <h3>Add an employee</h3>
+      <span class="ch-time num">0:35</span>
+      <code class="route">/employee/employees/new</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-09-employee-new.png">
+        <source src="mp4/em-09.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>From Masters ▸ Employee Master press <code>New Employee</code>.</li><li>Check the auto-filled employee code and the branch it reports detecting.</li><li>Fill Identity, then Contact Information, then Employment &amp; Role.</li><li>Complete the statutory and document sections below.</li><li>Press <code>Create Employee</code>.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Adding a person. The employee code is filled in for you, here M.D.M zero zero zero eight five, and the screen tells you which branch it detected from that prefix. Work down the sections in order: Identity, Contact Information, Employment and Role, and the statutory and document blocks below. Father's name is worth filling in, because it prints on the FORM two wage register. When everything is in, press Create Employee.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-09-employee-new-lower.png" alt="Add an employee — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-10">
+    <header class="ch-head">
+      <span class="slate">EM-10</span>
+      <h3>One employee's record</h3>
+      <span class="ch-time num">0:33</span>
+      <code class="route">/employee/employees/53</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-10-employee-detail.png">
+        <source src="mp4/em-10.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Click any row in the employee list.</li><li>Move through the tabs: Profile, Salary, <code>Payslips</code>, Leave, Attendance.</li><li>Use <code>Edit</code> for ordinary corrections; <code>Upload</code> for documents.</li><li>Issue a new password if the person has a login.</li><li>A salary change is raised as a revision and needs L1 then L2 approval.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>One person, with everything about them in five tabs: Profile, Salary, Payslips, Leave and Attendance. Along the top you can edit the record, deactivate or suspend the person, upload their documents, and issue a new password if they have a login. Pay is not edited casually here. A change to salary is raised as a revision, and then approved at two levels, L one and L two, before it takes effect.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-10-employee-detail-lower.png" alt="One employee's record — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-12">
+    <header class="ch-head">
+      <span class="slate">EM-12</span>
+      <h3>Excel import</h3>
+      <span class="ch-time num">0:26</span>
+      <code class="route">/employee/masters/employees</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-12-employee-master.png">
+        <source src="mp4/em-12.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Go to Masters, then Employee Master.</li><li>Press <code>Download Template</code>.</li><li>Fill the sheet, keeping the column headings exactly as given.</li><li><code>Upload</code> it and read the preview: rows to add, and rows to fix.</li><li>Commit only once the preview is clean.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>For a new branch you are not going to type two hundred people by hand. Employee Master, under Masters, gives you Download Template. Fill the sheet, upload it, and read the preview the system shows you before committing anything. Rows with problems are listed for you, so you fix the sheet rather than hunting through the system afterwards.</p>
+      </div>
+    </div>
+    
+  </article>
+</section>
+
+<section class="part">
+  <div class="part-rule">
+    <h2>Run the month</h2>
+    <span class="part-role">ATTENDANCE_TAKER → BRANCH_SUPERVISOR</span>
+  </div>
+  
+  <article class="chapter" id="em-13">
+    <header class="ch-head">
+      <span class="slate">EM-13</span>
+      <h3>Marking attendance</h3>
+      <span class="ch-time num">1:03</span>
+      <code class="route">/employee/attendance</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-13-attendance.png">
+        <source src="mp4/em-13.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Attendance and set the date; narrow by department if you want.</li><li>Check the tiles: on roster, saved, present, unmarked.</li><li>Press <code>Mark all present</code>, then fix only the exceptions.</li><li>Statuses: P present, A absent, HALF half day, WO weekly off, NH national holiday, OP off-day present, PL paid leave, UL unpaid leave.</li><li>Enter overtime hours in the OT box on the row.</li><li>With face check on, pick a status then photograph the person — 55% or better against their profile photo; you may mark through a failure.</li><li>The <code>Changes</code> tab shows every edit, stamped with who made it.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Marking a day. Pick your date and, if you want, narrow to a department. The tiles tell you where you stand: on roster, saved, present, and still unmarked. Press Mark all present, then correct only the exceptions with the status buttons on each row. P for present, A for absent, HALF for a half day, W.O for a weekly off, N.H for a national holiday, O.P for off day present, and P.L or U.L for paid and unpaid leave. Overtime hours go in the box on the right. Where face checking is switched on, you pick a status and then photograph the employee. The face has to score fifty five per cent or better against their profile photo, though you may still mark through a failure. The Changes tab shows every edit, because each mark is stamped with who made it.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-13-attendance-lower.png" alt="Marking attendance — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-14">
+    <header class="ch-head">
+      <span class="slate">EM-14</span>
+      <h3>The muster roll</h3>
+      <span class="ch-time num">0:30</span>
+      <code class="route">/employee/muster</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-14-muster.png">
+        <source src="mp4/em-14.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Muster and choose the month.</li><li>Scroll across to the totals: PRESENT DAY, OT Hours, NH OT, W.OFF, SUN.OT, ABSENT, TOTAL PAID.</li><li>Reconcile anything that looks wrong before payroll, not after.</li><li>Agree the sheet with the branch before the run is raised.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>The Muster Roll is your whole month on one sheet. Scroll across, and the totals on the right are the numbers payroll actually pays on: present days, overtime hours, national holiday overtime, weekly offs, Sunday overtime, absent days and total paid days. This is the screen to check and agree before you run payroll, because after the run, these are the numbers everybody is paid against.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-14-muster-lower.png" alt="The muster roll — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-15">
+    <header class="ch-head">
+      <span class="slate">EM-15</span>
+      <h3>Leave</h3>
+      <span class="ch-time num">0:25</span>
+      <code class="route">/employee/leave</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-15-leave.png">
+        <source src="mp4/em-15.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Leave. Applications is the default tab.</li><li>Review the row: employee, type, dates, days, reason.</li><li><code>Approve</code> or <code>Reject</code> from the row — give a reason when rejecting.</li><li>Check the <code>Balances</code> tab to see the quota left.</li><li>Use <code>Apply for leave</code> to file on someone's behalf.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Leave has two tabs, Applications and Balances. An application shows the employee, the type, the from and to dates, the number of days, a status and the reason given. Approve or reject from the row, and the employee's balance moves the moment you do. Apply for leave lets you file one on somebody's behalf.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-16">
+    <header class="ch-head">
+      <span class="slate">EM-16</span>
+      <h3>Penalties and advances</h3>
+      <span class="ch-time num">0:29</span>
+      <code class="route">/employee/deductions</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-16-deductions.png">
+        <source src="mp4/em-16.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Penalties &amp; <code>Advances</code>.</li><li>Press <code>New Penalty</code>; set type, amount and deduction month.</li><li><code>Approve</code> it — one approver is enough here.</li><li>It shows as DEDUCTED once payroll picks it up.</li><li><code>Advances</code> live on the <code>Advances</code> tab: active while instalments run, then closed.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>This is money recovered through the payslip, in two tabs. A penalty is raised with New Penalty: you choose the type, the amount, and the month it should be deducted in. It is then approved, and shows as deducted once payroll picks it up. Advances sit on the other tab. They stay active while the instalments run, and close when the money is fully recovered.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-17">
+    <header class="ch-head">
+      <span class="slate">EM-17</span>
+      <h3>Expense claims</h3>
+      <span class="ch-time num">0:32</span>
+      <code class="route">/employee/expenses</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-17-expenses.png">
+        <source src="mp4/em-17.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Expenses.</li><li>Press <code>New Claim</code>, add lines and attach the bill.</li><li>Submit it for approval.</li><li>The approver may approve a lower figure than claimed.</li><li><code>Categories</code> controls what can be claimed under.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Expense claims move through draft, submitted, approved and paid. Each claim carries a number, the employee, a date, a title, the total claimed, the amount actually approved, and what has been paid. An approver may pass a smaller figure than the one claimed, and the bill stays attached to the claim. New Claim starts one, and the Categories tab controls what people are allowed to claim under.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-18">
+    <header class="ch-head">
+      <span class="slate">EM-18</span>
+      <h3>Contract workers</h3>
+      <span class="ch-time num">0:24</span>
+      <code class="route">/employee/contractors</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-18-contract-workers.png">
+        <source src="mp4/em-18.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Contract Workers.</li><li>Press <code>Record new terms</code>.</li><li>Enter the fee, allowances and T.D.S. terms.</li><li>Save — the previous terms stay on the record as history.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Contract staff are paid on terms rather than a salary. The list shows code, name, phone, monthly figure and status. Record new terms files a fresh set of terms as a new row. The earlier terms are kept, not overwritten, so you can always see what was agreed, and from when.</p>
+      </div>
+    </div>
+    
+  </article>
+</section>
+
+<section class="part">
+  <div class="part-rule">
+    <h2>Close the month</h2>
+    <span class="part-role">HR_HEAD</span>
+  </div>
+  
+  <article class="chapter" id="em-19">
+    <header class="ch-head">
+      <span class="slate">EM-19</span>
+      <h3>The payroll register</h3>
+      <span class="ch-time num">0:25</span>
+      <code class="route">/employee/payroll</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-19-payroll.png">
+        <source src="mp4/em-19.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Payroll.</li><li>Read the register: period, branch, run type, status, employees, and the money columns.</li><li>Press <code>New payroll run</code> for the next period.</li><li>Raise it for the month that has just ended.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>The payroll register. Each row is one run: the period, the branch, the run type, its status, how many employees it covered, and then gross, deductions, net pay, employer cost and C.T.C. New payroll run starts the next one. Payroll is normally raised for the month that has just finished.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-19b">
+    <header class="ch-head">
+      <span class="slate">EM-19B</span>
+      <h3>Inside a payroll run</h3>
+      <span class="ch-time num">0:39</span>
+      <code class="route">/employee/payroll/4</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-19b-payroll-run.png">
+        <source src="mp4/em-19b.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open a run from the register.</li><li>Check the Sheet: attendance, earnings, deductions, employer contributions, computed.</li><li><code>Approve</code> at L1, then at L2 — both are required.</li><li>Hand over from the tabs: <code>Payslips</code>, <code>FORM-II</code>, EPF, ESIC, <code>Export Excel</code>.</li><li><code>Audit</code> shows who did what on the run.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Inside a run you get the full sheet: every employee with their attendance, earnings, deductions, employer contributions and the computed result, column by column, from paid days and overtime hours through basic, dearness allowance, H.R.A, conveyance and mobile allowance. The tabs along the top are what you actually hand over: Payslips, FORM two, E.P.F, E.S.I.C, an audit trail, and Export Excel. A run is approved at two levels before the payslips are final.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-19b-payroll-run-lower.png" alt="Inside a payroll run — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+
+  <article class="chapter" id="em-20">
+    <header class="ch-head">
+      <span class="slate">EM-20</span>
+      <h3>Performance</h3>
+      <span class="ch-time num">0:25</span>
+      <code class="route">/employee/performance</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-20-performance.png">
+        <source src="mp4/em-20.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Performance.</li><li>Start on By branch: headcount, paid days, absent, OT hours.</li><li>Note the below-average and fully-marked flags.</li><li>Switch to By employee to drill into one person.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Performance answers two questions. By branch shows headcount, paid days, absences and overtime hours side by side, and flags branches below average and whether attendance was fully marked. By employee drills into one person. This is a scanning screen: it tells you where to look, not what to do.</p>
+      </div>
+    </div>
+    
+  </article>
+
+  <article class="chapter" id="em-21">
+    <header class="ch-head">
+      <span class="slate">EM-21</span>
+      <h3>Reports</h3>
+      <span class="ch-time num">0:31</span>
+      <code class="route">/employee/reports</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-21-reports.png">
+        <source src="mp4/em-21.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>Open Reports.</li><li>Choose a report and press <code>Run</code> to see it on screen.</li><li>Press <code>Download</code> for the spreadsheet.</li><li>Use this for anyone who needs the numbers outside the system.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Reports gives you the same data in a form you can send outside the system. Pick a report and press Run to see it on screen. Headcount here shows code, name, status, branch, department, designation, wage and pay category, date of joining, tenure, phone, U.A.N and E.S.I.C number. Download gives you the same thing as a spreadsheet.</p>
+      </div>
+    </div>
+    <figure class="media lower"><img src="shots/em-21-reports-lower.png" alt="Reports — lower part of the screen" loading="lazy"><figcaption>Further down the same screen</figcaption></figure>
+  </article>
+</section>
+
+<section class="part">
+  <div class="part-rule">
+    <h2>What the employee sees</h2>
+    <span class="part-role">EMPLOYEE</span>
+  </div>
+  
+  <article class="chapter" id="em-22">
+    <header class="ch-head">
+      <span class="slate">EM-22</span>
+      <h3>My HR — what the employee sees</h3>
+      <span class="ch-time num">0:34</span>
+      <code class="route">/employee/me</code>
+    </header>
+    <figure class="media">
+      <video controls preload="none" playsinline poster="shots/em-22-my-hr.png">
+        <source src="mp4/em-22.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="ch-body">
+      <div class="do">
+        <h4>Do this</h4>
+        <ol><li>An employee with a login lands on My HR.</li><li>They see only their own <code>Payslips</code>, Attendance, Leave and My details.</li><li>They can change their own password.</li><li>No other employee's data, no payroll and no settings are reachable from here.</li></ol>
+      </div>
+      <div class="said">
+        <h4>What the voiceover says</h4>
+        <p>Finally, this is what an ordinary employee sees when they sign in. My H.R gives them their own payslips, their own attendance, their own leave and their own details, and nothing else. No other employee, no payroll, no settings. They can change their own password here too. It is worth showing your staff this screen, because most of the questions they would otherwise bring to H.R are already answered on it.</p>
+      </div>
+    </div>
+    
+  </article>
+</section>
+
+  <section class="warn">
+    <h2>Things that will trip you up</h2>
+    <ul>
+      <li><b>Payroll runs and pay revisions need two approvals.</b> L1 then L2. There is no different-person rule, so the same login can clear both &mdash; but both must happen before payslips are final.</li>
+      <li><b>A penalty needs only one approver.</b> Do not wait for a second signature. The two-person rule belongs to payments in the Accounting module, not here.</li>
+      <li><b>Payroll settings fall back key by key.</b> A branch value overrides the organisation for that one key and nothing else. Set the organisation first, then override only what genuinely differs.</li>
+      <li><b>Set the employee-code prefixes before you add anybody.</b> The code is built from the organisation prefix plus the branch short code. Miss a segment and it silently reverts to the old plain format.</li>
+      <li><b>Check the muster before the payroll run, not after.</b> The totals on the right of the Muster Roll are what everybody is paid against.</li>
+      <li><b>An employee login reaches My HR and nothing else.</b> Their own payslips, attendance, leave and details. No other employee, no payroll, no settings.</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    <span>Employee Management &middot; 23 chapters &middot; 12:04</span>
+    <span>Captured from the running module</span>
+  </footer>
+</div>

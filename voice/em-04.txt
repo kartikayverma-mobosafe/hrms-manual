@@ -1,0 +1,1 @@
+Basic Master holds your base wage rates, one row per designation and category. You set basic per day, dearness allowance per day, the monthly figure and H.R.A. Payroll reads these rates directly, so a wrong number here becomes a wrong payslip for everybody on that designation. New Rate adds a row.

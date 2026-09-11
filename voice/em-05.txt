@@ -1,0 +1,1 @@
+Leave Types decides what your staff can actually apply for. Each type has a name, a short code, an annual quota, whether it is paid, and whether the balance carries forward into next year. Casual Leave with a quota of twelve is a typical row. Add more with New Type.

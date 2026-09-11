@@ -1,0 +1,1 @@
+Before you add anybody, the system needs to know the shape of your organisation. Departments is the first master. Each row carries a name, a code, a description and a display order. Add one with New Department. Designations, Grades and Employment Types work exactly the same way, so once you have done this screen, you have done all four.

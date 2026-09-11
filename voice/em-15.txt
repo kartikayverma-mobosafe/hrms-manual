@@ -1,0 +1,1 @@
+Leave has two tabs, Applications and Balances. An application shows the employee, the type, the from and to dates, the number of days, a status and the reason given. Approve or reject from the row, and the employee's balance moves the moment you do. Apply for leave lets you file one on somebody's behalf.

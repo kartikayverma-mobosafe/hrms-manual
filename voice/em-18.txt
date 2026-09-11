@@ -1,0 +1,1 @@
+Contract staff are paid on terms rather than a salary. The list shows code, name, phone, monthly figure and status. Record new terms files a fresh set of terms as a new row. The earlier terms are kept, not overwritten, so you can always see what was agreed, and from when.

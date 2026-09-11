@@ -1,0 +1,1 @@
+The payroll register. Each row is one run: the period, the branch, the run type, its status, how many employees it covered, and then gross, deductions, net pay, employer cost and C.T.C. New payroll run starts the next one. Payroll is normally raised for the month that has just finished.

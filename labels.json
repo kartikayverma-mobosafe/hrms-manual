@@ -1,0 +1,531 @@
+{
+  "em-01": {
+    "h1": [
+      "Employee Management"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-02": {
+    "h1": [
+      "Departments"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "New Department"
+    ],
+    "tabs": [],
+    "ths": [
+      "Name",
+      "Code",
+      "Description",
+      "Order"
+    ],
+    "labels": [
+      "Show disabled"
+    ],
+    "statusPills": []
+  },
+  "em-03": {
+    "h1": [
+      "Employee Codes"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Discard",
+      "Save Code Format"
+    ],
+    "tabs": [],
+    "ths": [
+      "Branch",
+      "Short code",
+      "Codes there start with",
+      "Next code"
+    ],
+    "labels": [
+      "PREFIX",
+      "NUMBER WIDTH"
+    ],
+    "statusPills": []
+  },
+  "em-04": {
+    "h1": [
+      "Basic Master"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "New Rate"
+    ],
+    "tabs": [],
+    "ths": [
+      "Designation",
+      "Category",
+      "Basic / day",
+      "DA / day",
+      "Per month",
+      "HRA"
+    ],
+    "labels": [
+      "Show disabled"
+    ],
+    "statusPills": []
+  },
+  "em-05": {
+    "h1": [
+      "Leave Types"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "New Type"
+    ],
+    "tabs": [],
+    "ths": [
+      "Name",
+      "Code",
+      "Annual quota",
+      "Paid",
+      "Carry forward"
+    ],
+    "labels": [
+      "Show disabled"
+    ],
+    "statusPills": [
+      "Paid"
+    ]
+  },
+  "em-05b": {
+    "h1": [
+      "Holidays"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "New Holiday"
+    ],
+    "tabs": [],
+    "ths": [
+      "Date",
+      "Name",
+      "Type"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-06": {
+    "h1": [
+      "Payroll Settings"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Earnings",
+      "Overtime",
+      "Provident Fund",
+      "ESIC",
+      "PT & LWF",
+      "Other",
+      "Reset",
+      "Discard",
+      "Save settings"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-07": {
+    "h1": [
+      "Face Match"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Reset",
+      "Save Settings"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-08": {
+    "h1": [
+      "Employees"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "Add via Masters",
+      "Columns"
+    ],
+    "tabs": [],
+    "ths": [
+      "SR NO",
+      "PHOTO",
+      "CODE",
+      "NAME",
+      "DEPARTMENT",
+      "PHONE",
+      "UAN",
+      "CATEGORY",
+      "MONTHLY",
+      "LOGIN",
+      "STATUS"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-09": {
+    "h1": [
+      "New Employee"
+    ],
+    "h2": [
+      "Identity",
+      "Contact Information",
+      "Employment & Role",
+      "Statutory Identifiers",
+      "Bank Account Details",
+      "Wage & Shift Policy"
+    ],
+    "h3": [],
+    "buttons": [
+      "Cancel",
+      "Create Employee"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [
+      "EMPLOYEE CODE *",
+      "FULL NAME *",
+      "FATHER'S NAME",
+      "DATE OF BIRTH",
+      "PHONE NUMBER",
+      "EMAIL ADDRESS",
+      "EMERGENCY CONTACT NAME",
+      "EMERGENCY PHONE",
+      "RESIDENTIAL ADDRESS",
+      "CITY",
+      "STATE",
+      "PIN CODE",
+      "DATE OF JOINING",
+      "DATE OF LEAVING",
+      "UAN",
+      "ESIC NUMBER",
+      "PAN",
+      "AADHAAR NUMBER",
+      "PF REGISTRATION",
+      "ESI REGISTRATION",
+      "ACCOUNT NUMBER",
+      "IFSC CODE"
+    ],
+    "statusPills": []
+  },
+  "em-10": {
+    "h1": [
+      "AARAV SHARMA"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Edit",
+      "Deactivate",
+      "Profile",
+      "Salary",
+      "Payslips",
+      "Leave",
+      "Attendance",
+      "Issue a new password",
+      "Suspend"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-12": {
+    "h1": [
+      "Employee Master"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Download Template",
+      "New Employee"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-13": {
+    "h1": [
+      "Mark Attendance"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "Roster",
+      "Changes",
+      "Mark all present",
+      "Clear",
+      "Saved",
+      "HALF",
+      "WO",
+      "NH",
+      "OP",
+      "PL",
+      "UL"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [
+      "DATE",
+      "OT"
+    ],
+    "statusPills": []
+  },
+  "em-14": {
+    "h1": [
+      "Muster Roll"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh"
+    ],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-15": {
+    "h1": [
+      "Leave"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Apply for leave",
+      "Applications",
+      "Balances"
+    ],
+    "tabs": [],
+    "ths": [
+      "EMPLOYEE",
+      "TYPE",
+      "FROM",
+      "TO",
+      "DAYS",
+      "STATUS",
+      "REASON"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-16": {
+    "h1": [
+      "Penalties & Advances"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "New Penalty",
+      "Penalties",
+      "Advances"
+    ],
+    "tabs": [],
+    "ths": [
+      "DATE",
+      "EMPLOYEE",
+      "TYPE",
+      "DESCRIPTION",
+      "AMOUNT",
+      "DEDUCTION MONTH",
+      "STATUS"
+    ],
+    "labels": [],
+    "statusPills": [
+      "Approved"
+    ]
+  },
+  "em-17": {
+    "h1": [
+      "Expenses"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "New Claim",
+      "Claims",
+      "Categories"
+    ],
+    "tabs": [],
+    "ths": [
+      "CLAIM",
+      "EMPLOYEE",
+      "DATE",
+      "TITLE",
+      "TOTAL",
+      "APPROVED",
+      "PAID",
+      "STATUS"
+    ],
+    "labels": [],
+    "statusPills": [
+      "APPROVED",
+      "PAID",
+      "Paid"
+    ]
+  },
+  "em-18": {
+    "h1": [
+      "Contract Workers"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Record new terms"
+    ],
+    "tabs": [],
+    "ths": [
+      "CODE",
+      "NAME",
+      "PHONE",
+      "MONTHLY SALARY",
+      "STATUS"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-19": {
+    "h1": [],
+    "h2": [],
+    "h3": [],
+    "buttons": [],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-19b": {
+    "h1": [
+      "September 2026"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Sheet",
+      "Payslips (79)",
+      "FORM-II",
+      "EPF",
+      "ESIC",
+      "Audit",
+      "Export Excel"
+    ],
+    "tabs": [],
+    "ths": [
+      "Code",
+      "Employee",
+      "ATTENDANCE",
+      "EARNINGS",
+      "DEDUCTIONS",
+      "EMPLOYER CONTRIBUTIONS",
+      "COMPUTED",
+      "Paid Days",
+      "OT Hours",
+      "Sunday OT Hrs",
+      "NH OT Hrs",
+      "Basic",
+      "Dearness Allowance",
+      "House Rent Allowance",
+      "Conveyance Allowance",
+      "Mobile Allowance"
+    ],
+    "labels": [],
+    "statusPills": [
+      "Paid"
+    ]
+  },
+  "em-20": {
+    "h1": [
+      "Performance"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Refresh",
+      "By branch",
+      "By employee"
+    ],
+    "tabs": [],
+    "ths": [
+      "Branch",
+      "Headcount",
+      "Paid days",
+      "Absent",
+      "OT hours",
+      "Below average",
+      "Fully marked",
+      "Attendance"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-21": {
+    "h1": [
+      "Reports"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [
+      "Run",
+      "Download"
+    ],
+    "tabs": [],
+    "ths": [
+      "Sl No",
+      "Code",
+      "Name",
+      "Status",
+      "Branch",
+      "Department",
+      "Designation",
+      "Wage Category",
+      "Pay Category",
+      "Date of Joining",
+      "Tenure (months)",
+      "Phone",
+      "UAN",
+      "ESIC No"
+    ],
+    "labels": [],
+    "statusPills": []
+  },
+  "em-22": {
+    "h1": [
+      "My HR"
+    ],
+    "h2": [],
+    "h3": [],
+    "buttons": [],
+    "tabs": [],
+    "ths": [],
+    "labels": [],
+    "statusPills": []
+  }
+}

@@ -1,0 +1,1 @@
+Face Match lets attendance be verified against a stored photograph. The threshold decides how close a match has to be before the system accepts it. Set it too loose and you will get false accepts, so the screen warns you when the value is risky. Save with Save Face Match Settings.

@@ -1,0 +1,23 @@
+# The map from every real employee name to the fake one that replaced it.
+# This is the one file that can undo the redaction, so it never leaves the
+# machine that built the manual. Everything else here is already anonymous.
+redaction-map.json
+
+# A live signed-in session for the HRMS.
+.auth.json
+
+# Captures taken before the redaction engine existed. Nothing references them.
+shots/00-login.png
+shots/01-module-selection.png
+shots/em-02-masters-index.png
+shots/console-*.log
+shots/page-*.yml
+
+# Environments
+node_modules/
+tts-venv/
+
+# Scratch
+*.log
+.DS_Store
+Thumbs.db

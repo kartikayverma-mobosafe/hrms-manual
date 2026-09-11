@@ -1,0 +1,132 @@
+{
+  "source": "schema/changelog-24.55.0-hrms-role-set.xml, plus 24.52.0 and 24.56.0 for the self-service rung. Permission counts verified against the live role grants.",
+  "note": "Seven rungs, each the smallest set that lets somebody finish their own job. Nothing stops one person holding more than one role — that is a decision for whoever assigns them.",
+  "roles": [
+    {
+      "name": "HRMS_EMPLOYEE_SELF",
+      "count": 1,
+      "what": "The login an employee is handed for their own record. Reaches My HR and nothing else.",
+      "can": [
+        "Their own payslips, attendance, leave balance and details, through /hrms/me"
+      ],
+      "cannot": [
+        "See any other employee, anywhere in the module",
+        "Apply for leave or submit a claim through the main screens — those endpoints are organisation-wide, so an employee holding them would see every colleague's leave and every colleague's claims. They are deliberately withheld."
+      ],
+      "watch": "The role is called HRMS_EMPLOYEE_SELF, not EMPLOYEE. A role named plainly EMPLOYEE collided with an existing one, and every workforce login issued silently received all 53 permissions instead of one."
+    },
+    {
+      "name": "ATTENDANCE_TAKER",
+      "count": 4,
+      "what": "Marks the daily attendance of the branch or office they are posted to.",
+      "can": [
+        "See the employee list — the marking screen is a list of employees",
+        "View and mark attendance",
+        "See their own record, because whoever marks the roster is also on it"
+      ],
+      "cannot": [
+        "See what anybody is paid",
+        "Approve anything"
+      ]
+    },
+    {
+      "name": "BRANCH_SUPERVISOR",
+      "count": 16,
+      "what": "Runs a branch day to day: attendance, leave, expense claims and penalties for their own people.",
+      "can": [
+        "Everything the attendance taker can",
+        "Approve leave",
+        "Raise a penalty",
+        "Pass an expense claim",
+        "Read departments, advances, contract workers and performance"
+      ],
+      "cannot": [
+        "See salary",
+        "Correct attendance on a day payroll has already consumed — that changes a figure somebody has been paid against, so it is an HR_ADMIN action"
+      ]
+    },
+    {
+      "name": "HR_MANAGER",
+      "count": 37,
+      "what": "Runs the module: employee master, wage master, statutory returns and payroll processing.",
+      "can": [
+        "Create and edit employees",
+        "Manage departments, designations, grades and employment types",
+        "View salary and raise a pay revision",
+        "Process the monthly payroll run",
+        "Approve leave and expense claims, raise penalties and advances",
+        "Manage contract workers",
+        "Generate EPF, ESIC and Form-II returns"
+      ],
+      "cannot": [
+        "Approve a payroll run at either level — processing and approving must be two different acts, and this is the processing one",
+        "Sign the pay revision it raised, for the same reason",
+        "Delete an employee, or see unmasked identity numbers"
+      ]
+    },
+    {
+      "name": "HR_ADMIN",
+      "count": 46,
+      "what": "First signature: approves payroll runs and pay revisions at level 1, and corrects locked attendance.",
+      "can": [
+        "Everything HR_MANAGER can",
+        "Approve a payroll run at L1, and a pay revision at L1",
+        "Override attendance on a locked day",
+        "Delete an employee record",
+        "See unmasked identity numbers (UAN, ESIC, PAN, Aadhaar)",
+        "Approve penalties, rate performance, read the payroll journal",
+        "Mark a released run paid, or cancel one"
+      ],
+      "cannot": [
+        "Release a run — that is the second signature, and it belongs to HR_HEAD"
+      ]
+    },
+    {
+      "name": "HR_HEAD",
+      "count": 27,
+      "what": "Second signature: releases payroll runs and pay revisions at level 2.",
+      "can": [
+        "Approve a payroll run at L2, and a pay revision at L2 — the approvals that release either",
+        "Read the figures, the register behind them and the ledger they post to",
+        "Approve leave, expense claims and penalties",
+        "See unmasked identity numbers"
+      ],
+      "cannot": [
+        "Process payroll — this role cannot compute the run it releases",
+        "Create or edit employees, or touch the masters"
+      ]
+    },
+    {
+      "name": "HEAD_OFFICE",
+      "count": 23,
+      "what": "Head office and accounts: payroll settings, the wage master and the payroll ledger.",
+      "can": [
+        "Manage payroll settings — PF and ESIC rates, professional tax, the duty base",
+        "Manage the wage master every employee's basic is looked up in",
+        "Manage designations, grades and employment types",
+        "Read widely across the module, because a rate cannot be set sensibly without seeing what it does"
+      ],
+      "cannot": [
+        "Sign at either level. Somebody who both sets the rates and releases the run should be given HR_HEAD as well, deliberately, rather than this role quietly including it."
+      ]
+    }
+  ],
+  "platform": {
+    "names": "SUPER_ADMIN, FLEET_ADMIN",
+    "what": "The platform administrators, who already administer every other module. They hold the whole vocabulary including both signatures — somebody has to be able to unstick a tenant that has assigned its roles badly."
+  },
+  "rules": [
+    {
+      "title": "Two signatures, and they are different roles",
+      "body": "A payroll run and a pay revision both need L1 then L2. That is why the top of the ladder is split: HR_MANAGER computes, HR_ADMIN signs first, HR_HEAD signs second. A run one person can compute, approve and release is not controlled at all."
+    },
+    {
+      "title": "But there is no different-person rule",
+      "body": "Nothing stops one login holding HR_ADMIN and HR_HEAD and clearing both levels. The run records who signed each level, so the trail shows when they were the same person. If you want two people, assign two people."
+    },
+    {
+      "title": "A penalty needs only one approver",
+      "body": "hrms:penalty:approve is the whole requirement. Do not wait for a second signature — the two-person rule belongs to payments in the Accounting module, not here."
+    }
+  ]
+}

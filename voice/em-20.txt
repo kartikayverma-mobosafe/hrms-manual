@@ -1,0 +1,1 @@
+Performance answers two questions. By branch shows headcount, paid days, absences and overtime hours side by side, and flags branches below average and whether attendance was fully marked. By employee drills into one person. This is a scanning screen: it tells you where to look, not what to do.

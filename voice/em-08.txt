@@ -1,0 +1,1 @@
+This is the employee master, everybody on your rolls. The table carries code, name, department, phone, U.A.N, category, monthly wage, whether the person has a login, and status. Search by name or code, narrow by status, category or department, and use Columns to choose what you want to see. Watch the Login column — that tells you at a glance who can actually sign in.

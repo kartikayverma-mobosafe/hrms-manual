@@ -1,0 +1,467 @@
+[
+  {
+    "id": "em-01",
+    "name": "workspace",
+    "url": "/employee",
+    "wait": "Go to",
+    "ok": true,
+    "shots": [
+      "em-01-workspace.png",
+      "em-01-workspace-lower.png"
+    ],
+    "video": "em-01-workspace.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "BELLARY",
+        "JAJPUR"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-02",
+    "name": "departments",
+    "url": "/employee/masters/departments",
+    "wait": "Departments",
+    "ok": true,
+    "shots": [
+      "em-02-departments.png"
+    ],
+    "video": "em-02-departments.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-03",
+    "name": "employee-codes",
+    "url": "/employee/masters/codes",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-03-employee-codes.png",
+      "em-03-employee-codes-lower.png"
+    ],
+    "video": "em-03-employee-codes.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "BELLARY",
+        "JAJPUR",
+        "JAMSHEDPUR"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-04",
+    "name": "basic-master",
+    "url": "/employee/masters/basic",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-04-basic-master.png"
+    ],
+    "video": "em-04-basic-master.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-05",
+    "name": "leave-types",
+    "url": "/employee/masters/leave-types",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-05-leave-types.png"
+    ],
+    "video": "em-05-leave-types.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-05b",
+    "name": "holidays",
+    "url": "/employee/masters/holidays",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-05b-holidays.png"
+    ],
+    "video": "em-05b-holidays.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-06",
+    "name": "payroll-settings",
+    "url": "/employee/salary-setup",
+    "wait": "Payroll Settings",
+    "ok": true,
+    "shots": [
+      "em-06-payroll-settings.png"
+    ],
+    "video": "em-06-payroll-settings.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-07",
+    "name": "face-match",
+    "url": "/employee/masters/face-match",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-07-face-match.png"
+    ],
+    "video": "em-07-face-match.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-08",
+    "name": "employee-list",
+    "url": "/employee/employees",
+    "wait": "Employees",
+    "ok": true,
+    "shots": [
+      "em-08-employee-list.png",
+      "em-08-employee-list-lower.png"
+    ],
+    "video": "em-08-employee-list.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-09",
+    "name": "employee-new",
+    "url": "/employee/employees/new",
+    "wait": "Save",
+    "ok": true,
+    "shots": [
+      "em-09-employee-new.png",
+      "em-09-employee-new-lower.png"
+    ],
+    "video": "em-09-employee-new.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-10",
+    "name": "employee-detail",
+    "url": "/employee/employees/53",
+    "wait": "Profile",
+    "ok": true,
+    "shots": [
+      "em-10-employee-detail.png",
+      "em-10-employee-detail-lower.png"
+    ],
+    "video": "em-10-employee-detail.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-12",
+    "name": "employee-master",
+    "url": "/employee/masters/employees",
+    "wait": "Masters",
+    "ok": true,
+    "shots": [
+      "em-12-employee-master.png"
+    ],
+    "video": "em-12-employee-master.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-13",
+    "name": "attendance",
+    "url": "/employee/attendance",
+    "wait": "Attendance",
+    "ok": true,
+    "shots": [
+      "em-13-attendance.png",
+      "em-13-attendance-lower.png"
+    ],
+    "video": "em-13-attendance.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-14",
+    "name": "muster",
+    "url": "/employee/muster",
+    "wait": "Muster",
+    "ok": true,
+    "shots": [
+      "em-14-muster.png",
+      "em-14-muster-lower.png"
+    ],
+    "video": "em-14-muster.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "TOTAL"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-15",
+    "name": "leave",
+    "url": "/employee/leave",
+    "wait": "Leave",
+    "ok": true,
+    "shots": [
+      "em-15-leave.png"
+    ],
+    "video": "em-15-leave.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-16",
+    "name": "deductions",
+    "url": "/employee/deductions",
+    "wait": "Penalties",
+    "ok": true,
+    "shots": [
+      "em-16-deductions.png"
+    ],
+    "video": "em-16-deductions.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-17",
+    "name": "expenses",
+    "url": "/employee/expenses",
+    "wait": "Expenses",
+    "ok": true,
+    "shots": [
+      "em-17-expenses.png"
+    ],
+    "video": "em-17-expenses.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-18",
+    "name": "contract-workers",
+    "url": "/employee/contractors",
+    "wait": "Contract Workers",
+    "ok": true,
+    "shots": [
+      "em-18-contract-workers.png"
+    ],
+    "video": "em-18-contract-workers.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-19",
+    "name": "payroll",
+    "url": "/employee/payroll",
+    "wait": "Payroll",
+    "ok": true,
+    "shots": [
+      "em-19-payroll.png"
+    ],
+    "video": "em-19-payroll.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "JAJPUR"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-19b",
+    "name": "payroll-run",
+    "url": "/employee/payroll/4",
+    "wait": "Payroll",
+    "ok": true,
+    "shots": [
+      "em-19b-payroll-run.png",
+      "em-19b-payroll-run-lower.png"
+    ],
+    "video": "em-19b-payroll-run.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-20",
+    "name": "performance",
+    "url": "/employee/performance",
+    "wait": "Performance",
+    "ok": true,
+    "shots": [
+      "em-20-performance.png"
+    ],
+    "video": "em-20-performance.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "BELLARY",
+        "JAJPUR"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-21",
+    "name": "reports",
+    "url": "/employee/reports",
+    "wait": "Reports",
+    "ok": true,
+    "shots": [
+      "em-21-reports.png",
+      "em-21-reports-lower.png"
+    ],
+    "video": "em-21-reports.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [
+        "ACTIVE",
+        "REGULAR",
+        "BELLARY",
+        "JAJPUR"
+      ],
+      "leaks": 0
+    }
+  },
+  {
+    "id": "em-22",
+    "name": "my-hr",
+    "url": "/employee/me",
+    "wait": "My HR",
+    "ok": true,
+    "shots": [
+      "em-22-my-hr.png"
+    ],
+    "video": "em-22-my-hr.webm",
+    "audit": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "survived": [],
+      "singles": [],
+      "leaks": 0
+    }
+  }
+]

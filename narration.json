@@ -1,0 +1,289 @@
+[
+  {
+    "id": "em-01",
+    "title": "The workspace",
+    "role": "Any HR role",
+    "say": "Welcome to Employee Management. Everything about your staff sits behind this one door. The line under the title shows eighty five active employees of eighty five on record. Across the top you get your monthly wage bill, how many people are marked today, and anything awaiting your action. Below that sits the latest payroll, September twenty twenty six, already paid, with gross, deductions, net paid, employer cost and C.T.C. The Go to cards, and the menu down the left, take you to every other part of the module.",
+    "steps": [
+      "Sign in, then choose Employee Management on the module screen.",
+      "Read the line under the title — that is your live headcount.",
+      "Scan the four tiles: active employees, monthly wage bill, marked today, awaiting action.",
+      "Use the Go to cards or the left sidebar to reach any screen in the module."
+    ]
+  },
+  {
+    "id": "em-02",
+    "title": "Departments, designations, grades",
+    "role": "HR_ADMIN",
+    "say": "Before you add anybody, the system needs to know the shape of your organisation. Departments is the first master. Each row carries a name, a code, a description and a display order. Add one with New Department. Designations, Grades and Employment Types work exactly the same way, so once you have done this screen, you have done all four.",
+    "steps": [
+      "Go to Masters, then Departments.",
+      "Press New Department and fill name, code, description and order.",
+      "Repeat on the Designations, Grades and Employment Types tabs — same pattern.",
+      "Use Refresh if a row you just added has not appeared."
+    ]
+  },
+  {
+    "id": "em-03",
+    "title": "Employee codes",
+    "role": "HR_ADMIN",
+    "say": "Employee codes are built by the system, not typed by you. Each branch gets a short code, and the table shows you exactly what codes there will start with, and what the next code will be. A Bengaluru employee comes out as M.D.M dash B.L dash zero zero zero zero one. Set this up before you add people, and press Save Code Format when you are done. If a branch has no short code, the code quietly falls back to the older plain format.",
+    "steps": [
+      "Go to Masters, then Employee Codes.",
+      "Give each branch a short code; the table previews what codes there start with and the next code.",
+      "Press Save Code Format.",
+      "Do this before adding employees — a missing short code produces the old plain format instead."
+    ]
+  },
+  {
+    "id": "em-04",
+    "title": "Basic master — wage rates",
+    "role": "HR_ADMIN",
+    "say": "Basic Master holds your base wage rates, one row per designation and category. You set basic per day, dearness allowance per day, the monthly figure and H.R.A. Payroll reads these rates directly, so a wrong number here becomes a wrong payslip for everybody on that designation. New Rate adds a row.",
+    "steps": [
+      "Go to Masters, then Basic Master.",
+      "Press New Rate and pick the designation and category.",
+      "Enter basic per day, D.A. per day, the per-month figure and H.R.A.",
+      "Check the figures — payroll computes straight off these rates."
+    ]
+  },
+  {
+    "id": "em-05",
+    "title": "Leave types",
+    "role": "HR_ADMIN",
+    "say": "Leave Types decides what your staff can actually apply for. Each type has a name, a short code, an annual quota, whether it is paid, and whether the balance carries forward into next year. Casual Leave with a quota of twelve is a typical row. Add more with New Type.",
+    "steps": [
+      "Go to Masters, then Leave Types.",
+      "Press New Type.",
+      "Set name, code, annual quota, paid or unpaid, and carry forward.",
+      "These are the only types that will appear when somebody applies for leave."
+    ]
+  },
+  {
+    "id": "em-05b",
+    "title": "Holidays",
+    "role": "HR_ADMIN",
+    "say": "Holidays is the company calendar, the days everybody is off. Each entry has a date, a name and a type. Both the muster and payroll read this calendar, so load the full year before you run the first payroll. National holidays matter twice over here, because overtime worked on them is paid at a different rate.",
+    "steps": [
+      "Go to Masters, then Holidays.",
+      "Press New Holiday and enter the date, name and type.",
+      "Load the whole year before the first payroll run.",
+      "Mark national holidays correctly — N.H. overtime is paid at its own rate."
+    ]
+  },
+  {
+    "id": "em-06",
+    "title": "Payroll settings",
+    "role": "HR_ADMIN",
+    "say": "Payroll Settings is where the statutory side lives, split across tabs: Earnings, Overtime, Provident Fund, E.S.I.C, P.T and L.W.F, and Other. The important thing to understand here is scope. You set these once for the organisation, and where a branch is different, you set only that one key on the branch. Everything you do not override keeps falling back to the organisation value. Press Save settings to apply.",
+    "steps": [
+      "Open Payroll Settings from the sidebar.",
+      "Work through the tabs: Earnings, Overtime, Provident Fund, ESIC, PT & LWF, Other.",
+      "Set the organisation values first.",
+      "For a branch that differs, change only the keys that differ — the rest keep falling back.",
+      "Press Save settings."
+    ]
+  },
+  {
+    "id": "em-07",
+    "title": "Face match",
+    "role": "HR_ADMIN",
+    "say": "Face Match lets attendance be verified against a stored photograph. The threshold decides how close a match has to be before the system accepts it. Set it too loose and you will get false accepts, so the screen warns you when the value is risky. Save with Save Face Match Settings.",
+    "steps": [
+      "Go to Masters, then Face Match.",
+      "Set the match threshold.",
+      "Read the warning if the value is loose — a low threshold accepts the wrong face.",
+      "Press Save Face Match Settings."
+    ]
+  },
+  {
+    "id": "em-08",
+    "title": "The employee list",
+    "role": "HR_MANAGER",
+    "say": "This is the employee master, everybody on your rolls. The table carries code, name, department, phone, U.A.N, category, monthly wage, whether the person has a login, and status. Search by name or code, narrow by status, category or department, and use Columns to choose what you want to see. Watch the Login column — that tells you at a glance who can actually sign in.",
+    "steps": [
+      "Open Employees from the sidebar.",
+      "Search by name or code, or filter by status, category or department.",
+      "Press Columns to show or hide fields.",
+      "Use the Login column to see who has a working sign-in."
+    ]
+  },
+  {
+    "id": "em-09",
+    "title": "Add an employee",
+    "role": "HR_MANAGER",
+    "say": "Adding a person. The employee code is filled in for you, here M.D.M zero zero zero eight five, and the screen tells you which branch it detected from that prefix. Work down the sections in order: Identity, Contact Information, Employment and Role, and the statutory and document blocks below. Father's name is worth filling in, because it prints on the FORM two wage register. When everything is in, press Create Employee.",
+    "steps": [
+      "From Masters ▸ Employee Master press New Employee.",
+      "Check the auto-filled employee code and the branch it reports detecting.",
+      "Fill Identity, then Contact Information, then Employment & Role.",
+      "Complete the statutory and document sections below.",
+      "Press Create Employee."
+    ]
+  },
+  {
+    "id": "em-10",
+    "title": "One employee's record",
+    "role": "HR_MANAGER",
+    "say": "One person, with everything about them in five tabs: Profile, Salary, Payslips, Leave and Attendance. Along the top you can edit the record, deactivate or suspend the person, upload their documents, and issue a new password if they have a login. Pay is not edited casually here. A change to salary is raised as a revision, and then approved at two levels, L one and L two, before it takes effect.",
+    "steps": [
+      "Click any row in the employee list.",
+      "Move through the tabs: Profile, Salary, Payslips, Leave, Attendance.",
+      "Use Edit for ordinary corrections; Upload for documents.",
+      "Issue a new password if the person has a login.",
+      "A salary change is raised as a revision and needs L1 then L2 approval."
+    ]
+  },
+  {
+    "id": "em-12",
+    "title": "Excel import",
+    "role": "HR_ADMIN",
+    "say": "For a new branch you are not going to type two hundred people by hand. Employee Master, under Masters, gives you Download Template. Fill the sheet, upload it, and read the preview the system shows you before committing anything. Rows with problems are listed for you, so you fix the sheet rather than hunting through the system afterwards.",
+    "steps": [
+      "Go to Masters, then Employee Master.",
+      "Press Download Template.",
+      "Fill the sheet, keeping the column headings exactly as given.",
+      "Upload it and read the preview: rows to add, and rows to fix.",
+      "Commit only once the preview is clean."
+    ]
+  },
+  {
+    "id": "em-13",
+    "title": "Marking attendance",
+    "role": "ATTENDANCE_TAKER",
+    "say": "Marking a day. Pick your date and, if you want, narrow to a department. The tiles tell you where you stand: on roster, saved, present, and still unmarked. Press Mark all present, then correct only the exceptions with the status buttons on each row. P for present, A for absent, HALF for a half day, W.O for a weekly off, N.H for a national holiday, O.P for off day present, and P.L or U.L for paid and unpaid leave. Overtime hours go in the box on the right. Where face checking is switched on, you pick a status and then photograph the employee. The face has to score fifty five per cent or better against their profile photo, though you may still mark through a failure. The Changes tab shows every edit, because each mark is stamped with who made it.",
+    "steps": [
+      "Open Attendance and set the date; narrow by department if you want.",
+      "Check the tiles: on roster, saved, present, unmarked.",
+      "Press Mark all present, then fix only the exceptions.",
+      "Statuses: P present, A absent, HALF half day, WO weekly off, NH national holiday, OP off-day present, PL paid leave, UL unpaid leave.",
+      "Enter overtime hours in the OT box on the row.",
+      "With face check on, pick a status then photograph the person — 55% or better against their profile photo; you may mark through a failure.",
+      "The Changes tab shows every edit, stamped with who made it."
+    ]
+  },
+  {
+    "id": "em-14",
+    "title": "The muster roll",
+    "role": "BRANCH_SUPERVISOR",
+    "say": "The Muster Roll is your whole month on one sheet. Scroll across, and the totals on the right are the numbers payroll actually pays on: present days, overtime hours, national holiday overtime, weekly offs, Sunday overtime, absent days and total paid days. This is the screen to check and agree before you run payroll, because after the run, these are the numbers everybody is paid against.",
+    "steps": [
+      "Open Muster and choose the month.",
+      "Scroll across to the totals: PRESENT DAY, OT Hours, NH OT, W.OFF, SUN.OT, ABSENT, TOTAL PAID.",
+      "Reconcile anything that looks wrong before payroll, not after.",
+      "Agree the sheet with the branch before the run is raised."
+    ]
+  },
+  {
+    "id": "em-15",
+    "title": "Leave",
+    "role": "BRANCH_SUPERVISOR",
+    "say": "Leave has two tabs, Applications and Balances. An application shows the employee, the type, the from and to dates, the number of days, a status and the reason given. Approve or reject from the row, and the employee's balance moves the moment you do. Apply for leave lets you file one on somebody's behalf.",
+    "steps": [
+      "Open Leave. Applications is the default tab.",
+      "Review the row: employee, type, dates, days, reason.",
+      "Approve or Reject from the row — give a reason when rejecting.",
+      "Check the Balances tab to see the quota left.",
+      "Use Apply for leave to file on someone's behalf."
+    ]
+  },
+  {
+    "id": "em-16",
+    "title": "Penalties and advances",
+    "role": "HR_MANAGER",
+    "say": "This is money recovered through the payslip, in two tabs. A penalty is raised with New Penalty: you choose the type, the amount, and the month it should be deducted in. It is then approved, and shows as deducted once payroll picks it up. Advances sit on the other tab. They stay active while the instalments run, and close when the money is fully recovered.",
+    "steps": [
+      "Open Penalties & Advances.",
+      "Press New Penalty; set type, amount and deduction month.",
+      "Approve it — one approver is enough here.",
+      "It shows as DEDUCTED once payroll picks it up.",
+      "Advances live on the Advances tab: active while instalments run, then closed."
+    ]
+  },
+  {
+    "id": "em-17",
+    "title": "Expense claims",
+    "role": "HR_MANAGER",
+    "say": "Expense claims move through draft, submitted, approved and paid. Each claim carries a number, the employee, a date, a title, the total claimed, the amount actually approved, and what has been paid. An approver may pass a smaller figure than the one claimed, and the bill stays attached to the claim. New Claim starts one, and the Categories tab controls what people are allowed to claim under.",
+    "steps": [
+      "Open Expenses.",
+      "Press New Claim, add lines and attach the bill.",
+      "Submit it for approval.",
+      "The approver may approve a lower figure than claimed.",
+      "Categories controls what can be claimed under."
+    ]
+  },
+  {
+    "id": "em-18",
+    "title": "Contract workers",
+    "role": "HR_MANAGER",
+    "say": "Contract staff are paid on terms rather than a salary. The list shows code, name, phone, monthly figure and status. Record new terms files a fresh set of terms as a new row. The earlier terms are kept, not overwritten, so you can always see what was agreed, and from when.",
+    "steps": [
+      "Open Contract Workers.",
+      "Press Record new terms.",
+      "Enter the fee, allowances and T.D.S. terms.",
+      "Save — the previous terms stay on the record as history."
+    ]
+  },
+  {
+    "id": "em-19",
+    "title": "The payroll register",
+    "role": "HR_HEAD",
+    "say": "The payroll register. Each row is one run: the period, the branch, the run type, its status, how many employees it covered, and then gross, deductions, net pay, employer cost and C.T.C. New payroll run starts the next one. Payroll is normally raised for the month that has just finished.",
+    "steps": [
+      "Open Payroll.",
+      "Read the register: period, branch, run type, status, employees, and the money columns.",
+      "Press New payroll run for the next period.",
+      "Raise it for the month that has just ended."
+    ]
+  },
+  {
+    "id": "em-19b",
+    "title": "Inside a payroll run",
+    "role": "HR_HEAD",
+    "say": "Inside a run you get the full sheet: every employee with their attendance, earnings, deductions, employer contributions and the computed result, column by column, from paid days and overtime hours through basic, dearness allowance, H.R.A, conveyance and mobile allowance. The tabs along the top are what you actually hand over: Payslips, FORM two, E.P.F, E.S.I.C, an audit trail, and Export Excel. A run is approved at two levels before the payslips are final.",
+    "steps": [
+      "Open a run from the register.",
+      "Check the Sheet: attendance, earnings, deductions, employer contributions, computed.",
+      "Approve at L1, then at L2 — both are required.",
+      "Hand over from the tabs: Payslips, FORM-II, EPF, ESIC, Export Excel.",
+      "Audit shows who did what on the run."
+    ]
+  },
+  {
+    "id": "em-20",
+    "title": "Performance",
+    "role": "HR_HEAD",
+    "say": "Performance answers two questions. By branch shows headcount, paid days, absences and overtime hours side by side, and flags branches below average and whether attendance was fully marked. By employee drills into one person. This is a scanning screen: it tells you where to look, not what to do.",
+    "steps": [
+      "Open Performance.",
+      "Start on By branch: headcount, paid days, absent, OT hours.",
+      "Note the below-average and fully-marked flags.",
+      "Switch to By employee to drill into one person."
+    ]
+  },
+  {
+    "id": "em-21",
+    "title": "Reports",
+    "role": "HR_HEAD",
+    "say": "Reports gives you the same data in a form you can send outside the system. Pick a report and press Run to see it on screen. Headcount here shows code, name, status, branch, department, designation, wage and pay category, date of joining, tenure, phone, U.A.N and E.S.I.C number. Download gives you the same thing as a spreadsheet.",
+    "steps": [
+      "Open Reports.",
+      "Choose a report and press Run to see it on screen.",
+      "Press Download for the spreadsheet.",
+      "Use this for anyone who needs the numbers outside the system."
+    ]
+  },
+  {
+    "id": "em-22",
+    "title": "My HR — what the employee sees",
+    "role": "EMPLOYEE",
+    "say": "Finally, this is what an ordinary employee sees when they sign in. My H.R gives them their own payslips, their own attendance, their own leave and their own details, and nothing else. No other employee, no payroll, no settings. They can change their own password here too. It is worth showing your staff this screen, because most of the questions they would otherwise bring to H.R are already answered on it.",
+    "steps": [
+      "An employee with a login lands on My HR.",
+      "They see only their own Payslips, Attendance, Leave and My details.",
+      "They can change their own password.",
+      "No other employee's data, no payroll and no settings are reachable from here."
+    ]
+  }
+]

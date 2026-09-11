@@ -1,0 +1,87 @@
+{
+  "em-01": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "BELLARY",
+        "JAJPUR"
+      ]
+    }
+  },
+  "em-03": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "BELLARY",
+        "JAJPUR",
+        "JAMSHEDPUR"
+      ]
+    }
+  },
+  "em-14": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "TOTAL"
+      ]
+    }
+  },
+  "em-19": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "JAJPUR"
+      ]
+    }
+  },
+  "em-20": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "BELLARY",
+        "JAJPUR"
+      ]
+    }
+  },
+  "em-21": {
+    "leaks": {
+      "names": [],
+      "ids": [],
+      "phones": [],
+      "realNamesSurviving": []
+    },
+    "review": {
+      "singleWords": [
+        "ACTIVE",
+        "REGULAR",
+        "BELLARY",
+        "JAJPUR"
+      ]
+    }
+  }
+}
